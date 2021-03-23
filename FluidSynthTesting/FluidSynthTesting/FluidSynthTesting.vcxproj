@@ -78,7 +78,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)bin</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -120,14 +119,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../fluidsynth/test;../../fluidsynth/include\fluidsynth;../../fluidsynth/src;..\..\fluidsynth\out\build\x64-Debug (default)\include;..\..\out\build\x64-Debug (default);../../fluidsynth/include;../../fluidsynth/src/utils;../../fluidsynth/src/sfloader;../../fluidsynth/src/rvoice;../../fluidsynth/src/midi;../../fluidsynth/src/bindings;C:\gtk-build\gtk\x64\release\include\glib-2.0;C:\gtk-build\gtk\x64\release\lib\glib-2.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\palfu\Documents\Visual Studio 2019\Projects\fluidsynth-2.1.8\fluidsynth-2.1.8\test;C:\Users\palfu\Documents\Visual Studio 2019\Projects\fluidsynth-2.1.8\fluidsynth-2.1.8\include\fluidsynth;C:\Users\palfu\Documents\Visual Studio 2019\Projects\fluidsynth-2.1.8\fluidsynth-2.1.8\src;C:\Users\palfu\Documents\Visual Studio 2019\Projects\fluidsynth-2.1.8\fluidsynth-2.1.8\out\build\x64-Debug (default)\include;C:\Users\palfu\Documents\Visual Studio 2019\Projects\fluidsynth-2.1.8\fluidsynth-2.1.8\out\build\x64-Debug (default);C:\Users\palfu\Documents\Visual Studio 2019\Projects\fluidsynth-2.1.8\fluidsynth-2.1.8\include;C:\Users\palfu\Documents\Visual Studio 2019\Projects\fluidsynth-2.1.8\fluidsynth-2.1.8\src\utils;C:\Users\palfu\Documents\Visual Studio 2019\Projects\fluidsynth-2.1.8\fluidsynth-2.1.8\src\sfloader;C:\Users\palfu\Documents\Visual Studio 2019\Projects\fluidsynth-2.1.8\fluidsynth-2.1.8\src\rvoice;C:\Users\palfu\Documents\Visual Studio 2019\Projects\fluidsynth-2.1.8\fluidsynth-2.1.8\src\midi;C:\Users\palfu\Documents\Visual Studio 2019\Projects\fluidsynth-2.1.8\fluidsynth-2.1.8\src\bindings;C:\gtk-build\gtk\x64\release\include\glib-2.0;C:\gtk-build\gtk\x64\release\lib\glib-2.0\include</AdditionalIncludeDirectories>
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>fluidsynth.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../libraries</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
