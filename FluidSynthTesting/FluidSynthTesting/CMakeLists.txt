@@ -3,7 +3,7 @@
 #
 cmake_minimum_required (VERSION 3.8)
 
-project ("FluidSynthTesting" VERSION 1.0)
+project ("FluidSynthTesting" LANGUAGES C VERSION 1.0)
 
 # Add source to this project's executable.
 add_executable (FluidSynthTesting "main.c")
@@ -17,9 +17,10 @@ set (FLUIDSYNTH_DIR "${CMAKE_SOURCE_DIR}/../../fluidsynth")
 if ( WIN32 ) 
     set (FLUIDSYNTH_LIB "${FLUIDSYNTH_DIR}/out/build/x64-Debug/src/fluidsynth.lib")
 else ( WIN32 )
-    set (FLUIDSYNTH_LIB "${FLUIDSYNTH_DIR}/fluidsynth.so")
+    set (FLUIDSYNTH_LIB "${FLUIDSYNTH_DIR}/src/libfluidsynth.so")
 endif ( WIN32 )
 target_include_directories(FluidSynthTesting PRIVATE
+    "${FLUIDSYNTH_DIR}"
     "${FLUIDSYNTH_DIR}/include"
     "${FLUIDSYNTH_DIR}/src"
     "${FLUIDSYNTH_DIR}/src/utils"
