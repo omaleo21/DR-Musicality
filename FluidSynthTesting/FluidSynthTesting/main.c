@@ -1,10 +1,23 @@
+/*---------------------------------------------------------------------------*\
+|*----------------------------- SYSTEM INCLUDES -----------------------------*|
+\*---------------------------------------------------------------------------*/
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+#include <SDL.h>        // Needed for SDL2 audio driver
+
+/*---------------------------------------------------------------------------*\
+|*--------------------------- FLUIDSYNTH INCLUDES ---------------------------*|
+\*---------------------------------------------------------------------------*/
 #include "fluidsynth.h"
 #include "synth/fluid_synth.h"
 #include "synth/fluid_voice.h"
 #include "rvoice/fluid_rvoice.h"
 #include "utils/fluid_sys.h"
+
+/*---------------------------------------------------------------------------*\
+|*--------------------------------- GLOBALS ---------------------------------*|
+\*---------------------------------------------------------------------------*/
 fluid_synth_t *synth;
 fluid_audio_driver_t *audiodriver;
 fluid_sequencer_t *sequencer;
@@ -26,9 +39,12 @@ int playBongos = 1;
 void
 sequencer_callback(unsigned int time, fluid_event_t *event,
                    fluid_sequencer_t *seq, void *data);
+
+/*---------------------------------------------------------------------------*\
+|*-------------------------------- FUNCTIONS --------------------------------*|
+\*---------------------------------------------------------------------------*/
 /* schedule a note on message */
-void
-schedule_noteon(int chan, short key, unsigned int ticks)
+void schedule_noteon(int chan, short key, unsigned int ticks)
 {
     fluid_event_t *ev = new_fluid_event();
     fluid_event_set_source(ev, -1);
@@ -37,9 +53,9 @@ schedule_noteon(int chan, short key, unsigned int ticks)
     fluid_sequencer_send_at(sequencer, ev, ticks, 1);
     delete_fluid_event(ev);
 }
+
 /* schedule a note off message */
-void
-schedule_noteoff(int chan, short key, unsigned int ticks)
+void schedule_noteoff(int chan, short key, unsigned int ticks)
 {
     fluid_event_t *ev = new_fluid_event();
     fluid_event_set_source(ev, -1);
@@ -48,9 +64,9 @@ schedule_noteoff(int chan, short key, unsigned int ticks)
     fluid_sequencer_send_at(sequencer, ev, ticks, 1);
     delete_fluid_event(ev);
 }
+
 /* schedule a timer event (shall trigger the callback) */
-void
-schedule_timer_event(void)
+void schedule_timer_event(void)
 {
     fluid_event_t *ev = new_fluid_event();
     fluid_event_set_source(ev, -1);
@@ -59,9 +75,9 @@ schedule_timer_event(void)
     fluid_sequencer_send_at(sequencer, ev, time_marker, 1);
     delete_fluid_event(ev);
 }
+
 /* schedule the arpeggio's notes */
-void
-schedule_pattern(void)
+void schedule_pattern(void)
 {
     int i, note_time, note_duration[5];
     int j, note_time2, note_duration2[6];
@@ -190,105 +206,113 @@ schedule_pattern(void)
     // Update global time for next frame
     time_marker += duration;
 }
-void
-sequencer_callback(unsigned int time, fluid_event_t *event,
-                   fluid_sequencer_t *seq, void *data)
+
+void sequencer_callback(
+    unsigned int                time,
+    fluid_event_t               *event,
+    fluid_sequencer_t           *seq,
+    void                        *data)
 {
     schedule_timer_event();
     schedule_pattern();
 }
-void
-usage(char *prog_name)
+
+void usage(char *prog_name)
 {
-    printf("Usage: %s soundfont.sf2 [steps [duration]]\n", prog_name);
-    printf("\t(optional) steps: number of pattern notes, from 2 to %d\n",
-           pattern_size);
-    printf("\t(optional) duration: of the pattern in ticks, default %d\n",
-           duration);
+    printf("Usage: %s\n", prog_name);
+    printf("\tPress 'c' then enter to toggle the clave.\n");
+    printf("\tPress 'w' then enter to toggle the cowbell.\n");
+    printf("\tPress 'b' then enter to toggle the bongos.\n");
 }
-int
-main(int argc, char *argv[])
+
+/*---------------------------------------------------------------------------*\
+|*-------------------------------- PROGRAM MAIN -----------------------------*|
+\*---------------------------------------------------------------------------*/
+int main(int argc, char *argv[])
 {
     double bpm = 4.8E5 / duration;
 
     int n, n2, n3;
+    
+    if ( argc == 2 && !strcmp(argv[1], "-h") ) {
+        usage("FluidSynthTesting");
+        return 0;
+    }
+    
+    // Initialize SDL2 driver
+    if (SDL_Init(SDL_INIT_AUDIO) != 0) {
+    	printf("Unable to initialize SDL2: %s", SDL_GetError());
+    	return 1;
+    }
+    
+    /* Register the SDL2 driver with fluidsynth */
     fluid_settings_t *settings;
+    const char *audioDrivers[] = { "sdl2", NULL };
+    int res = fluid_audio_driver_register(audioDrivers);
+    if ( res != FLUID_OK ) {
+        printf("Could not register sdl2 audio driver\n");
+        return -1;
+    }
+    
+    /* Initialize fluidsynth settings struct */
     settings = new_fluid_settings();
     pattern_size = sizeof(notes) / sizeof(int);
-    if(argc < 2)
+    
+    /* create the synth, driver and sequencer instances */
+    synth = new_fluid_synth(settings);
+    fluid_settings_setstr(settings, "audio.driver", "sdl2");
+
+    synth->gain = 5.0;
+    
+    /* load the SoundFonts */
+    n = fluid_synth_sfload(synth, "bongo.sf2", 1);
+    n2 = fluid_synth_sfload(synth, "claves.sf2", 1);
+    n3 = fluid_synth_sfload(synth, "cowbell.sf2", 1);
+
+    fluid_synth_program_select( synth, 0, 1, 0, 0 );
+    fluid_synth_program_select( synth, 1, 2, 0, 0 );
+    fluid_synth_program_select( synth, 2, 3, 0, 0 );
+
+    if(n != -1 && n2 != -1 && n3 != -1)
     {
-        usage(argv[0]);
-    }
-    else
-    {
-        /* create the synth, driver and sequencer instances */
-        synth = new_fluid_synth(settings);
+        sequencer = new_fluid_sequencer2(0);
+        /* register the synth with the sequencer */
+        synth_destination = fluid_sequencer_register_fluidsynth(sequencer,
+                           synth);
+        /* register the client name and callback */
+        client_destination = fluid_sequencer_register_client(sequencer,
+                         "arpeggio", sequencer_callback, NULL);
 
-        synth->gain = 5.0;
-        /* load a SoundFont */
-        n = fluid_synth_sfload(synth, "bongo.sf2", 1);
-        n2 = fluid_synth_sfload(synth, "claves.sf2", 1);
-        n3 = fluid_synth_sfload(synth, "cowbell.sf2", 1);
-       // int retVal = fluid_synth_set_bank_offset( synth, 2, 2 );
+        audiodriver = new_fluid_audio_driver(settings, synth);
+        /* get the current time in ticks */
+        time_marker = fluid_sequencer_get_tick(sequencer);
+        /* schedule patterns */
+        schedule_pattern();
+        schedule_timer_event();
+        schedule_pattern();
+        /* wait for user input */
+        printf("press <q> then <enter> to stop\n");
+        while ( n != 'q' ) {
+            n = getchar();
 
-        fluid_synth_program_select( synth, 0, 1, 0, 0 );
-        fluid_synth_program_select( synth, 1, 2, 0, 0 );
-        fluid_synth_program_select( synth, 2, 3, 0, 0 );
-
-        if(n != -1 && n2 != -1 && n3 != -1)
-        {
-            sequencer = new_fluid_sequencer2(0);
-            /* register the synth with the sequencer */
-            synth_destination = fluid_sequencer_register_fluidsynth(sequencer,
-                                synth);
-            /* register the client name and callback */
-            client_destination = fluid_sequencer_register_client(sequencer,
-                             "arpeggio", sequencer_callback, NULL);
-            if(argc > 2)
-            {
-                n = atoi(argv[2]);
-                if((n > 1) && (n <= pattern_size))
-                {
-                    pattern_size = n;
-                }
+            if ( n == 'b' ) {
+                playBongos = !playBongos;
             }
-            if(argc > 3)
-            {
-                n = atoi(argv[3]);
-                if(n > 0)
-                {
-                    duration = n;
-                }
+            if ( n == 'c' ) {
+                playClave = !playClave;
             }
-            audiodriver = new_fluid_audio_driver(settings, synth);
-            /* get the current time in ticks */
-            time_marker = fluid_sequencer_get_tick(sequencer);
-            /* schedule patterns */
-            schedule_pattern();
-            schedule_timer_event();
-            schedule_pattern();
-            /* wait for user input */
-            printf("press <Enter> to stop\n");
-            while ( n != 'q' ) {
-                n = getchar();
-
-                if ( n == 'b' ) {
-                    playBongos = !playBongos;
-                }
-                if ( n == 'c' ) {
-                    playClave = !playClave;
-                }
-                if ( n == 'w' ) {
-                    playCowbell = !playCowbell;
-                }
+            if ( n == 'w' ) {
+                playCowbell = !playCowbell;
             }
-
         }
-        /* clean and exit */
-        delete_fluid_audio_driver(audiodriver);
-        delete_fluid_sequencer(sequencer);
-        delete_fluid_synth(synth);
+
     }
+    /* clean and exit */
+    delete_fluid_audio_driver(audiodriver);
+    delete_fluid_sequencer(sequencer);
+    delete_fluid_synth(synth);
+
     delete_fluid_settings(settings);
+    SDL_Quit();
     return 0;
 }

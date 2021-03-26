@@ -3,45 +3,39 @@
 #
 cmake_minimum_required (VERSION 3.8)
 
-project ("FluidSynthTesting" LANGUAGES C VERSION 1.0)
+# Name our project; State the languages in use and the current version
+project ("FluidSynthTesting.exe" LANGUAGES C VERSION 1.0)
 
-# Add source to this project's executable.
-add_executable (FluidSynthTesting "main.c")
-
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
-
-set (FLUIDSYNTH_DIR "${CMAKE_SOURCE_DIR}/../../fluidsynth")
-
-if ( WIN32 ) 
-    set (FLUIDSYNTH_LIB "${FLUIDSYNTH_DIR}/out/build/x64-Debug/src/fluidsynth.lib")
-else ( WIN32 )
-    set (FLUIDSYNTH_LIB "${FLUIDSYNTH_DIR}/src/libfluidsynth.so")
-endif ( WIN32 )
-target_include_directories(FluidSynthTesting PRIVATE
-    "${FLUIDSYNTH_DIR}"
-    "${FLUIDSYNTH_DIR}/include"
-    "${FLUIDSYNTH_DIR}/src"
-    "${FLUIDSYNTH_DIR}/src/utils"
-    "${FLUIDSYNTH_DIR}/src/sfloader"
-    "${FLUIDSYNTH_DIR}/src/rvoice"
-    "${FLUIDSYNTH_DIR}/src/midi"
-    "${FLUIDSYNTH_DIR}/src/bindings" )
-
-option ( enable-pkgconfig "use pkg-config to locate dependencies" on )
-
-#link_directories(FluidSynthTesting "../../fluidsynth/out")
-
-set(SOURCES main.c)
-
-add_library(fluidsynth STATIC IMPORTED)
-target_link_libraries(FluidSynthTesting PRIVATE ${FLUIDSYNTH_LIB})
-
+# Set the c++ standard to build with. C++99 should be compatible with multiple platforms
 set(CMAKE_CXX_STANDARD 99)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# Turn on warning checks
+if (MSVC)
+    add_compile_options (/W4)
+else (MSVC)
+    add_compile_options (-Wall -Wextra -pedantic)
+endif (MSVC)
 
+# Add source to this project's executable.
+add_executable (${PROJECT_NAME} "main.c")
+
+# Set option for using pkg-config to locate dependencies
+option ( enable-pkgconfig "use pkg-config to locate dependencies" on )
+
+# Set local var for where fluidsynth is stored
+set (FLUIDSYNTH_DIR "${CMAKE_SOURCE_DIR}/../../fluidsynth")
+
+# Set local var for path to fluidsynth library file
+if ( MSVC ) 
+    set (FLUIDSYNTH_LIB "${FLUIDSYNTH_DIR}/out/build/x64-Debug/src/fluidsynth.lib")
+elseif ( MACOSX_FRAMEWORK )
+    set (FLUIDSYNTH_LIB "${FLUIDSYNTH_DIR}/src/FluidSynth.framework/FluidSynth")
+else ( MSVC )
+    set (FLUIDSYNTH_LIB "${FLUIDSYNTH_DIR}/src/libfluidsynth.so")
+endif ( MSVC )
+
+# Find glib2 include and library paths
 if(NOT enable-pkgconfig)
 
     FIND_LIBRARY( GLIB_LIB NAMES glib glib-2.0 PATH GLIB_LIBRARY_DIR )
@@ -75,10 +69,26 @@ else(NOT enable-pkgconfig)
 
 endif(NOT enable-pkgconfig)
 
+# Find SDL2 include and library paths
+find_package(SDL2 REQUIRED)
 
-target_include_directories (
-    FluidSynthTesting PRIVATE
+# Set up include directories required for this project
+target_include_directories(${PROJECT_NAME} PRIVATE
     ${GLIB_INCLUDE_DIRS}
-)
+    ${SDL2_INCLUDE_DIRS}
+    ${FLUIDSYNTH_DIR}
+    "${FLUIDSYNTH_DIR}/include"
+    "${FLUIDSYNTH_DIR}/src"
+    "${FLUIDSYNTH_DIR}/src/utils"
+    "${FLUIDSYNTH_DIR}/src/sfloader"
+    "${FLUIDSYNTH_DIR}/src/rvoice"
+    "${FLUIDSYNTH_DIR}/src/midi"
+    "${FLUIDSYNTH_DIR}/src/bindings" )
 
-# TODO: Add tests and install targets if needed.
+# List source files to compile
+set(SOURCES main.c)
+
+# Link the project
+target_link_libraries( ${PROJECT_NAME} ${FLUIDSYNTH_LIB} ${SDL2_LIBRARIES} )
+
+
