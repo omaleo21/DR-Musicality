@@ -1,3 +1,0 @@
-/Users/omarleon/Documents/GitHub/DR-Musicality/SalsaMusicality/Main/CMakeFiles/rebuild_cache.dir
-/Users/omarleon/Documents/GitHub/DR-Musicality/SalsaMusicality/Main/CMakeFiles/edit_cache.dir
-/Users/omarleon/Documents/GitHub/DR-Musicality/SalsaMusicality/Main/CMakeFiles/SalsaMusicality.dir

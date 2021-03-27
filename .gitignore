@@ -6,3 +6,9 @@ x64
 *.pdb
 *.exe
 *.lib
+SalsaMusicality/Main/CMakeFiles/**
+SalsaMusicality/Main/CMakeCache.txt
+SalsaMusicality/Main/cmake_install.cmake
+fluidsynth/**
+.vscode/**
+
