@@ -4,7 +4,7 @@
 cmake_minimum_required (VERSION 3.8)
 
 # Name our project; State the languages in use and the current version
-project ("FluidSynthTesting.exe" LANGUAGES C VERSION 1.0)
+project ("SalsaMusicality" LANGUAGES C VERSION 1.0)
 
 # Set the c++ standard to build with. C++99 should be compatible with multiple platforms
 set(CMAKE_CXX_STANDARD 99)
@@ -32,7 +32,7 @@ if ( MSVC )
 elseif ( MACOSX_FRAMEWORK )
     set (FLUIDSYNTH_LIB "${FLUIDSYNTH_DIR}/src/FluidSynth.framework/FluidSynth")
 else ( MSVC )
-    set (FLUIDSYNTH_LIB "${FLUIDSYNTH_DIR}/src/libfluidsynth.so")
+    set (FLUIDSYNTH_LIB "${FLUIDSYNTH_DIR}/src/FluidSynth.framework/FluidSynth")
 endif ( MSVC )
 
 # Find glib2 include and library paths

@@ -16,6 +16,12 @@
 #include "utils/fluid_sys.h"
 
 /*---------------------------------------------------------------------------*\
+|*--------------------------- PATH FOR SOUNDFONTS ---------------------------*|
+\*---------------------------------------------------------------------------*/
+
+#define SoundFontsPath "./SoundFonts/"
+
+/*---------------------------------------------------------------------------*\
 |*--------------------------------- GLOBALS ---------------------------------*|
 \*---------------------------------------------------------------------------*/
 fluid_synth_t *synth;
@@ -43,6 +49,14 @@ sequencer_callback(unsigned int time, fluid_event_t *event,
 /*---------------------------------------------------------------------------*\
 |*-------------------------------- FUNCTIONS --------------------------------*|
 \*---------------------------------------------------------------------------*/
+/* concatenate sound font file at the end of path */
+char *concat_directory(char *path, const char *directory)
+{
+    char *buffer = strdup(path);
+    return strcat(buffer, directory);
+}
+
+
 /* schedule a note on message */
 void schedule_noteon(int chan, short key, unsigned int ticks)
 {
@@ -265,9 +279,20 @@ int main(int argc, char *argv[])
     synth->gain = 5.0;
     
     /* load the SoundFonts */
-    n = fluid_synth_sfload(synth, "bongo.sf2", 1);
-    n2 = fluid_synth_sfload(synth, "claves.sf2", 1);
-    n3 = fluid_synth_sfload(synth, "cowbell.sf2", 1);
+    
+    char *pathToBongo = concat_directory(SoundFontsPath, "bongo.sf2");
+    n = fluid_synth_sfload(synth, pathToBongo, 1);
+    free(pathToBongo);
+    
+
+    char *pathToClave = concat_directory(SoundFontsPath, "claves.sf2");
+    n2 = fluid_synth_sfload(synth, pathToClave, 1);
+    free(pathToClave);
+    
+
+    char *pathToCowbell = concat_directory(SoundFontsPath, "cowbell.sf2");
+    n3 = fluid_synth_sfload(synth, pathToCowbell, 1);
+    free(pathToCowbell);
 
     fluid_synth_program_select( synth, 0, 1, 0, 0 );
     fluid_synth_program_select( synth, 1, 2, 0, 0 );
@@ -307,7 +332,9 @@ int main(int argc, char *argv[])
         }
 
     }
+    
     /* clean and exit */
+
     delete_fluid_audio_driver(audiodriver);
     delete_fluid_sequencer(sequencer);
     delete_fluid_synth(synth);
