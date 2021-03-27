@@ -11,4 +11,6 @@ SalsaMusicality/Main/CMakeCache.txt
 SalsaMusicality/Main/cmake_install.cmake
 fluidsynth/**
 .vscode/**
+SalsaMusicality/Main/Makefile
 
+SalsaMusicality/.DS_Store
