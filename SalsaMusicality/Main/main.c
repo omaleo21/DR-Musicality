@@ -50,10 +50,10 @@ sequencer_callback(unsigned int time, fluid_event_t *event,
 |*-------------------------------- FUNCTIONS --------------------------------*|
 \*---------------------------------------------------------------------------*/
 /* concatenate sound font file at the end of path */
-char *concat_directory(char *path, const char *directory)
+void concat_directory(char *buffer, char *path, const char *directory)
 {
-    char *buffer = strdup(path);
-    return strcat(buffer, directory);
+    strcpy(buffer, path);
+    strcat(buffer, directory);
 }
 
 
@@ -245,8 +245,11 @@ void usage(char *prog_name)
 int main(int argc, char *argv[])
 {
     double bpm = 4.8E5 / duration;
+    char pathToBongo[100];
+    char pathToClave[100];
+    char pathToCowbell[100];
 
-    int n, n2, n3;
+    int n = -1, n2 = -1, n3 = -1;
     
     if ( argc == 2 && !strcmp(argv[1], "-h") ) {
         usage("FluidSynthTesting");
@@ -280,19 +283,16 @@ int main(int argc, char *argv[])
     
     /* load the SoundFonts */
     
-    char *pathToBongo = concat_directory(SoundFontsPath, "bongo.sf2");
+    concat_directory(pathToBongo, SoundFontsPath, "bongo.sf2");
     n = fluid_synth_sfload(synth, pathToBongo, 1);
-    free(pathToBongo);
     
 
-    char *pathToClave = concat_directory(SoundFontsPath, "claves.sf2");
+    concat_directory(pathToClave, SoundFontsPath, "claves.sf2");
     n2 = fluid_synth_sfload(synth, pathToClave, 1);
-    free(pathToClave);
     
 
-    char *pathToCowbell = concat_directory(SoundFontsPath, "cowbell.sf2");
+    concat_directory(pathToCowbell, SoundFontsPath, "cowbell.sf2");
     n3 = fluid_synth_sfload(synth, pathToCowbell, 1);
-    free(pathToCowbell);
 
     fluid_synth_program_select( synth, 0, 1, 0, 0 );
     fluid_synth_program_select( synth, 1, 2, 0, 0 );
@@ -334,7 +334,6 @@ int main(int argc, char *argv[])
     }
     
     /* clean and exit */
-
     delete_fluid_audio_driver(audiodriver);
     delete_fluid_sequencer(sequencer);
     delete_fluid_synth(synth);
