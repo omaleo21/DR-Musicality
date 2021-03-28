@@ -23,16 +23,21 @@ add_executable (${PROJECT_NAME} "main.c")
 # Set option for using pkg-config to locate dependencies
 option ( enable-pkgconfig "use pkg-config to locate dependencies" on )
 
+# Set option for Darwinism
+if ( CMAKE_SYSTEM MATCHES "Darwin" )
+    option ( enable-framework "create a Mac OSX style ${PROJECT_NAME}.framework" on )
+endif ( CMAKE_SYSTEM MATCHES "Darwin" )
+
 # Set local var for where fluidsynth is stored
 set (FLUIDSYNTH_DIR "${CMAKE_SOURCE_DIR}/../../fluidsynth")
 
 # Set local var for path to fluidsynth library file
 if ( MSVC ) 
     set (FLUIDSYNTH_LIB "${FLUIDSYNTH_DIR}/out/build/x64-Debug/src/fluidsynth.lib")
-elseif ( MACOSX_FRAMEWORK )
+elseif ( enable-framework )
     set (FLUIDSYNTH_LIB "${FLUIDSYNTH_DIR}/src/FluidSynth.framework/FluidSynth")
 else ( MSVC )
-    set (FLUIDSYNTH_LIB "${FLUIDSYNTH_DIR}/src/FluidSynth.framework/FluidSynth")
+    set (FLUIDSYNTH_LIB "${FLUIDSYNTH_DIR}/src/libfluidsynth.so")
 endif ( MSVC )
 
 # Find glib2 include and library paths
