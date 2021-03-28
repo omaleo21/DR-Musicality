@@ -1,0 +1,1 @@
+cmd='/usr/local/Cellar/cmake/3.19.7/bin/cmake;-DCMAKE_VERBOSE_MAKEFILE=FALSE;-G;Unix Makefiles;-B;/Users/omarleon/Documents/GitHub/DR-Musicality/fluidsynth/src/gentables;/Users/omarleon/Documents/GitHub/DR-Musicality/fluidsynth/src/gentables'

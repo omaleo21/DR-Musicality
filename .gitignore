@@ -9,10 +9,15 @@ x64
 SalsaMusicality/Main/CMakeFiles/**
 SalsaMusicality/Main/CMakeCache.txt
 SalsaMusicality/Main/cmake_install.cmake
-fluidsynth/**
+
+*.cmake
+*CMakeCache.txt
+*/CMakeFiles/**
+
 .vscode/**
 SalsaMusicality/Main/Makefile
 
 SalsaMusicality/.DS_Store
 SalsaMusicality/Main/Makefile
 SalsaMusicality/Main/SalsaMusicality
+.DS_Store
