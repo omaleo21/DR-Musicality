@@ -29,7 +29,7 @@ if ( CMAKE_SYSTEM MATCHES "Darwin" )
 endif ( CMAKE_SYSTEM MATCHES "Darwin" )
 
 # Set local var for where fluidsynth is stored
-set (FLUIDSYNTH_DIR "${CMAKE_SOURCE_DIR}/../../fluidsynth")
+set (FLUIDSYNTH_DIR "${CMAKE_SOURCE_DIR}/../fluidsynth")
 
 # Set local var for path to fluidsynth library file
 if ( MSVC ) 
