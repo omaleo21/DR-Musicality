@@ -11,31 +11,24 @@
 \*---------------------------------------------------------------------------*/
 #include "fluidsynth.h"
 #include "synth/fluid_synth.h"
-#include "synth/fluid_voice.h"
-#include "rvoice/fluid_rvoice.h"
-#include "utils/fluid_sys.h"
+
+#include "SoundLibraries/Fluidsynth_class.h"
 
 /*---------------------------------------------------------------------------*\
 |*--------------------------- PATH FOR SOUNDFONTS ---------------------------*|
 \*---------------------------------------------------------------------------*/
-
-#define SoundFontsPath "./SoundFonts/"
+const char *SoundFontsPath = "./SoundFonts/";
 
 /*---------------------------------------------------------------------------*\
 |*--------------------------------- GLOBALS ---------------------------------*|
 \*---------------------------------------------------------------------------*/
-fluid_synth_t *synth;
-fluid_audio_driver_t *audiodriver;
-fluid_sequencer_t *sequencer;
-short synth_destination, client_destination;
+CFluidSynth *pFluid             = NULL;
+fluid_synth_t *synth            = NULL;
+fluid_sequencer_t *sequencer    = NULL;
+
 unsigned int time_marker;
 /* duration of the pattern in ticks. Must be divisible by 15! */
 unsigned int duration = 2760; // 4000 is 120bpm, 3000 is 160bpm
-/* notes of the arpeggio */
-//unsigned int notes[] = { 60, 64, 67, 72, 76, 79, 84, 79, 76, 72, 67, 64 };
-unsigned int notes[] = { 60, 60, 60, 60, 60 };
-/* number of notes in one pattern */
-unsigned int pattern_size;
 
 int playClave = 1;
 int playCowbell = 1;
@@ -50,7 +43,7 @@ sequencer_callback(unsigned int time, fluid_event_t *event,
 |*-------------------------------- FUNCTIONS --------------------------------*|
 \*---------------------------------------------------------------------------*/
 /* concatenate sound font file at the end of path */
-void concat_directory(char *buffer, char *path, const char *directory)
+void concat_directory(char *buffer, const char *path, const char *directory)
 {
     strcpy(buffer, path);
     strcat(buffer, directory);
@@ -62,7 +55,7 @@ void schedule_noteon(int chan, short key, unsigned int ticks)
 {
     fluid_event_t *ev = new_fluid_event();
     fluid_event_set_source(ev, -1);
-    fluid_event_set_dest(ev, synth_destination);
+    fluid_event_set_dest(ev, pFluid->GetSynthDest());
     fluid_event_noteon(ev, chan, key, 127);
     fluid_sequencer_send_at(sequencer, ev, ticks, 1);
     delete_fluid_event(ev);
@@ -73,7 +66,7 @@ void schedule_noteoff(int chan, short key, unsigned int ticks)
 {
     fluid_event_t *ev = new_fluid_event();
     fluid_event_set_source(ev, -1);
-    fluid_event_set_dest(ev, synth_destination);
+    fluid_event_set_dest(ev, pFluid->GetSynthDest());
     fluid_event_noteoff(ev, chan, key);
     fluid_sequencer_send_at(sequencer, ev, ticks, 1);
     delete_fluid_event(ev);
@@ -84,7 +77,7 @@ void schedule_timer_event(void)
 {
     fluid_event_t *ev = new_fluid_event();
     fluid_event_set_source(ev, -1);
-    fluid_event_set_dest(ev, client_destination);
+    fluid_event_set_dest(ev, pFluid->GetClientDest());
     fluid_event_timer(ev, NULL);
     fluid_sequencer_send_at(sequencer, ev, time_marker, 1);
     delete_fluid_event(ev);
@@ -94,8 +87,8 @@ void schedule_timer_event(void)
 void schedule_pattern(void)
 {
     int i, note_time, note_duration[5];
-    int j, note_time2, note_duration2[6];
-    int k, note_time3, note_duration3[11], keyToPlay[11];
+    int note_time2, note_duration2[6];
+    int note_time3, note_duration3[11], keyToPlay[11];
     int timeSlice = duration / 15; // Represents one-half beat (time between 1& and 2)
 
     int steps[16];
@@ -124,7 +117,7 @@ void schedule_pattern(void)
     for ( i = 1; i < 16; i++) {
         steps[i] = steps[i - 1] + timeSlice;
     }
-    
+
     // Son 3-2 Clave
     //note_duration[0] = steps[3] - steps[0];                           // from 1 to 2&
     //note_duration[1] = steps[6] - steps[3];                           // from 2& to 4
@@ -143,12 +136,12 @@ void schedule_pattern(void)
     if ( playClave ) {
         printf( "----Clave------\n" );
 
-        for(i = 0; i < pattern_size; ++i)
+        for(i = 0; i < 5; ++i)
         {
             printf( "Note %d: %d\n", i, note_time );
-            schedule_noteon(1, notes[i], note_time);
+            schedule_noteon(1, 60, note_time);
             note_time += note_duration[i];
-            schedule_noteoff(1, notes[i], note_time);
+            schedule_noteoff(1, 60, note_time);
         }
     }
 
@@ -177,7 +170,7 @@ void schedule_pattern(void)
 
     // Cowbell on 1, 2, 3, 4, 4.5, 5, 6, 6.5, 7, 8, 8.5
     note_time3 = steps[0]; // Start at beat 2
-    
+
     note_duration3[0] = steps[2] - steps[0]; // 1                         // from 1 to 2    (down hit)
     note_duration3[1] = steps[4] - steps[2]; // 1                         // from 2 to 3    (up hit)
     note_duration3[2] = steps[6] - steps[4]; // 1                         // from 3 to 4    (down hit)
@@ -231,7 +224,7 @@ void sequencer_callback(
     schedule_pattern();
 }
 
-void usage(char *prog_name)
+void usage(const char *prog_name)
 {
     printf("Usage: %s\n", prog_name);
     printf("\tPress 'c' then enter to toggle the clave.\n");
@@ -244,52 +237,37 @@ void usage(char *prog_name)
 \*---------------------------------------------------------------------------*/
 int main(int argc, char *argv[])
 {
-    double bpm = 4.8E5 / duration;
+    //double bpm = 4.8E5 / duration;
     char pathToBongo[100];
     char pathToClave[100];
     char pathToCowbell[100];
 
     int n = -1, n2 = -1, n3 = -1;
-    
+
+    pFluid = new CFluidSynth("SalsaMusicality", &sequencer_callback);
+
     if ( argc == 2 && !strcmp(argv[1], "-h") ) {
         usage("FluidSynthTesting");
         return 0;
     }
-    
-    // Initialize SDL2 driver
-    if (SDL_Init(SDL_INIT_AUDIO) != 0) {
-    	printf("Unable to initialize SDL2: %s", SDL_GetError());
-    	return 1;
+
+    if ( pFluid->StartInit() != 0 ) {
+        return 1;
     }
-    
-    /* Register the SDL2 driver with fluidsynth */
-    fluid_settings_t *settings;
-    const char *audioDrivers[] = { "sdl2", NULL };
-    int res = fluid_audio_driver_register(audioDrivers);
-    if ( res != FLUID_OK ) {
-        printf("Could not register sdl2 audio driver\n");
-        return -1;
-    }
-    
-    /* Initialize fluidsynth settings struct */
-    settings = new_fluid_settings();
-    pattern_size = sizeof(notes) / sizeof(int);
-    
-    /* create the synth, driver and sequencer instances */
-    synth = new_fluid_synth(settings);
-    fluid_settings_setstr(settings, "audio.driver", "sdl2");
+
+    synth = pFluid->GetSynth();
 
     synth->gain = 5.0;
-    
+
     /* load the SoundFonts */
-    
+
     concat_directory(pathToBongo, SoundFontsPath, "bongo.sf2");
     n = fluid_synth_sfload(synth, pathToBongo, 1);
-    
+
 
     concat_directory(pathToClave, SoundFontsPath, "claves.sf2");
     n2 = fluid_synth_sfload(synth, pathToClave, 1);
-    
+
 
     concat_directory(pathToCowbell, SoundFontsPath, "cowbell.sf2");
     n3 = fluid_synth_sfload(synth, pathToCowbell, 1);
@@ -300,15 +278,12 @@ int main(int argc, char *argv[])
 
     if(n != -1 && n2 != -1 && n3 != -1)
     {
-        sequencer = new_fluid_sequencer2(0);
-        /* register the synth with the sequencer */
-        synth_destination = fluid_sequencer_register_fluidsynth(sequencer,
-                           synth);
-        /* register the client name and callback */
-        client_destination = fluid_sequencer_register_client(sequencer,
-                         "arpeggio", sequencer_callback, NULL);
+        if ( pFluid->FinishInit() != 0 ) {
+            return 1;
+        }
 
-        audiodriver = new_fluid_audio_driver(settings, synth);
+        sequencer = pFluid->GetSequencer();
+
         /* get the current time in ticks */
         time_marker = fluid_sequencer_get_tick(sequencer);
         /* schedule patterns */
@@ -332,13 +307,9 @@ int main(int argc, char *argv[])
         }
 
     }
-    
-    /* clean and exit */
-    delete_fluid_audio_driver(audiodriver);
-    delete_fluid_sequencer(sequencer);
-    delete_fluid_synth(synth);
 
-    delete_fluid_settings(settings);
-    SDL_Quit();
+    /* clean and exit */
+    delete pFluid;
+
     return 0;
 }

@@ -18,7 +18,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 if (MSVC)
     add_compile_options (/W4)
 else (MSVC)
-    add_compile_options (-Wall -Wextra -pedantic)
+    add_compile_options (-Wall -Wextra -fpermissive)
 endif (MSVC)
 
 # Add source to this project's executable.
@@ -82,7 +82,7 @@ endif(NOT enable-pkgconfig)
 find_package(SDL2 REQUIRED)
 
 # Set up include directories required for this project
-target_include_directories(${PROJECT_NAME} PRIVATE
+include_directories(PRIVATE
     ${GLIB_INCLUDE_DIRS}
     ${SDL2_INCLUDE_DIRS}
     ${FLUIDSYNTH_DIR}
@@ -95,9 +95,13 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     "${FLUIDSYNTH_DIR}/src/bindings" )
 
 # List source files to compile
-set(SOURCES main.c)
+set(SOURCES
+        SoundLibraries/Fluidsynth_class.cpp )
+
+# Compile sources into object library
+add_library( ${PROJECT_NAME}-OBJ OBJECT ${SOURCES})
 
 # Link the project
-target_link_libraries( ${PROJECT_NAME} ${FLUIDSYNTH_LIB} ${SDL2_LIBRARIES} )
+target_link_libraries( ${PROJECT_NAME} ${FLUIDSYNTH_LIB} ${SDL2_LIBRARIES} ${PROJECT_NAME}-OBJ )
 
 
