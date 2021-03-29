@@ -9,11 +9,6 @@
 /*---------------------------------------------------------------------------*\
 |*----------------------------- LOCAL INCLUDES ------------------------------*|
 \*---------------------------------------------------------------------------*/
-//#include "synth/fluid_synth.h"
-//#include "synth/fluid_voice.h"
-//#include "rvoice/fluid_rvoice.h"
-//#include "utils/fluid_sys.h"
-
 #include "Fluidsynth_class.h"
 
 /*-----------------------------------------------------------------*\
@@ -24,8 +19,8 @@
 |* Output:  N/A
 \*-----------------------------------------------------------------*/
 CFluidSynth::CFluidSynth(
-    const char *ipInstanceName,
-    fluid_event_callback_t ipCallbackFunc )
+    const char                  *ipInstanceName,
+    fluid_event_callback_t      ipCallbackFunc )
 {
     m_pSynth            = NULL;
     m_pAudioDriver      = NULL;
