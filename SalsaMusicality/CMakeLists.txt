@@ -4,10 +4,14 @@
 cmake_minimum_required (VERSION 3.8)
 
 # Name our project; State the languages in use and the current version
-project ("SalsaMusicality" LANGUAGES C VERSION 1.0)
+project ("SalsaMusicality")
+
+# State the language in use
+
+enable_language(CXX)
 
 # Set the c++ standard to build with. C++99 should be compatible with multiple platforms
-set(CMAKE_CXX_STANDARD 99)
+set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Turn on warning checks
@@ -18,7 +22,7 @@ else (MSVC)
 endif (MSVC)
 
 # Add source to this project's executable.
-add_executable (${PROJECT_NAME} "main.c")
+add_executable (${PROJECT_NAME} "main.cpp")
 
 # Set option for using pkg-config to locate dependencies
 option ( enable-pkgconfig "use pkg-config to locate dependencies" on )
