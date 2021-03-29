@@ -17,6 +17,9 @@ SalsaMusicality/SalsaMusicality
 SalsaMusicality/.DS_Store
 
 fluidsynth/*.cmake
+fluidsynth/src/fluidsynth
+fluidsynth/src/FluidSynth.framework/Versions/2/FluidSynth
 
 .vscode/**
 .DS_Store
+
