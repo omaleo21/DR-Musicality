@@ -301,9 +301,7 @@ int main(int argc, char *argv[])
     }
 
     /* clean and exit */
-
-    pFluid -> Close();
-
+    
     delete pFluid;
 
     return 0;

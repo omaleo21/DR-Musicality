@@ -38,8 +38,8 @@ CFluidSynth::CFluidSynth(
 /*-----------------------------------------------------------------*\
 |*----------------------- ~CFluidSynth ----------------------------*|
 |*-----------------------------------------------------------------*|
-|* Purpose: Free the resources allocated by this instance before being
-|*          destroyed.                                              |
+|* Purpose: Free the resources allocated by this instance before    |
+|*          being destroyed.                                        |
 |* Input:   N/A                                                     |
 |* Output:  N/A                                                     |
 \*-----------------------------------------------------------------*/
@@ -164,19 +164,3 @@ int CFluidSynth::FinishInit()
 
     return 0;
 }
-
-/*-----------------------------------------------------------------*\
-|*------------------------ Close ----------------------------------*|
-|*-----------------------------------------------------------------*|
-|* Purpose: Close audio driver, synthesizer, and settings.          |
-|* Input:   N/A                                                     |
-|* Output:  Returns 0 on success, non-zero for failure.             |
-\*-----------------------------------------------------------------*/
-
-void CFluidSynth::Close()
-{
-    /* Clean up */
-    delete_fluid_audio_driver(m_pAudioDriver);
-    delete_fluid_synth(m_pSynth);
-    delete_fluid_settings(m_pSettings);
-};

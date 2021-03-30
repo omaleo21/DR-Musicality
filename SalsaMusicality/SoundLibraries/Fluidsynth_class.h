@@ -13,7 +13,6 @@ public:
     virtual int StartInit();
     virtual int FinishInit();
     virtual void Reset();
-    virtual void Close();
 
     // Accessor functions
     virtual fluid_synth_t       *GetSynth()         { return m_pSynth; }
