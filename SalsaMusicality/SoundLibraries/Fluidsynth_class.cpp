@@ -9,6 +9,7 @@
 /*---------------------------------------------------------------------------*\
 |*----------------------------- LOCAL INCLUDES ------------------------------*|
 \*---------------------------------------------------------------------------*/
+
 #include "Fluidsynth_class.h"
 
 /*-----------------------------------------------------------------*\
@@ -38,9 +39,9 @@ CFluidSynth::CFluidSynth(
 |*----------------------- ~CFluidSynth ----------------------------*|
 |*-----------------------------------------------------------------*|
 |* Purpose: Free the resources allocated by this instance before being
-|*          destroyed.
-|* Input:   N/A
-|* Output:  N/A
+|*          destroyed.                                              |
+|* Input:   N/A                                                     |
+|* Output:  N/A                                                     |
 \*-----------------------------------------------------------------*/
 CFluidSynth::~CFluidSynth()
 {
@@ -50,9 +51,9 @@ CFluidSynth::~CFluidSynth()
 /*-----------------------------------------------------------------*\
 |*--------------------------- Reset -------------------------------*|
 |*-----------------------------------------------------------------*|
-|* Purpose: Reset the SDL2 and fluidsynth libraries.
-|* Input:   N/A
-|* Output:  N/A
+|* Purpose: Reset the SDL2 and fluidsynth libraries.                |
+|* Input:   N/A                                                     |
+|* Output:  N/A                                                     |
 \*-----------------------------------------------------------------*/
 void CFluidSynth::Reset()
 {
@@ -81,11 +82,12 @@ void CFluidSynth::Reset()
 /*-----------------------------------------------------------------*\
 |*------------------------ StartInit ------------------------------*|
 |*-----------------------------------------------------------------*|
-|* Purpose: Initialize SDL2 audio driver and fluidsynth library. If
-|*          this instance has already been initialized, reset the SDL2
-|*          and fluidsynth libraries in order to initialize them again.
-|* Input:   N/A
-|* Output:  Returns 0 on success, non-zero for failure.
+|* Purpose: Initialize SDL2 audio driver and fluidsynth library. If |
+|*          this instance has already been initialized, reset the   |
+|*          SDL2 nd fluidsynth libraries in order to initialize them| 
+|*          again.                                                  |
+|* Input:   N/A                                                     |
+|* Output:  Returns 0 on success, non-zero for failure.             |
 \*-----------------------------------------------------------------*/
 int CFluidSynth::StartInit()
 {
@@ -123,11 +125,11 @@ int CFluidSynth::StartInit()
 /*-----------------------------------------------------------------*\
 |*------------------------ FinishInit -----------------------------*|
 |*-----------------------------------------------------------------*|
-|* Purpose: Initialize the sequencer and register the user-provided
-|*          callback function. This should be called after StartInit
-|*          and after setting up the MIDI channels.
-|* Input:   N/A
-|* Output:  Returns 0 on success, non-zero for failure.
+|* Purpose: Initialize the sequencer and register the user-provided |
+|*          callback function. This should be called after StartInit|
+|*          and after setting up the MIDI channels.                 |
+|* Input:   N/A                                                     |
+|* Output:  Returns 0 on success, non-zero for failure.             |
 \*-----------------------------------------------------------------*/
 int CFluidSynth::FinishInit()
 {
@@ -162,3 +164,19 @@ int CFluidSynth::FinishInit()
 
     return 0;
 }
+
+/*-----------------------------------------------------------------*\
+|*------------------------ Close ----------------------------------*|
+|*-----------------------------------------------------------------*|
+|* Purpose: Close audio driver, synthesizer, and settings.          |
+|* Input:   N/A                                                     |
+|* Output:  Returns 0 on success, non-zero for failure.             |
+\*-----------------------------------------------------------------*/
+
+void CFluidSynth::Close()
+{
+    /* Clean up */
+    delete_fluid_audio_driver(m_pAudioDriver);
+    delete_fluid_synth(m_pSynth);
+    delete_fluid_settings(m_pSettings);
+};
