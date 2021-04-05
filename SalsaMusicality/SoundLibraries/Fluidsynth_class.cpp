@@ -168,9 +168,14 @@ int CFluidSynth::FinishInit()
     return 0;
 }
 
-/* schedule a note on message */
-
-void CFluidSynth::schedule_noteon(int chan, short key, unsigned int ticks)
+/*-----------------------------------------------------------------*\
+|*------------------------ Schedule_noteon ------------------------*|
+|*-----------------------------------------------------------------*|
+|* Purpose: Schedule a note on message to play sound.               |
+|* Input:   int chan, short key, unsigned int ticks                 |
+|* Output:  N/A                                                     |
+\*-----------------------------------------------------------------*/
+void CFluidSynth::Schedule_noteon(int chan, short key, unsigned int ticks)
 {
     fluid_event_t *ev = new_fluid_event();
     fluid_event_set_source(ev, -1);
@@ -180,8 +185,14 @@ void CFluidSynth::schedule_noteon(int chan, short key, unsigned int ticks)
     delete_fluid_event(ev);
 }
 
-/* schedule a note off message */
-void CFluidSynth::schedule_noteoff(int chan, short key, unsigned int ticks)
+/*-----------------------------------------------------------------*\
+|*------------------------ Schedule_noteoff -----------------------*|
+|*-----------------------------------------------------------------*|
+|* Purpose: Schedule a note off message to stop playing sound.      |
+|* Input:   int chan, short key, unsigned int ticks                 |
+|* Output:  N/A                                                     |
+\*-----------------------------------------------------------------*/
+void CFluidSynth::Schedule_noteoff(int chan, short key, unsigned int ticks)
 {
     fluid_event_t *ev = new_fluid_event();
     fluid_event_set_source(ev, -1);
@@ -191,8 +202,14 @@ void CFluidSynth::schedule_noteoff(int chan, short key, unsigned int ticks)
     delete_fluid_event(ev);
 }
 
-/* schedule a timer event (shall trigger the callback) */
-void CFluidSynth::schedule_timer_event(void)
+/*-----------------------------------------------------------------*\
+|*------------------------ Schedule_timer_event -------------------*|
+|*-----------------------------------------------------------------*|
+|* Purpose: Schedule a timer event (triggers the callback).         |
+|* Input:   N/A                                                     |
+|* Output:  N/A                                                     |
+\*-----------------------------------------------------------------*/
+void CFluidSynth::Schedule_timer_event(void)
 {
     fluid_event_t *ev = new_fluid_event();
     fluid_event_set_source(ev, -1);
@@ -202,16 +219,28 @@ void CFluidSynth::schedule_timer_event(void)
     delete_fluid_event(ev);
 }
 
-/* Get time_marker value. */
+/*-----------------------------------------------------------------*\
+|*------------------------ Get_time_marker ------------------------*|
+|*-----------------------------------------------------------------*|
+|* Purpose: Gets value of time_marker.                              |
+|* Input:   N/A                                                     |
+|* Output:  unsigned int time_marker                                |
+\*-----------------------------------------------------------------*/
 
-unsigned int CFluidSynth::get_time_marker(void)
+unsigned int CFluidSynth::Get_time_marker(void)
 {
     return time_marker;
 }
 
-/* Set time_marker value. */
+/*-----------------------------------------------------------------*\
+|*------------------------ Set_time_marker ------------------------*|
+|*-----------------------------------------------------------------*|
+|* Purpose: Adds duration time to time_marker.                      |
+|* Input:   int duration                                            |
+|* Output:  unsigned int time_marker                                |
+\*-----------------------------------------------------------------*/
 
-void CFluidSynth::set_time_marker(int duration)
+void CFluidSynth::Set_time_marker(int duration)
 {
     time_marker+= duration;
 }

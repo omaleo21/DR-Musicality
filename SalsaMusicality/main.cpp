@@ -86,10 +86,10 @@ void schedule_pattern(void)
 
     int steps[16];
 
-    note_time = pFluid->get_time_marker(); // time at time_marker represents beat 1
-    note_time2 = pFluid->get_time_marker();
+    note_time = pFluid->Get_time_marker(); // time at time_marker represents beat 1
+    note_time2 = pFluid->Get_time_marker();
 
-    steps[0] = pFluid->get_time_marker();
+    steps[0] = pFluid->Get_time_marker();
     // beat 1      = 0
     // beat 1&     = 1
     // beat 2      = 2
@@ -132,9 +132,9 @@ void schedule_pattern(void)
         for(i = 0; i < 5; ++i)
         {
             printf( "Note %d: %d\n", i, note_time );
-            pFluid->schedule_noteon(1, 60, note_time);
+            pFluid->Schedule_noteon(1, 60, note_time);
             note_time += note_duration[i];
-            pFluid->schedule_noteoff(1, 60, note_time);
+            pFluid->Schedule_noteoff(1, 60, note_time);
         }
     }
 
@@ -155,9 +155,9 @@ void schedule_pattern(void)
         for ( i = 0; i < 6; ++i )
         {
             printf( "Note %d: %d\n", i, note_time2 );
-            pFluid->schedule_noteon( 0, 60, note_time2 );
+            pFluid->Schedule_noteon( 0, 60, note_time2 );
             note_time2 += note_duration2[i];
-            pFluid->schedule_noteoff( 0, 60, note_time2 );
+            pFluid->Schedule_noteoff( 0, 60, note_time2 );
         }
     }
 
@@ -197,14 +197,14 @@ void schedule_pattern(void)
         for ( i = 0; i < 11; ++i )
         {
             printf( "Note %d: %d\n", i, note_time3 );
-            pFluid->schedule_noteon( 2, keyToPlay[i], note_time3 );
+            pFluid->Schedule_noteon( 2, keyToPlay[i], note_time3 );
             note_time3 += note_duration3[i];
-            pFluid->schedule_noteoff( 2, keyToPlay[i], note_time3 );
+            pFluid->Schedule_noteoff( 2, keyToPlay[i], note_time3 );
         }
     }
 
     // Update global time for next frame
-    pFluid->set_time_marker(duration);
+    pFluid->Set_time_marker(duration);
 }
 
 void sequencer_callback(
@@ -213,7 +213,7 @@ void sequencer_callback(
     fluid_sequencer_t           *seq,
     void                        *data)
 {
-    pFluid->schedule_timer_event();
+    pFluid->Schedule_timer_event();
     schedule_pattern();
 }
 
@@ -281,7 +281,7 @@ int main(int argc, char *argv[])
         
         /* schedule patterns */
         schedule_pattern();
-        pFluid->schedule_timer_event();
+        pFluid->Schedule_timer_event();
         schedule_pattern();
         /* wait for user input */
         printf("press <q> then <enter> to stop\n");
