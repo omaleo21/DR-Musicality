@@ -3,7 +3,7 @@
 \*---------------------------------------------------------------------------*/
 
 #include "synth/fluid_synth.h"
-/*#include "SoundLibraries/Fluidsynth_class.h"*/
+//#include "SoundLibraries/Fluidsynth_class.h"
 #include "SoundLibraries/PlayNotes_class.h"
 
 /*---------------------------------------------------------------------------*\
@@ -16,7 +16,7 @@ const char *SoundFontsPath = "./SoundFonts/";
 |*--------------------------------- GLOBALS ---------------------------------*|
 \*---------------------------------------------------------------------------*/
 CFluidSynth *pFluid             = NULL;
-Notes *pNotes                   = NULL;
+//Notes *pNotes                   = NULL;
 fluid_synth_t *synth            = NULL;
 fluid_sequencer_t *sequencer    = NULL;
 
@@ -238,7 +238,7 @@ int main(int argc, char *argv[])
     int n = -1, n2 = -1, n3 = -1;
 
     pFluid = new CFluidSynth("SalsaMusicality", &sequencer_callback);
-    pNotes = new Notes();
+    //pNotes = new Notes();
 
     if ( argc == 2 && !strcmp(argv[1], "-h") ) {
         usage("FluidSynthTesting");

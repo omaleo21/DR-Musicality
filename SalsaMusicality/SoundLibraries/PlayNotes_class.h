@@ -11,11 +11,14 @@
 #include "Fluidsynth_class.h"
 
 class Notes{
+    
     public:
             
         Notes();
 
     private:
+    /*
         CFluidSynth *pFluid; 
         fluid_sequencer_t *sequencer;
+    */ 
 };

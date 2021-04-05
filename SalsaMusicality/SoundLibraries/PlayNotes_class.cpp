@@ -3,10 +3,12 @@
 \*---------------------------------------------------------------------------*/
 
 #include "PlayNotes_class.h"
-
+Notes::Notes()
+{}
+/*
 Notes::Notes()
 {
  sequencer = pFluid->GetSequencer();
 }
-
+*/
 
