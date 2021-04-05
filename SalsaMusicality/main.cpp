@@ -3,7 +3,8 @@
 \*---------------------------------------------------------------------------*/
 
 #include "synth/fluid_synth.h"
-#include "SoundLibraries/Fluidsynth_class.h"
+/*#include "SoundLibraries/Fluidsynth_class.h"*/
+#include "SoundLibraries/PlayNotes_class.h"
 
 /*---------------------------------------------------------------------------*\
 |*--------------------------- PATH FOR SOUNDFONTS ---------------------------*|
