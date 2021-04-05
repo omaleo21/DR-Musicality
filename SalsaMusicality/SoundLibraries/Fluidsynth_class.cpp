@@ -162,6 +162,9 @@ int CFluidSynth::FinishInit()
         return 70;
     }
 
+    /* get the current time in ticks */
+    time_marker = fluid_sequencer_get_tick(m_pSequencer);
+
     return 0;
 }
 

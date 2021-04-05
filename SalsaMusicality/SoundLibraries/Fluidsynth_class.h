@@ -36,9 +36,6 @@ private:
     bool                        m_bSDLActive;
 
     const char *                m_pInstanceName;
-
-    int chan;
-    short key;
-    unsigned int ticks;
+    
     unsigned int time_marker;
 };

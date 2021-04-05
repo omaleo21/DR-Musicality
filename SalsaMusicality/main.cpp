@@ -279,8 +279,7 @@ int main(int argc, char *argv[])
 
         sequencer = pFluid->GetSequencer();
 
-        /* get the current time in ticks */
-        time_marker = fluid_sequencer_get_tick(sequencer);
+        
         /* schedule patterns */
         schedule_pattern();
         pFluid->schedule_timer_event();
