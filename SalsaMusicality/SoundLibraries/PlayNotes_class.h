@@ -19,7 +19,7 @@ class Notes{
         virtual void schedule_noteoff(int chan, short key, unsigned int ticks);            virtual void schedule_timer_event(void);
     private:
         CFluidSynth *pFluid; 
-        fluid_sequencer_t *sequencer = pFluid->GetSequencer();
+        fluid_sequencer_t *sequencer;
         
         int chan;
         short key;

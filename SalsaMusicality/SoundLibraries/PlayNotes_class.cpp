@@ -6,10 +6,10 @@
 
 Notes::Notes()
 {
-    
+ sequencer = pFluid->GetSequencer();
 }
 
-Notes::schedule_noteon(int chan, short key, unsigned int ticks)
+void Notes::schedule_noteon(int chan, short key, unsigned int ticks)
 {   
     fluid_event_t *ev = new_fluid_event();
     fluid_event_set_source(ev, -1);

@@ -16,6 +16,7 @@ const char *SoundFontsPath = "./SoundFonts/";
 |*--------------------------------- GLOBALS ---------------------------------*|
 \*---------------------------------------------------------------------------*/
 CFluidSynth *pFluid             = NULL;
+Notes *pNotes                   = NULL;
 fluid_synth_t *synth            = NULL;
 fluid_sequencer_t *sequencer    = NULL;
 
@@ -44,6 +45,7 @@ void concat_directory(char *buffer, const char *path, const char *directory)
 
 
 /* schedule a note on message */
+/*
 void schedule_noteon(int chan, short key, unsigned int ticks)
 {
     fluid_event_t *ev = new_fluid_event();
@@ -53,7 +55,7 @@ void schedule_noteon(int chan, short key, unsigned int ticks)
     fluid_sequencer_send_at(sequencer, ev, ticks, 1);
     delete_fluid_event(ev);
 }
-
+*/
 /* schedule a note off message */
 void schedule_noteoff(int chan, short key, unsigned int ticks)
 {
@@ -132,7 +134,7 @@ void schedule_pattern(void)
         for(i = 0; i < 5; ++i)
         {
             printf( "Note %d: %d\n", i, note_time );
-            schedule_noteon(1, 60, note_time);
+            pNotes->schedule_noteon(1, 60, note_time);
             note_time += note_duration[i];
             schedule_noteoff(1, 60, note_time);
         }
@@ -155,7 +157,7 @@ void schedule_pattern(void)
         for ( i = 0; i < 6; ++i )
         {
             printf( "Note %d: %d\n", i, note_time2 );
-            schedule_noteon( 0, 60, note_time2 );
+            pNotes->schedule_noteon( 0, 60, note_time2 );
             note_time2 += note_duration2[i];
             schedule_noteoff( 0, 60, note_time2 );
         }
@@ -197,7 +199,7 @@ void schedule_pattern(void)
         for ( i = 0; i < 11; ++i )
         {
             printf( "Note %d: %d\n", i, note_time3 );
-            schedule_noteon( 2, keyToPlay[i], note_time3 );
+            pNotes->schedule_noteon( 2, keyToPlay[i], note_time3 );
             note_time3 += note_duration3[i];
             schedule_noteoff( 2, keyToPlay[i], note_time3 );
         }
@@ -238,7 +240,8 @@ int main(int argc, char *argv[])
     int n = -1, n2 = -1, n3 = -1;
 
     pFluid = new CFluidSynth("SalsaMusicality", &sequencer_callback);
-
+    pNotes = new Notes();
+    
     if ( argc == 2 && !strcmp(argv[1], "-h") ) {
         usage("FluidSynthTesting");
         return 0;
