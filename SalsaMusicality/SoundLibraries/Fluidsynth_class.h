@@ -13,6 +13,9 @@ public:
     virtual int StartInit();
     virtual int FinishInit();
     virtual void Reset();
+    virtual void schedule_noteon(int chan, short key, unsigned int ticks);
+    virtual void schedule_noteoff(int chan, short key, unsigned int ticks); 
+    virtual void schedule_timer_event(void);   
 
     // Accessor functions
     virtual fluid_synth_t       *GetSynth()         { return m_pSynth; }
@@ -33,4 +36,9 @@ private:
     bool                        m_bSDLActive;
 
     const char *                m_pInstanceName;
+
+    int chan;
+    short key;
+    unsigned int ticks;
+    unsigned int time_marker;
 };

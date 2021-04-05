@@ -96,7 +96,8 @@ include_directories(PRIVATE
 
 # List source files to compile
 set(SOURCES
-        SoundLibraries/Fluidsynth_class.cpp )
+        SoundLibraries/Fluidsynth_class.cpp 
+        SoundLibraries/PlayNotes_class.cpp )
 
 # Compile sources into object library
 add_library( ${PROJECT_NAME}-OBJ OBJECT ${SOURCES})

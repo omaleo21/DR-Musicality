@@ -164,3 +164,37 @@ int CFluidSynth::FinishInit()
 
     return 0;
 }
+
+/* schedule a note on message */
+
+void CFluidSynth::schedule_noteon(int chan, short key, unsigned int ticks)
+{
+    fluid_event_t *ev = new_fluid_event();
+    fluid_event_set_source(ev, -1);
+    fluid_event_set_dest(ev, m_iClientDest);
+    fluid_event_noteon(ev, chan, key, 127);
+    fluid_sequencer_send_at(m_pSequencer, ev, ticks, 1);
+    delete_fluid_event(ev);
+}
+
+/* schedule a note off message */
+void CFluidSynth::schedule_noteoff(int chan, short key, unsigned int ticks)
+{
+    fluid_event_t *ev = new_fluid_event();
+    fluid_event_set_source(ev, -1);
+    fluid_event_set_dest(ev, m_iClientDest);
+    fluid_event_noteoff(ev, chan, key);
+    fluid_sequencer_send_at(m_pSequencer, ev, ticks, 1);
+    delete_fluid_event(ev);
+}
+
+/* schedule a timer event (shall trigger the callback) */
+void CFluidSynth::schedule_timer_event(void)
+{
+    fluid_event_t *ev = new_fluid_event();
+    fluid_event_set_source(ev, -1);
+    fluid_event_set_dest(ev, m_iClientDest);
+    fluid_event_timer(ev, NULL);
+    fluid_sequencer_send_at(m_pSequencer, ev, time_marker, 1);
+    delete_fluid_event(ev);
+}

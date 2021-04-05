@@ -43,40 +43,39 @@ void concat_directory(char *buffer, const char *path, const char *directory)
     strcat(buffer, directory);
 }
 
+// /* schedule a note on message */
 
-/* schedule a note on message */
-/*
-void schedule_noteon(int chan, short key, unsigned int ticks)
-{
-    fluid_event_t *ev = new_fluid_event();
-    fluid_event_set_source(ev, -1);
-    fluid_event_set_dest(ev, pFluid->GetSynthDest());
-    fluid_event_noteon(ev, chan, key, 127);
-    fluid_sequencer_send_at(sequencer, ev, ticks, 1);
-    delete_fluid_event(ev);
-}
-*/
-/* schedule a note off message */
-void schedule_noteoff(int chan, short key, unsigned int ticks)
-{
-    fluid_event_t *ev = new_fluid_event();
-    fluid_event_set_source(ev, -1);
-    fluid_event_set_dest(ev, pFluid->GetSynthDest());
-    fluid_event_noteoff(ev, chan, key);
-    fluid_sequencer_send_at(sequencer, ev, ticks, 1);
-    delete_fluid_event(ev);
-}
+// void schedule_noteon(int chan, short key, unsigned int ticks)
+// {
+//     fluid_event_t *ev = new_fluid_event();
+//     fluid_event_set_source(ev, -1);
+//     fluid_event_set_dest(ev, pFluid->GetSynthDest());
+//     fluid_event_noteon(ev, chan, key, 127);
+//     fluid_sequencer_send_at(sequencer, ev, ticks, 1);
+//     delete_fluid_event(ev);
+// }
 
-/* schedule a timer event (shall trigger the callback) */
-void schedule_timer_event(void)
-{
-    fluid_event_t *ev = new_fluid_event();
-    fluid_event_set_source(ev, -1);
-    fluid_event_set_dest(ev, pFluid->GetClientDest());
-    fluid_event_timer(ev, NULL);
-    fluid_sequencer_send_at(sequencer, ev, time_marker, 1);
-    delete_fluid_event(ev);
-}
+// /* schedule a note off message */
+// void schedule_noteoff(int chan, short key, unsigned int ticks)
+// {
+//     fluid_event_t *ev = new_fluid_event();
+//     fluid_event_set_source(ev, -1);
+//     fluid_event_set_dest(ev, pFluid->GetSynthDest());
+//     fluid_event_noteoff(ev, chan, key);
+//     fluid_sequencer_send_at(sequencer, ev, ticks, 1);
+//     delete_fluid_event(ev);
+// }
+
+// /* schedule a timer event (shall trigger the callback) */
+// void schedule_timer_event(void)
+// {
+//     fluid_event_t *ev = new_fluid_event();
+//     fluid_event_set_source(ev, -1);
+//     fluid_event_set_dest(ev, pFluid->GetClientDest());
+//     fluid_event_timer(ev, NULL);
+//     fluid_sequencer_send_at(sequencer, ev, time_marker, 1);
+//     delete_fluid_event(ev);
+// }
 
 /* schedule the arpeggio's notes */
 void schedule_pattern(void)
@@ -134,9 +133,9 @@ void schedule_pattern(void)
         for(i = 0; i < 5; ++i)
         {
             printf( "Note %d: %d\n", i, note_time );
-            pNotes->schedule_noteon(1, 60, note_time);
+            pFluid->schedule_noteon(1, 60, note_time);
             note_time += note_duration[i];
-            schedule_noteoff(1, 60, note_time);
+            pFluid->schedule_noteoff(1, 60, note_time);
         }
     }
 
@@ -157,9 +156,9 @@ void schedule_pattern(void)
         for ( i = 0; i < 6; ++i )
         {
             printf( "Note %d: %d\n", i, note_time2 );
-            pNotes->schedule_noteon( 0, 60, note_time2 );
+            pFluid->schedule_noteon( 0, 60, note_time2 );
             note_time2 += note_duration2[i];
-            schedule_noteoff( 0, 60, note_time2 );
+            pFluid->schedule_noteoff( 0, 60, note_time2 );
         }
     }
 
@@ -199,9 +198,9 @@ void schedule_pattern(void)
         for ( i = 0; i < 11; ++i )
         {
             printf( "Note %d: %d\n", i, note_time3 );
-            pNotes->schedule_noteon( 2, keyToPlay[i], note_time3 );
+            pFluid->schedule_noteon( 2, keyToPlay[i], note_time3 );
             note_time3 += note_duration3[i];
-            schedule_noteoff( 2, keyToPlay[i], note_time3 );
+            pFluid->schedule_noteoff( 2, keyToPlay[i], note_time3 );
         }
     }
 
@@ -215,7 +214,7 @@ void sequencer_callback(
     fluid_sequencer_t           *seq,
     void                        *data)
 {
-    schedule_timer_event();
+    pFluid->schedule_timer_event();
     schedule_pattern();
 }
 
@@ -241,7 +240,7 @@ int main(int argc, char *argv[])
 
     pFluid = new CFluidSynth("SalsaMusicality", &sequencer_callback);
     pNotes = new Notes();
-    
+
     if ( argc == 2 && !strcmp(argv[1], "-h") ) {
         usage("FluidSynthTesting");
         return 0;
@@ -284,7 +283,7 @@ int main(int argc, char *argv[])
         time_marker = fluid_sequencer_get_tick(sequencer);
         /* schedule patterns */
         schedule_pattern();
-        schedule_timer_event();
+        pFluid->schedule_timer_event();
         schedule_pattern();
         /* wait for user input */
         printf("press <q> then <enter> to stop\n");
