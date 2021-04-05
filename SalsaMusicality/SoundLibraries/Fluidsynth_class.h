@@ -16,6 +16,8 @@ public:
     virtual void schedule_noteon(int chan, short key, unsigned int ticks);
     virtual void schedule_noteoff(int chan, short key, unsigned int ticks); 
     virtual void schedule_timer_event(void);   
+    virtual unsigned int get_time_marker(void);
+    virtual void set_time_marker(int duration);
 
     // Accessor functions
     virtual fluid_synth_t       *GetSynth()         { return m_pSynth; }

@@ -20,7 +20,6 @@ Notes *pNotes                   = NULL;
 fluid_synth_t *synth            = NULL;
 fluid_sequencer_t *sequencer    = NULL;
 
-unsigned int time_marker;
 /* duration of the pattern in ticks. Must be divisible by 15! */
 unsigned int duration = 2760; // 4000 is 120bpm, 3000 is 160bpm
 
@@ -87,10 +86,10 @@ void schedule_pattern(void)
 
     int steps[16];
 
-    note_time = time_marker; // time at time_marker represents beat 1
-    note_time2 = time_marker;
+    note_time = pFluid->get_time_marker(); // time at time_marker represents beat 1
+    note_time2 = pFluid->get_time_marker();
 
-    steps[0] = time_marker;
+    steps[0] = pFluid->get_time_marker();
     // beat 1      = 0
     // beat 1&     = 1
     // beat 2      = 2
@@ -205,7 +204,7 @@ void schedule_pattern(void)
     }
 
     // Update global time for next frame
-    time_marker += duration;
+    pFluid->set_time_marker(duration);
 }
 
 void sequencer_callback(

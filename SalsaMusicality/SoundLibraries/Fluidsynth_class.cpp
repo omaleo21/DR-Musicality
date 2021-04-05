@@ -201,3 +201,17 @@ void CFluidSynth::schedule_timer_event(void)
     fluid_sequencer_send_at(m_pSequencer, ev, time_marker, 1);
     delete_fluid_event(ev);
 }
+
+/* Get time_marker value. */
+
+unsigned int CFluidSynth::get_time_marker(void)
+{
+    return time_marker;
+}
+
+/* Set time_marker value. */
+
+void CFluidSynth::set_time_marker(int duration)
+{
+    time_marker+= duration;
+}
