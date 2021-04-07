@@ -1,36 +1,72 @@
 /*---------------------------------------------------------------------------*\
+|* Title: InstrumentClave.h
+|* Date:  30 MARCH 2021
+|*
+|*-----------------------------------------------------------------------------
+|* File Description: Provide class for playing clave notes.
+|*
+\*---------------------------------------------------------------------------*/
+#ifndef FLUIDSYNTH_CLASS_H
+#define FLUIDSYNTH_CLASS_H
+
+/*---------------------------------------------------------------------------*\
 |*--------------------------- FLUIDSYNTH INCLUDES ---------------------------*|
 \*---------------------------------------------------------------------------*/
 #include "fluidsynth.h"
 
+/*---------------------------------------------------------------------------*\
+|*---------------------------- FUNCTION POINTERS ----------------------------*|
+\*---------------------------------------------------------------------------*/
+typedef void (*ptSchedulePattern)(
+    void                        *pData,
+    unsigned int                &ioStartTimeOfNextPattern );
+
+/*---------------------------------------------------------------------------*\
+|*---------------------------- CLASS CFluidSynth ----------------------------*|
+\*---------------------------------------------------------------------------*/
 class CFluidSynth {
 public:
-    CFluidSynth(
-        const char *ipInstanceName,
-        fluid_event_callback_t ipCallbackFunc );
+    CFluidSynth( const char *ipInstanceName );
     virtual ~CFluidSynth();
 
+    virtual void Reset();
     virtual int StartInit();
     virtual int FinishInit();
-    virtual void Reset();
-    virtual void Schedule_noteon(int chan, short key, unsigned int ticks);
-    virtual void Schedule_noteoff(int chan, short key, unsigned int ticks); 
-    virtual void Schedule_timer_event(void);   
-    virtual unsigned int Get_time_marker(void);
-    virtual void Set_time_marker(int duration);
 
-    // Accessor functions
-    virtual fluid_synth_t       *GetSynth()         { return m_pSynth; }
-    virtual fluid_sequencer_t   *GetSequencer()     { return m_pSequencer; }
-    virtual short               GetSynthDest()      { return m_iSynthDest; }
-    virtual short               GetClientDest()     { return m_iClientDest; }
+    virtual void ScheduleNoteOn(
+        const int                       &iChannel,
+        const short                     &iKey,
+        const unsigned int              &iTime);
+
+    virtual void ScheduleNoteOff(
+        const int                       &iChannel,
+        const short                     &iKey,
+        const unsigned int              &iTime);
+
+    virtual void ScheduleTimerEvent();
+
+    virtual void SetCallbackFunction(
+        ptSchedulePattern               ipSchedulePattern,
+        void                            *pData = NULL );
+
+    virtual int RegisterInstrument( const char *ipPathToSFFile );
+
+    virtual void BeginPlayback();
+
+    virtual void SetMasterVolume( const float &iGain );
 
 private:
+
+    static void ScheduleCallback(
+        unsigned int                    iCurrentTime,
+        fluid_event_t                   *iEvent,
+        fluid_sequencer_t               *iSeq,
+        void                            *iData );
+
     fluid_synth_t               *m_pSynth;
     fluid_audio_driver_t        *m_pAudioDriver;
     fluid_sequencer_t           *m_pSequencer;
     fluid_settings_t            *m_pSettings;
-    fluid_event_callback_t      m_pCallbackFunc;
 
     short                       m_iSynthDest;
     short                       m_iClientDest;
@@ -38,6 +74,12 @@ private:
     bool                        m_bSDLActive;
 
     const char *                m_pInstanceName;
-    
-    unsigned int time_marker;
+
+    unsigned int                m_iStartTimeOfNextPattern;
+    int                         m_iNumInstruments;
+
+    ptSchedulePattern           m_pSchedulePattern;
+    void                        *m_pPatternData;
 };
+
+#endif

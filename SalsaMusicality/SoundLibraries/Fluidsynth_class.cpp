@@ -19,20 +19,20 @@
 |* Input:   N/A
 |* Output:  N/A
 \*-----------------------------------------------------------------*/
-CFluidSynth::CFluidSynth(
-    const char                  *ipInstanceName,
-    fluid_event_callback_t      ipCallbackFunc )
+CFluidSynth::CFluidSynth( const char *ipInstanceName )
 {
-    m_pSynth            = NULL;
-    m_pAudioDriver      = NULL;
-    m_pSequencer        = NULL;
-    m_pSettings         = NULL;
-    m_bSDLActive        = false;
-    m_iSynthDest        = -1;
-    m_iClientDest       = -1;
+    m_pSynth                        = NULL;
+    m_pAudioDriver                  = NULL;
+    m_pSequencer                    = NULL;
+    m_pSettings                     = NULL;
+    m_bSDLActive                    = false;
+    m_iSynthDest                    = -1;
+    m_iClientDest                   = -1;
+    m_iStartTimeOfNextPattern       = 0;
 
-    m_pInstanceName     = ipInstanceName;
-    m_pCallbackFunc     = ipCallbackFunc;
+    m_pInstanceName                 = ipInstanceName;
+
+    m_iNumInstruments = 0;
 }
 
 /*-----------------------------------------------------------------*\
@@ -153,8 +153,8 @@ int CFluidSynth::FinishInit()
         fluid_sequencer_register_client(
             m_pSequencer,
             m_pInstanceName,
-            m_pCallbackFunc,
-            NULL);
+            ScheduleCallback,
+            this);
 
     m_pAudioDriver = new_fluid_audio_driver(m_pSettings, m_pSynth);
     if ( !m_pAudioDriver ) {
@@ -163,84 +163,161 @@ int CFluidSynth::FinishInit()
     }
 
     /* get the current time in ticks */
-    time_marker = fluid_sequencer_get_tick(m_pSequencer);
+    m_iStartTimeOfNextPattern = fluid_sequencer_get_tick(m_pSequencer);
 
     return 0;
 }
 
 /*-----------------------------------------------------------------*\
-|*------------------------ Schedule_noteon ------------------------*|
+|*------------------------ ScheduleNoteOn -------------------------*|
 |*-----------------------------------------------------------------*|
 |* Purpose: Schedule a note on message to play sound.               |
 |* Input:   int chan, short key, unsigned int ticks                 |
 |* Output:  N/A                                                     |
 \*-----------------------------------------------------------------*/
-void CFluidSynth::Schedule_noteon(int chan, short key, unsigned int ticks)
+void CFluidSynth::ScheduleNoteOn(
+    const int                     &iChannel,
+    const short                   &iKey,
+    const unsigned int            &iTime)
 {
     fluid_event_t *ev = new_fluid_event();
     fluid_event_set_source(ev, -1);
     fluid_event_set_dest(ev, m_iSynthDest);
-    fluid_event_noteon(ev, chan, key, 127);
-    fluid_sequencer_send_at(m_pSequencer, ev, ticks, 1);
+    fluid_event_noteon(ev, iChannel, iKey, 127);
+    fluid_sequencer_send_at(m_pSequencer, ev, iTime, 1);
     delete_fluid_event(ev);
 }
 
 /*-----------------------------------------------------------------*\
-|*------------------------ Schedule_noteoff -----------------------*|
+|*------------------------ ScheduleNoteOff ------------------------*|
 |*-----------------------------------------------------------------*|
 |* Purpose: Schedule a note off message to stop playing sound.      |
 |* Input:   int chan, short key, unsigned int ticks                 |
 |* Output:  N/A                                                     |
 \*-----------------------------------------------------------------*/
-void CFluidSynth::Schedule_noteoff(int chan, short key, unsigned int ticks)
+void CFluidSynth::ScheduleNoteOff(
+    const int                     &iChannel,
+    const short                   &iKey,
+    const unsigned int            &iTime)
 {
     fluid_event_t *ev = new_fluid_event();
     fluid_event_set_source(ev, -1);
     fluid_event_set_dest(ev, m_iSynthDest);
-    fluid_event_noteoff(ev, chan, key);
-    fluid_sequencer_send_at(m_pSequencer, ev, ticks, 1);
+    fluid_event_noteoff(ev, iChannel, iKey);
+    fluid_sequencer_send_at(m_pSequencer, ev, iTime, 1);
     delete_fluid_event(ev);
 }
 
 /*-----------------------------------------------------------------*\
-|*------------------------ Schedule_timer_event -------------------*|
+|*------------------------ ScheduleTimerEvent ---------------------*|
 |*-----------------------------------------------------------------*|
 |* Purpose: Schedule a timer event (triggers the callback).         |
 |* Input:   N/A                                                     |
 |* Output:  N/A                                                     |
 \*-----------------------------------------------------------------*/
-void CFluidSynth::Schedule_timer_event(void)
+void CFluidSynth::ScheduleTimerEvent(void)
 {
     fluid_event_t *ev = new_fluid_event();
     fluid_event_set_source(ev, -1);
     fluid_event_set_dest(ev, m_iClientDest);
     fluid_event_timer(ev, NULL);
-    fluid_sequencer_send_at(m_pSequencer, ev, time_marker, 1);
+    fluid_sequencer_send_at(m_pSequencer, ev, m_iStartTimeOfNextPattern, 1);
     delete_fluid_event(ev);
 }
 
 /*-----------------------------------------------------------------*\
-|*------------------------ Get_time_marker ------------------------*|
+|*------------------------ ScheduleCallback -----------------------*|
 |*-----------------------------------------------------------------*|
-|* Purpose: Gets value of time_marker.                              |
-|* Input:   N/A                                                     |
-|* Output:  unsigned int time_marker                                |
+|* Purpose: Define the callback function that fluidsynth calls at   |
+|*          the specified time.                                     |
+|* Input:   Data passed to this class from fluidsynth               |
+|* Output:  N/A                                                     |
 \*-----------------------------------------------------------------*/
-
-unsigned int CFluidSynth::Get_time_marker(void)
+void CFluidSynth::ScheduleCallback(
+    unsigned int                    iCurrentTime,
+    fluid_event_t                   *ipEvent,
+    fluid_sequencer_t               *ipSeq,
+    void                            *ipData )
 {
-    return time_marker;
+    CFluidSynth *pFluidObj = (CFluidSynth *)ipData;
+
+    pFluidObj->ScheduleTimerEvent();
+    pFluidObj->m_pSchedulePattern(
+        pFluidObj->m_pPatternData,
+        pFluidObj->m_iStartTimeOfNextPattern );
 }
 
 /*-----------------------------------------------------------------*\
-|*------------------------ Set_time_marker ------------------------*|
+|*------------------------ RegisterInstrument ---------------------*|
 |*-----------------------------------------------------------------*|
-|* Purpose: Adds duration time to time_marker.                      |
-|* Input:   int duration                                            |
-|* Output:  unsigned int time_marker                                |
+|* Purpose: Load the specified sound font file, and then assign it  |
+|*          to the next available MIDI channel.                     |
+|* Input:   Sound font file                                         |
+|* Output:  Returns -1 on failure, assigned MIDI channel on success |
 \*-----------------------------------------------------------------*/
-
-void CFluidSynth::Set_time_marker(int duration)
+int CFluidSynth::RegisterInstrument( const char *ipPathToSFFile )
 {
-    time_marker+= duration;
+    int channel = m_iNumInstruments;
+    int soundFontID = fluid_synth_sfload(m_pSynth, ipPathToSFFile, 0);
+
+    if ( soundFontID == FLUID_FAILED ) {
+        return -1;
+    }
+
+    if ( fluid_synth_program_select(
+             m_pSynth,
+             channel,
+             soundFontID,
+             0,
+             0 ) != FLUID_OK ) {
+        return -1;
+    }
+
+    m_iNumInstruments++;
+    return channel;
+}
+
+/*-----------------------------------------------------------------*\
+|*----------------------- SetCallbackFunction ---------------------*|
+|*-----------------------------------------------------------------*|
+|* Purpose: Set the callback function to be called by this class    |
+|*          when the ScheduleCallback function is called by         |
+|*          fluidsynth.                                             |
+|* Input:   Function pointer to desired callback function           |
+|*          Data to be passed to the callback function              |
+|* Output:  N/A                                                     |
+\*-----------------------------------------------------------------*/
+void CFluidSynth::SetCallbackFunction(
+    ptSchedulePattern           ipSchedulePattern,
+    void                        *pData)
+{
+    m_pSchedulePattern      = ipSchedulePattern;
+    m_pPatternData          = pData;
+}
+
+/*-----------------------------------------------------------------*\
+|*------------------------- BeginPlayback -------------------------*|
+|*-----------------------------------------------------------------*|
+|* Purpose: Call the desired callback function to begin scheduling  |
+|*          notes to be played.                                     |
+|* Input:   N/A                                                     |
+|* Output:  N/A                                                     |
+\*-----------------------------------------------------------------*/
+void CFluidSynth::BeginPlayback()
+{
+    m_pSchedulePattern(m_pPatternData, m_iStartTimeOfNextPattern);
+    ScheduleTimerEvent();
+    m_pSchedulePattern(m_pPatternData, m_iStartTimeOfNextPattern);
+}
+
+/*-----------------------------------------------------------------*\
+|*----------------------- SetMasterVolume -------------------------*|
+|*-----------------------------------------------------------------*|
+|* Purpose: Set the overall volume for the synthesizer.             |
+|* Input:   Gain value (range 0.0 - 10.0)                           |
+|* Output:  N/A                                                     |
+\*-----------------------------------------------------------------*/
+void CFluidSynth::SetMasterVolume( const float &iGain )
+{
+    fluid_synth_set_gain(m_pSynth, iGain);
 }
