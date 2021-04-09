@@ -25,13 +25,13 @@ CInstrumentCollection::CInstrumentCollection(
     m_iDurationOfOneBar = iDurationOfOneBar;
 
     /* Ensure that the duration is a multiple of 15 */
-    int rem = m_iDurationOfOneBar % 7;
+    int rem = m_iDurationOfOneBar % 8;
     if ( rem != 0 ) {
-        m_iDurationOfOneBar += 7 - rem;
+        m_iDurationOfOneBar += 8 - rem;
     }
 
     // Calculate length of one-half beat (time between 1& and 2)
-    m_iDurationOfHalfBeat = m_iDurationOfOneBar / 7;
+    m_iDurationOfHalfBeat = m_iDurationOfOneBar / 8;
 }
 
 CInstrumentCollection::~CInstrumentCollection()
