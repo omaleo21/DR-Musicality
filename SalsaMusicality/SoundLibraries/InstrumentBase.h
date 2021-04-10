@@ -30,9 +30,9 @@ struct Note
     /*-----------------------------------------------------------------*\
     |*------------------------ Note::Note() ---------------------------*|
     |*-----------------------------------------------------------------*|
-    |* Purpose: Initialize member variables to default values.
-    |* Input:   N/A
-    |* Output:  N/A
+    |* Purpose: Initialize member variables to default values.          |
+    |* Input:   N/A                                                     |   
+    |* Output:  N/A                                                     |
     \*-----------------------------------------------------------------*/
     Note()
     {
@@ -48,9 +48,9 @@ struct Note
     /*-----------------------------------------------------------------*\
     |*------------------- Note::CreateLinkedList ----------------------*|
     |*-----------------------------------------------------------------*|
-    |* Purpose: Create a linked list of notes, size "iSize".
-    |* Input:   Size of list
-    |* Output:  N/A
+    |* Purpose: Create a linked list of notes, size "iSize".            |
+    |* Input:   Size of list                                            |
+    |* Output:  N/A                                                     |
     \*-----------------------------------------------------------------*/
     static Note *CreateLinkedList(const int iSize)
     {
@@ -78,10 +78,10 @@ struct Note
     /*-----------------------------------------------------------------*\
     |*--------------------- Note::FreeLinkedList ----------------------*|
     |*-----------------------------------------------------------------*|
-    |* Purpose: Free the memory associated with the nodes of the specified
-    |*          list.
-    |* Input:   First note of linked list
-    |* Output:  N/A
+    |* Purpose: Free the memory associated with the nodes of the        |
+    |*          specified list.                                         |
+    |* Input:   First note of linked list                               |
+    |* Output:  N/A                                                     |
     \*-----------------------------------------------------------------*/
     static void FreeLinkedList(Note *pHead)
     {
