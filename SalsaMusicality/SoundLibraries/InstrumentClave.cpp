@@ -55,12 +55,12 @@ Note *CInstrumentClave::GetNotes(
     //note_duration[2] = steps[10] - steps[6];                          // from 4 to 6
     //note_duration[3] = steps[12] - steps[10];                         // from 6 to 7
     //note_duration[4] = steps[0] + duration - steps[12];               // from 7 to 1 on next frame
-
+    /*
     // Son 2-3 Clave
     if ( m_bFirstBar ) {
         note_time = iBeatTimes[2];
         note_duration[0] = iBar.Quarter_note(0);                             // from 2 to 3
-        note_duration[1] = iBar.Half_note(0);//iBeatTimes[0] + iDuration - iBeatTimes[4];                             // from 3 to 5
+        note_duration[1] = iBar.Half_note(0);                                // from 3 to 5
         note_duration[2] = 0;
     } else {
         note_time = iBeatTimes[0];
@@ -68,7 +68,21 @@ Note *CInstrumentClave::GetNotes(
         note_duration[1] = iBar.Quarter_note(1);                            // from 6& to 8
         note_duration[2] = iBar.Half_note(0);;                 // from 8 to 2 on next frame
     }
-
+    */
+    
+    // Son 2-3 Rumba Clave
+    if ( m_bFirstBar ) {
+        note_time = iBeatTimes[2];
+        note_duration[0] = iBar.Quarter_note(0);                             // from 2 to 3
+        note_duration[1] = iBar.Half_note(0);                                // from 3 to 5
+        note_duration[2] = 0;
+    } else {
+        note_time = iBeatTimes[0];
+        note_duration[0] = iBar.Quarter_note(1);                            // from 5 to 6&
+        note_duration[1] = iBar.Half_note(0);                            // from 6& to 8
+        note_duration[2] = iBar.Quarter_note(1);                 // from 8 to 2 on next frame
+    }
+    
     m_bFirstBar = !m_bFirstBar;
 
     printf( "----Clave------\n" );
