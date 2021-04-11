@@ -51,8 +51,8 @@ int main(int argc, char *argv[])
     CInstrumentClave *pClave                    = NULL;
     CInstrumentCowbell *pCowbell                = NULL;
 
-    /* duration of the pattern in ticks. Must be divisible by 7! */
-    unsigned int duration = 4000; // 4000 is 120bpm, 3000 is 160bpm
+    /* duration of the pattern in ticks. Must be divisible by 8! */
+    unsigned int duration = 4500; // 4000 is 120bpm, 3000 is 160bpm
 
     //double bpm = 4.8E5 / duration;
     char pathToBongo[100];

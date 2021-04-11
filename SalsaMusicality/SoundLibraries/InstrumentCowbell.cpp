@@ -1,10 +1,10 @@
 /*---------------------------------------------------------------------------*\
-|* Title: InstrumentCowbell.cpp
-|* Date:  30 MARCH 2021
-|*
-|*-----------------------------------------------------------------------------
-|* File Description: Provide class for playing cowbell notes.
-|*
+|* Title: InstrumentCowbell.cpp                                               |
+|* Date:  30 MARCH 2021                                                       |
+|*                                                                            |
+|*----------------------------------------------------------------------------|
+|* File Description: Provide class for playing cowbell notes.                 |
+|*                                                                            |
 \*---------------------------------------------------------------------------*/
 
 /*---------------------------------------------------------------------------*\
@@ -34,27 +34,15 @@ Note *CInstrumentCowbell::GetNotes(
     const int                   iBeatTimes[8] )
 {
     int i = 0;
-    int note_duration[4];
-    int keyToPlay[4];
+    int note_duration[6];
+    int keyToPlay[6];
 
     int note_time = iTimeOfNextPattern; // time at time_marker represents beat 1
 
     Note *pCurrentNote = m_pNotes;
 
-    keyToPlay[0]    = 39;
-    keyToPlay[1]    = 39;
-    keyToPlay[2]    = 39;
-    keyToPlay[3]    = 39;
+    SheetMusic CBar = SheetMusic(iBeatTimes);
 
-
-    SheetMusic iBar = SheetMusic(iBeatTimes);
-
-    note_time = iBeatTimes[0];
-    note_duration[0] = iBar.Quarter_note(0);
-    note_duration[1] = iBar.Quarter_note(0);
-    note_duration[2] = iBar.Quarter_note(0);
-    note_duration[3] = iBar.Quarter_note(0);
-    
     // beat 1      = 0
     // beat 1&     = 1
     // beat 2      = 2
@@ -63,15 +51,39 @@ Note *CInstrumentCowbell::GetNotes(
     // beat 3&     = 5
     // beat 4      = 6
     // beat 4&     = 7
-/*
+    /*
+    // Cowbell Hitting Every Beat
+    note_time = iBeatTimes[0];
+    note_duration[0] = CBar.Quarter_note(0);
+    note_duration[1] = CBar.Quarter_note(0);
+    note_duration[2] = CBar.Quarter_note(0);
+    note_duration[3] = CBar.Quarter_note(0);
+    
+    keyToPlay[0]    = 39;
+    keyToPlay[1]    = 39;
+    keyToPlay[2]    = 39;
+    keyToPlay[3]    = 39;
+    */
+   /*
+   // Cowbell Hitting Every Off Beat
+    note_time = iBeatTimes[0];
+    note_duration[0] = CBar.Half_note(0);
+    note_duration[1] = CBar.Half_note(0);
+    note_duration[2] = 0;
+    note_duration[3] = 0;
+    
+    keyToPlay[0]    = 39;
+    keyToPlay[1]    = 39;
+    */
+
     if ( m_bFirstBar ) {
 
         note_time = iBeatTimes[0];
-        note_duration[0] = iBeatTimes[2] - iBeatTimes[0];                 // from 1 to 2    (down hit)
-        note_duration[1] = iBeatTimes[4] - iBeatTimes[2];                 // from 2 to 3    (up hit)
-        note_duration[2] = iBeatTimes[6] - iBeatTimes[4];                 // from 3 to 4    (down hit)
-        note_duration[3] = iBeatTimes[7] - iBeatTimes[6];                 // from 4 to 4&   (up hit)
-        note_duration[4] = iBeatTimes[0] + iDuration - iBeatTimes[7];     // from 4& to 5   (up hit)
+        note_duration[0] = CBar.Quarter_note(0);                 // from 1 to 2    (down hit)
+        note_duration[1] = CBar.Quarter_note(0);                 // from 2 to 3    (up hit)
+        note_duration[2] = CBar.Quarter_note(0);                 // from 3 to 4    (down hit)
+        note_duration[3] = CBar.Eighth_note();                    // from 4 to 4&   (up hit)
+        note_duration[4] = CBar.Eighth_note();                   // from 4& to 5   (up hit)
         note_duration[5] = 0;
 
         // Set key to play (36 for down, 38 for up)
@@ -86,12 +98,12 @@ Note *CInstrumentCowbell::GetNotes(
     } else {
 
         note_time = iBeatTimes[0];
-        note_duration[0] = iBeatTimes[2] - iBeatTimes[0];                 // from 5 to 6    (down hit)
-        note_duration[1] = iBeatTimes[3] - iBeatTimes[2];                 // from 6 to 6&   (up hit)
-        note_duration[2] = iBeatTimes[4] - iBeatTimes[3];                 // from 6& to 7   (up hit)
-        note_duration[3] = iBeatTimes[6] - iBeatTimes[4];                 // from 7 to 8    (down hit)
-        note_duration[4] = iBeatTimes[7] - iBeatTimes[6];                 // from 8 to 8&   (up hit)
-        note_duration[5] = iBeatTimes[0] + iDuration - iBeatTimes[7];     // from 8& to 1 on next frame    (up hit)
+        note_duration[0] = CBar.Quarter_note(0);                  // from 5 to 6    (down hit)
+        note_duration[1] = CBar.Eighth_note();                  // from 6 to 6&   (up hit)
+        note_duration[2] = CBar.Eighth_note();                  // from 6& to 7   (up hit)
+        note_duration[3] = CBar.Quarter_note(0);                 // from 7 to 8    (down hit)
+        note_duration[4] = CBar.Eighth_note();                  // from 8 to 8&   (up hit)
+        note_duration[5] = CBar.Eighth_note();      // from 8& to 1 on next frame    (up hit)
 
         // Set key to play (36 for down, 38 for up)
         // Not sure which key is correct for these, but for now having them sound different is most important
@@ -102,7 +114,7 @@ Note *CInstrumentCowbell::GetNotes(
         keyToPlay[4]    = 36; // 0;
         keyToPlay[5]    = 36; // 0;
     }
-*/
+
     m_bFirstBar = !m_bFirstBar;
 
     printf( "----Cowbell------\n" );
