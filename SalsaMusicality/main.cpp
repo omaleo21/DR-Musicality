@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
     pBongos = new CInstrumentBongos(pathToBongo, true, 1);
     n = pCollection->AddInstrumentToCollection(pBongos);
 
-    pClave = new CInstrumentClave(pathToClave, false, 1);
+    pClave = new CInstrumentClave(pathToClave, true, 1);
     n2 = pCollection->AddInstrumentToCollection(pClave);
 
     pCowbell = new CInstrumentCowbell(pathToCowbell, true, 1);

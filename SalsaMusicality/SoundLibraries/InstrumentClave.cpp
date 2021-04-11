@@ -38,6 +38,7 @@ Note *CInstrumentClave::GetNotes(
     int note_time = iTimeOfNextPattern; // time at time_marker represents beat 1
 
     Note *pCurrentNote = m_pNotes;
+    SheetMusic iBar = SheetMusic(iBeatTimes);
 
     // beat 1      = 0
     // beat 1&     = 1
@@ -58,14 +59,14 @@ Note *CInstrumentClave::GetNotes(
     // Son 2-3 Clave
     if ( m_bFirstBar ) {
         note_time = iBeatTimes[2];
-        note_duration[0] = iBeatTimes[4] - iBeatTimes[2];                             // from 2 to 3
-        note_duration[1] = iBeatTimes[0] + iDuration - iBeatTimes[4];                             // from 3 to 5
+        note_duration[0] = iBar.Quarter_note(0);                             // from 2 to 3
+        note_duration[1] = iBar.Half_note(0);//iBeatTimes[0] + iDuration - iBeatTimes[4];                             // from 3 to 5
         note_duration[2] = 0;
     } else {
         note_time = iBeatTimes[0];
-        note_duration[0] = iBeatTimes[3] - iBeatTimes[0];                            // from 5 to 6&
-        note_duration[1] = iBeatTimes[6] - iBeatTimes[3];                           // from 6& to 8
-        note_duration[2] = iBeatTimes[2] + iDuration - iBeatTimes[6];                 // from 8 to 2 on next frame
+        note_duration[0] = iBar.Quarter_note(1);                            // from 5 to 6&
+        note_duration[1] = iBar.Quarter_note(1);                            // from 6& to 8
+        note_duration[2] = iBar.Half_note(0);;                 // from 8 to 2 on next frame
     }
 
     m_bFirstBar = !m_bFirstBar;
