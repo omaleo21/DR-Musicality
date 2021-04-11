@@ -1,10 +1,10 @@
 /*---------------------------------------------------------------------------*\
-|* Title: InstrumentBongos.cpp
-|* Date:  30 MARCH 2021
-|*
-|*-----------------------------------------------------------------------------
-|* File Description: Provide class for playing bongo notes.
-|*
+|* Title: InstrumentBongos.cpp                                                |
+|* Date:  30 MARCH 2021                                                       |
+|*                                                                            |
+|*----------------------------------------------------------------------------|
+|* File Description: Provide class for playing bongo notes.                   |
+|*                                                                            |
 \*---------------------------------------------------------------------------*/
 
 /*---------------------------------------------------------------------------*\
@@ -38,6 +38,8 @@ Note *CInstrumentBongos::GetNotes(
 
     Note *pCurrentNote = m_pNotes;
 
+    SheetMusic iBar = SheetMusic(iBeatTimes);
+
     // beat 1      = 0
     // beat 1&     = 1
     // beat 2      = 2
@@ -49,9 +51,9 @@ Note *CInstrumentBongos::GetNotes(
 
     // Basic conga - bar 1 = bar 2
     note_time = iBeatTimes[2];
-    note_duration[0] = iBeatTimes[6] - iBeatTimes[2];                             // from 2 to 3
-    note_duration[1] = iBeatTimes[7] - iBeatTimes[6];                             // from 2 to 3
-    note_duration[2] = iBeatTimes[2] + iDuration - iBeatTimes[7];                             // from 3 to 5
+    note_duration[0] = iBar.Half_note(0);                             // from 2 to 4
+    note_duration[1] = iBar.Eighth_note();                             // from 4 to 4.5
+    note_duration[2] = iBar.Eighth_note()+iBar.Half_note(0);                             // from 4.5 to 2
 
     printf( "----Bongos------\n" );
     while ( pCurrentNote )

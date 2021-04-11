@@ -21,8 +21,7 @@
 class SheetMusic{
     
     public:
-            
-        void Bar(const int iBeatTimes[8]);
+        SheetMusic(const int iBeatTimes[8]);
         int Whole_note(bool bdot);
         int Half_note(bool bdot);
         int Quarter_note(bool bdot);

@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     CInstrumentCowbell *pCowbell                = NULL;
 
     /* duration of the pattern in ticks. Must be divisible by 7! */
-    unsigned int duration = 2100; // 4000 is 120bpm, 3000 is 160bpm
+    unsigned int duration = 4000; // 4000 is 120bpm, 3000 is 160bpm
 
     //double bpm = 4.8E5 / duration;
     char pathToBongo[100];
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    pFluid->SetMasterVolume(5.0);
+    pFluid->SetMasterVolume(1.0);
 
     /* load the SoundFonts */
 
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
     pBongos = new CInstrumentBongos(pathToBongo, true, 1);
     n = pCollection->AddInstrumentToCollection(pBongos);
 
-    pClave = new CInstrumentClave(pathToClave, true, 1);
+    pClave = new CInstrumentClave(pathToClave, false, 1);
     n2 = pCollection->AddInstrumentToCollection(pClave);
 
     pCowbell = new CInstrumentCowbell(pathToCowbell, true, 1);

@@ -34,13 +34,27 @@ Note *CInstrumentCowbell::GetNotes(
     const int                   iBeatTimes[8] )
 {
     int i = 0;
-    int note_duration[6];
-    int keyToPlay[6];
+    int note_duration[4];
+    int keyToPlay[4];
 
     int note_time = iTimeOfNextPattern; // time at time_marker represents beat 1
 
     Note *pCurrentNote = m_pNotes;
 
+    keyToPlay[0]    = 39;
+    keyToPlay[1]    = 39;
+    keyToPlay[2]    = 39;
+    keyToPlay[3]    = 39;
+
+
+    SheetMusic iBar = SheetMusic(iBeatTimes);
+
+    note_time = iBeatTimes[0];
+    note_duration[0] = iBar.Quarter_note(0);
+    note_duration[1] = iBar.Quarter_note(0);
+    note_duration[2] = iBar.Quarter_note(0);
+    note_duration[3] = iBar.Quarter_note(0);
+    
     // beat 1      = 0
     // beat 1&     = 1
     // beat 2      = 2
@@ -49,7 +63,7 @@ Note *CInstrumentCowbell::GetNotes(
     // beat 3&     = 5
     // beat 4      = 6
     // beat 4&     = 7
-
+/*
     if ( m_bFirstBar ) {
 
         note_time = iBeatTimes[0];
@@ -88,7 +102,7 @@ Note *CInstrumentCowbell::GetNotes(
         keyToPlay[4]    = 36; // 0;
         keyToPlay[5]    = 36; // 0;
     }
-
+*/
     m_bFirstBar = !m_bFirstBar;
 
     printf( "----Cowbell------\n" );
