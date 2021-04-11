@@ -8,7 +8,7 @@ void SheetMusic::Bar(const int iBeatTimes[8])
 {memcpy( m_iBeats, iBeatTimes, 8 * sizeof(int) );
 }
 
-int Whole_note(bool bdot){
+int SheetMusic::Whole_note(bool bdot){
     if (bdot) {
         return (m_iBeats[7]-m_iBeats[0])+(m_iBeats[3]-m_iBeats[0]);
     }
@@ -17,7 +17,7 @@ int Whole_note(bool bdot){
     }
 }
 
-int Half_note(bool bdot){
+int SheetMusic::Half_note(bool bdot){
     if (bdot) {
         return (m_iBeats[5]-m_iBeats[0]);
     }
@@ -26,7 +26,7 @@ int Half_note(bool bdot){
     }
 }
 
-int Quarter_note(bool bdot){
+int SheetMusic::Quarter_note(bool bdot){
     if (bdot) {
         return (m_iBeats[3]-m_iBeats[0]);
     }
@@ -35,7 +35,7 @@ int Quarter_note(bool bdot){
     }
 }
 
-int Eighth_note(){
+int SheetMusic::Eighth_note(){
     return (m_iBeats[1]-m_iBeats[0]);
 }
 
