@@ -1,10 +1,10 @@
 /*---------------------------------------------------------------------------*\
-|* Title: InstrumentBase.h
-|* Date:  30 MARCH 2021
-|*
-|*-----------------------------------------------------------------------------
-|* File Description: Provide abstract class for playing notes using an instrument
-|*
+|* Title: InstrumentBase.h                                                    |
+|* Date:  30 MARCH 2021                                                       |
+|*                                                                            |
+|*----------------------------------------------------------------------------|
+|* File Description: Provide abstract class for playing notes using an        |
+|* instrument                                                                 |
 \*---------------------------------------------------------------------------*/
 #ifndef INSTRUMENT_BASE_H
 #define INSTRUMENT_BASE_H

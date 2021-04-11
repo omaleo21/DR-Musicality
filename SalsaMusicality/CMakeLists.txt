@@ -98,10 +98,12 @@ include_directories(PRIVATE
 set(SOURCES
         SoundLibraries/Fluidsynth_class.cpp
         SoundLibraries/InstrumentBase.cpp
+        SoundLibraries/SheetMusic.cpp
         SoundLibraries/InstrumentBongos.cpp
         SoundLibraries/InstrumentClave.cpp
         SoundLibraries/InstrumentCowbell.cpp
         SoundLibraries/InstrumentCollection.cpp )
+        
 
 # Compile sources into object library
 add_library( ${PROJECT_NAME}-OBJ OBJECT ${SOURCES})
