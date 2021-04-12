@@ -51,19 +51,22 @@ Note *CInstrumentCowbell::GetNotes(
     // beat 3&     = 5
     // beat 4      = 6
     // beat 4&     = 7
-    /*
+    
     // Cowbell Hitting Every Beat
     note_time = iBeatTimes[0];
     note_duration[0] = CBar.Quarter_note(0);
     note_duration[1] = CBar.Quarter_note(0);
     note_duration[2] = CBar.Quarter_note(0);
     note_duration[3] = CBar.Quarter_note(0);
-    
+    note_duration[4] = 0;
+    note_duration[5] = 0;
+
     keyToPlay[0]    = 39;
     keyToPlay[1]    = 39;
     keyToPlay[2]    = 39;
     keyToPlay[3]    = 39;
-    */
+    keyToPlay[4]    = 39;
+    keyToPlay[4]    = 39;
    /*
    // Cowbell Hitting Every Off Beat
     note_time = iBeatTimes[0];
@@ -75,7 +78,7 @@ Note *CInstrumentCowbell::GetNotes(
     keyToPlay[0]    = 39;
     keyToPlay[1]    = 39;
     */
-
+   /*
     if ( m_bFirstBar ) {
 
         note_time = iBeatTimes[0];
@@ -114,7 +117,7 @@ Note *CInstrumentCowbell::GetNotes(
         keyToPlay[4]    = 36; // 0;
         keyToPlay[5]    = 36; // 0;
     }
-
+    */
     m_bFirstBar = !m_bFirstBar;
 
     printf( "----Cowbell------\n" );

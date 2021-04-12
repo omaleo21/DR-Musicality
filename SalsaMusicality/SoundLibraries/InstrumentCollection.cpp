@@ -24,7 +24,7 @@ CInstrumentCollection::CInstrumentCollection(
     m_vInstruments = new std::vector<CInstrumentBase *>();
     m_iDurationOfOneBar = iDurationOfOneBar;
 
-    /* Ensure that the duration is a multiple of 15 */
+    /* Ensure that the duration is a multiple of 8 */
     int rem = m_iDurationOfOneBar % 8;
     if ( rem != 0 ) {
         m_iDurationOfOneBar += 8 - rem;

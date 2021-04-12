@@ -52,7 +52,8 @@ int main(int argc, char *argv[])
     CInstrumentCowbell *pCowbell                = NULL;
 
     /* duration of the pattern in ticks. Must be divisible by 8! */
-    unsigned int duration = 4500; // 4000 is 120bpm, 3000 is 160bpm
+    double bpm = 171.4;//2.4E5 / bpm
+    unsigned int duration = 2.4E5/bpm; // 2400 is 100bpm
 
     //double bpm = 4.8E5 / duration;
     char pathToBongo[100];
@@ -80,12 +81,12 @@ int main(int argc, char *argv[])
     concat_directory(pathToClave, SoundFontsPath, "claves.sf2");
     concat_directory(pathToCowbell, SoundFontsPath, "cowbell.sf2");
 
-    pCollection = new CInstrumentCollection(pFluid, duration / 2);
+    pCollection = new CInstrumentCollection(pFluid, duration);
 
-    pBongos = new CInstrumentBongos(pathToBongo, true, 1);
+    pBongos = new CInstrumentBongos(pathToBongo, false, 1);
     n = pCollection->AddInstrumentToCollection(pBongos);
 
-    pClave = new CInstrumentClave(pathToClave, true, 1);
+    pClave = new CInstrumentClave(pathToClave, false, 1);
     n2 = pCollection->AddInstrumentToCollection(pClave);
 
     pCowbell = new CInstrumentCowbell(pathToCowbell, true, 1);
