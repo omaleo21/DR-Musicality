@@ -34,7 +34,7 @@ public:
         const int                   iBeatTimes[8] );
 
 private:
-
+    bool m_bFirstBar;
 };
 
 #endif

@@ -38,7 +38,7 @@ Note *CInstrumentClave::GetNotes(
     int note_time = iTimeOfNextPattern; // time at time_marker represents beat 1
 
     Note *pCurrentNote = m_pNotes;
-    SheetMusic iBar = SheetMusic(iBeatTimes);
+    SheetMusic CBar = SheetMusic(iBeatTimes);
 
     // beat 1      = 0
     // beat 1&     = 1
@@ -48,39 +48,32 @@ Note *CInstrumentClave::GetNotes(
     // beat 3&     = 5
     // beat 4      = 6
     // beat 4&     = 7
-
-    // Son 3-2 Clave
-    //note_duration[0] = steps[3] - steps[0];                           // from 1 to 2&
-    //note_duration[1] = steps[6] - steps[3];                           // from 2& to 4
-    //note_duration[2] = steps[10] - steps[6];                          // from 4 to 6
-    //note_duration[3] = steps[12] - steps[10];                         // from 6 to 7
-    //note_duration[4] = steps[0] + duration - steps[12];               // from 7 to 1 on next frame
     /*
     // Son 2-3 Clave
     if ( m_bFirstBar ) {
         note_time = iBeatTimes[2];
-        note_duration[0] = iBar.Quarter_note(0);                             // from 2 to 3
-        note_duration[1] = iBar.Half_note(0);                                // from 3 to 5
+        note_duration[0] = CBar.Quarter_note(0);                             // from 2 to 3
+        note_duration[1] = CBar.Half_note(0);                                // from 3 to 5
         note_duration[2] = 0;
     } else {
         note_time = iBeatTimes[0];
-        note_duration[0] = iBar.Quarter_note(1);                            // from 5 to 6&
-        note_duration[1] = iBar.Quarter_note(1);                            // from 6& to 8
-        note_duration[2] = iBar.Half_note(0);;                 // from 8 to 2 on next frame
+        note_duration[0] = CBar.Quarter_note(1);                            // from 5 to 6&
+        note_duration[1] = CBar.Quarter_note(1);                            // from 6& to 8
+        note_duration[2] = CBar.Half_note(0);;                 // from 8 to 2 on next frame
     }
     */
     
     // Son 2-3 Rumba Clave
     if ( m_bFirstBar ) {
         note_time = iBeatTimes[2];
-        note_duration[0] = iBar.Quarter_note(0);                             // from 2 to 3
-        note_duration[1] = iBar.Half_note(0);                                // from 3 to 5
+        note_duration[0] = CBar.Quarter_note(0);                             // from 2 to 3
+        note_duration[1] = CBar.Half_note(0);                                // from 3 to 5
         note_duration[2] = 0;
     } else {
         note_time = iBeatTimes[0];
-        note_duration[0] = iBar.Quarter_note(1);                            // from 5 to 6&
-        note_duration[1] = iBar.Half_note(0);                            // from 6& to 8
-        note_duration[2] = iBar.Quarter_note(1);                 // from 8 to 2 on next frame
+        note_duration[0] = CBar.Quarter_note(1);                            // from 5 to 6&
+        note_duration[1] = CBar.Half_note(0);                            // from 6& to 8
+        note_duration[2] = CBar.Quarter_note(1);                 // from 8 to 2 on next frame
     }
     
     m_bFirstBar = !m_bFirstBar;
@@ -94,14 +87,14 @@ Note *CInstrumentClave::GetNotes(
             break;
         }
 
-        printf( "Note %d on: %d\n", i, note_time );
+        printf( "Note %d on: %d\n", i+1, note_time );
         pCurrentNote->m_iChannel          = m_iChannel;
         pCurrentNote->m_iKey              = 60;
         pCurrentNote->m_iNoteOnTime       = note_time;
 
         note_time += note_duration[i];
 
-        printf( "Note %d off: %d\n", i, note_time );
+        printf( "Note %d off: %d\n", i+1, note_time );
         pCurrentNote->m_iNoteOffTime      = note_time;
         pCurrentNote = pCurrentNote->pNext;
 

@@ -129,14 +129,14 @@ Note *CInstrumentCowbell::GetNotes(
             break;
         }
 
-        printf( "Note %d on: %d\n", i, note_time );
+        printf( "Note %d on: %d\n", i+1, note_time );
         pCurrentNote->m_iChannel          = m_iChannel;
         pCurrentNote->m_iKey              = keyToPlay[i];
         pCurrentNote->m_iNoteOnTime       = note_time;
 
         note_time += note_duration[i];
 
-        printf( "Note %d off: %d\n", i, note_time );
+        printf( "Note %d off: %d\n", i+1, note_time );
         pCurrentNote->m_iNoteOffTime      = note_time;
         pCurrentNote = pCurrentNote->pNext;
 

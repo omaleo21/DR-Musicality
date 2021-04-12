@@ -23,7 +23,8 @@ CInstrumentBongos::CInstrumentBongos(
         iKeyFactor )
 {
     /* Create a linked list of 3 notes. 3 notes per bar */
-    m_pNotes = Note::CreateLinkedList(3);
+    m_pNotes = Note::CreateLinkedList(5);
+    m_bFirstBar = true;
 }
 
 Note *CInstrumentBongos::GetNotes(
@@ -32,13 +33,13 @@ Note *CInstrumentBongos::GetNotes(
     const int                   iBeatTimes[8] )
 {
     int i = 0;
-    int note_duration[3];
+    int note_duration[5];
 
     int note_time = iTimeOfNextPattern; // time at time_marker represents beat 1
 
     Note *pCurrentNote = m_pNotes;
 
-    SheetMusic iBar = SheetMusic(iBeatTimes);
+    SheetMusic CBar = SheetMusic(iBeatTimes);
 
     // beat 1      = 0
     // beat 1&     = 1
@@ -48,12 +49,52 @@ Note *CInstrumentBongos::GetNotes(
     // beat 3&     = 5
     // beat 4      = 6
     // beat 4&     = 7
-
-    // Basic conga - bar 1 = bar 2
+    /*
+    // Basic Conga Symmetric
     note_time = iBeatTimes[2];
-    note_duration[0] = iBar.Half_note(0);                             // from 2 to 4
-    note_duration[1] = iBar.Eighth_note();                             // from 4 to 4.5
-    note_duration[2] = iBar.Eighth_note()+iBar.Half_note(0);                             // from 4.5 to 2
+    note_duration[0] = CBar.Half_note(0);                             // from 2 to 4
+    note_duration[1] = CBar.Eighth_note();                             // from 4 to 4.5
+    note_duration[2] = CBar.Eighth_note()+CBar.Half_note(0);                             // from 4.5 to 2
+    note_duration[3] = 0;
+    note_duration[4] = 0;
+    */
+   /*
+   // Basic Conga Asymmetric
+   if ( m_bFirstBar ) {
+        note_time = iBeatTimes[6];
+        note_duration[0] = CBar.Whole_note(0);                             // from 4 to 8
+        note_duration[1] = 0;                                
+        note_duration[2] = 0;
+        note_duration[3] = 0;
+        note_duration[4] = 0;
+    } else {
+        note_time = iBeatTimes[6];
+        note_duration[0] = CBar.Eighth_note();                            // from 5 to 6&
+        note_duration[1] = CBar.Whole_note(0)-CBar.Eighth_note();                            // from 6& to 8
+        note_duration[2] = 0;                 
+        note_duration[3] = 0;
+        note_duration[4] = 0;
+    }
+    */
+
+   // Advanced Conga 
+   if ( m_bFirstBar ) {
+        note_time = iBeatTimes[2];
+        note_duration[0] = CBar.Half_note(0);                             // from 2 to 4
+        note_duration[1] = CBar.Eighth_note();                             // from 4 to 4.5
+        note_duration[2] = CBar.Eighth_note()+CBar.Half_note(0);                             // from 4.5 to 6
+        note_duration[3] = 0;
+        note_duration[4] = 0;
+    } else {
+        note_time = iBeatTimes[2];
+        note_duration[0] = CBar.Eighth_note();                            // from 6 to 6&
+        note_duration[1] = CBar.Eighth_note();                            // from 6& to 7
+        note_duration[2] = CBar.Quarter_note(0);                 // from 7 to 8 on next frame
+        note_duration[3] = CBar.Eighth_note();  // 8 to 8&
+        note_duration[4] = CBar.Eighth_note()+CBar.Half_note(0); // from 8.5 to 2
+    }
+
+    m_bFirstBar = !m_bFirstBar;
 
     printf( "----Bongos------\n" );
     while ( pCurrentNote )
@@ -64,14 +105,14 @@ Note *CInstrumentBongos::GetNotes(
             break;
         }
 
-        printf( "Note %d on: %d\n", i, note_time );
+        printf( "Note %d on: %d\n", i+1, note_time );
         pCurrentNote->m_iChannel          = m_iChannel;
         pCurrentNote->m_iKey              = 60;
         pCurrentNote->m_iNoteOnTime       = note_time;
 
         note_time += note_duration[i];
 
-        printf( "Note %d off: %d\n", i, note_time );
+        printf( "Note %d off: %d\n", i+1, note_time );
         pCurrentNote->m_iNoteOffTime      = note_time;
         pCurrentNote = pCurrentNote->pNext;
 

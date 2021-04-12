@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     CInstrumentCowbell *pCowbell                = NULL;
 
     /* duration of the pattern in ticks. Must be divisible by 8! */
-    double bpm = 171.4;//2.4E5 / bpm
+    double bpm = 100;//2.4E5 / bpm
     unsigned int duration = 2.4E5/bpm; // 2400 is 100bpm
 
     //double bpm = 4.8E5 / duration;
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
 
     pCollection = new CInstrumentCollection(pFluid, duration);
 
-    pBongos = new CInstrumentBongos(pathToBongo, false, 1);
+    pBongos = new CInstrumentBongos(pathToBongo, true, 1);
     n = pCollection->AddInstrumentToCollection(pBongos);
 
     pClave = new CInstrumentClave(pathToClave, false, 1);
