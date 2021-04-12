@@ -1,2 +1,7 @@
 build/**
 .vscode/**
+SoundLibraries/CMakeFiles
+SoundLibraries/CMakeCache.txt
+SoundLibraries/*.cmake
+SoundLibraries/Makefile
+SoundLibraries/*.so

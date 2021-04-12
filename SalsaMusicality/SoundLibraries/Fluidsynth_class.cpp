@@ -178,12 +178,13 @@ int CFluidSynth::FinishInit()
 void CFluidSynth::ScheduleNoteOn(
     const int                     &iChannel,
     const short                   &iKey,
+    const short                   &iVelocity,
     const unsigned int            &iTime)
 {
     fluid_event_t *ev = new_fluid_event();
     fluid_event_set_source(ev, -1);
     fluid_event_set_dest(ev, m_iSynthDest);
-    fluid_event_noteon(ev, iChannel, iKey, 127);
+    fluid_event_noteon(ev, iChannel, iKey, iVelocity);
     fluid_sequencer_send_at(m_pSequencer, ev, iTime, 1);
     delete_fluid_event(ev);
 }

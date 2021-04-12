@@ -32,6 +32,8 @@ public:
 
     virtual int AddInstrumentToCollection(CInstrumentBase *ipInstrument);
 
+    virtual void SetDurationOfOneBar(const unsigned int &iDurationOfOneBar);
+
 private:
     static void SchedulePattern(
         void                            *pData,

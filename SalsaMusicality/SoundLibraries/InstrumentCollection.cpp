@@ -22,16 +22,8 @@ CInstrumentCollection::CInstrumentCollection(
     m_pFluid->SetCallbackFunction(&SchedulePattern, (void *)this);
 
     m_vInstruments = new std::vector<CInstrumentBase *>();
-    m_iDurationOfOneBar = iDurationOfOneBar;
 
-    /* Ensure that the duration is a multiple of 8 */
-    int rem = m_iDurationOfOneBar % 8;
-    if ( rem != 0 ) {
-        m_iDurationOfOneBar += 8 - rem;
-    }
-
-    // Calculate length of one-half beat (time between 1& and 2)
-    m_iDurationOfHalfBeat = m_iDurationOfOneBar / 8;
+    SetDurationOfOneBar(iDurationOfOneBar);
 }
 
 CInstrumentCollection::~CInstrumentCollection()
@@ -97,6 +89,7 @@ void CInstrumentCollection::SchedulePattern(
                 pCollection->m_pFluid->ScheduleNoteOn(
                     pNotes->m_iChannel,
                     pNotes->m_iKey,
+                    (short)(pInstrument->GetVolume() * pNotes->m_iVelocity),
                     pNotes->m_iNoteOnTime );
 
                 pCollection->m_pFluid->ScheduleNoteOff(
@@ -110,4 +103,18 @@ void CInstrumentCollection::SchedulePattern(
     }
 
     ioStartTimeOfNextPattern += pCollection->m_iDurationOfOneBar;
+}
+
+void CInstrumentCollection::SetDurationOfOneBar(const unsigned int &iDurationOfOneBar)
+{
+    m_iDurationOfOneBar = iDurationOfOneBar;
+
+    /* Ensure that the duration is a multiple of 8 */
+    int rem = m_iDurationOfOneBar % 8;
+    if ( rem != 0 ) {
+        m_iDurationOfOneBar += 8 - rem;
+    }
+
+    // Calculate length of one-half beat (time between 1& and 2)
+    m_iDurationOfHalfBeat = m_iDurationOfOneBar / 8;
 }

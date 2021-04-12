@@ -36,6 +36,7 @@ public:
     virtual void ScheduleNoteOn(
         const int                       &iChannel,
         const short                     &iKey,
+        const short                     &iVelocity,
         const unsigned int              &iTime);
 
     virtual void ScheduleNoteOff(

@@ -132,6 +132,7 @@ Note *CInstrumentCowbell::GetNotes(
         printf( "Note %d on: %d\n", i+1, note_time );
         pCurrentNote->m_iChannel          = m_iChannel;
         pCurrentNote->m_iKey              = keyToPlay[i];
+        pCurrentNote->m_iVelocity         = 127;
         pCurrentNote->m_iNoteOnTime       = note_time;
 
         note_time += note_duration[i];

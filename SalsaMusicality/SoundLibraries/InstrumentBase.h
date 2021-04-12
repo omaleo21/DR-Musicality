@@ -21,6 +21,7 @@ struct Note
 {
     int                 m_iChannel;
     short               m_iKey;
+    short               m_iVelocity;
     unsigned int        m_iNoteOnTime;
     unsigned int        m_iNoteOffTime;
 
@@ -38,6 +39,7 @@ struct Note
     {
         m_iChannel          = -1;
         m_iKey              = -1;
+        m_iVelocity         = 127; // Default to max velocity
         m_iNoteOnTime       = -1;
         m_iNoteOffTime      = -1;
 
@@ -119,6 +121,11 @@ public:
 
     virtual void SetChannel(const int &iChannel) { m_iChannel = iChannel; }
 
+    /* Volume range is 0-10 */
+    virtual void SetVolume(const float &iVolume);
+
+    virtual float GetVolume(void) { return m_fVolume; }
+
     virtual void Toggle() { m_bIsEnabled = !m_bIsEnabled; }
 
     virtual bool IsEnabled() { return m_bIsEnabled; }
@@ -130,6 +137,7 @@ protected:
     bool                        m_bIsEnabled;
     int                         m_iChannel;
     short                       m_iKeyFactor;
+    float                       m_fVolume;
     Note                        *m_pNotes;
 
 };

@@ -8,29 +8,16 @@
 /*---------------------------------------------------------------------------*\
 |*----------------------------- LOCAL INCLUDES ------------------------------*|
 \*---------------------------------------------------------------------------*/
-#include "SoundLibraries/Fluidsynth_class.h"
-#include "SoundLibraries/InstrumentBongos.h"
-#include "SoundLibraries/InstrumentClave.h"
-#include "SoundLibraries/InstrumentCowbell.h"
-#include "SoundLibraries/InstrumentCollection.h"
+#include "SoundLibraries/SoundLibraryInterface.h"
 
 /*---------------------------------------------------------------------------*\
 |*--------------------------- PATH FOR SOUNDFONTS ---------------------------*|
 \*---------------------------------------------------------------------------*/
-
-const char *SoundFontsPath = "./SoundFonts/";
+char *SoundFontsPath = "../SoundFonts/"; // Must be relative to SoundLibrary shared object
 
 /*---------------------------------------------------------------------------*\
 |*-------------------------------- FUNCTIONS --------------------------------*|
 \*---------------------------------------------------------------------------*/
-/* concatenate sound font file at the end of path */
-void concat_directory(char *buffer, const char *path, const char *directory)
-{
-    strcpy(buffer, path);
-    strcat(buffer, directory);
-}
-
-
 void usage(const char *prog_name)
 {
     printf("Usage: %s\n", prog_name);
@@ -45,61 +32,17 @@ void usage(const char *prog_name)
 int main(int argc, char *argv[])
 {
     /* Local variables */
-    CFluidSynth *pFluid                         = NULL;
-    CInstrumentCollection *pCollection          = NULL;
-    CInstrumentBongos *pBongos                  = NULL;
-    CInstrumentClave *pClave                    = NULL;
-    CInstrumentCowbell *pCowbell                = NULL;
+    int n = 0;
+    bool isEnabled = false;
 
     /* duration of the pattern in ticks. Must be divisible by 8! */
     double bpm = 100;//2.4E5 / bpm
     unsigned int duration = 2.4E5/bpm; // 2400 is 100bpm
 
-    //double bpm = 4.8E5 / duration;
-    char pathToBongo[100];
-    char pathToClave[100];
-    char pathToCowbell[100];
-
-    int n = -1, n2 = -1, n3 = -1;
-
-    pFluid = new CFluidSynth("SalsaMusicality");
-
-    if ( argc == 2 && !strcmp(argv[1], "-h") ) {
-        usage("FluidSynthTesting");
-        return 0;
-    }
-
-    if ( pFluid->StartInit() != 0 ) {
-        return 1;
-    }
-
-    pFluid->SetMasterVolume(1.0);
-
-    /* load the SoundFonts */
-
-    concat_directory(pathToBongo, SoundFontsPath, "Congas Edition.sf2");
-    concat_directory(pathToClave, SoundFontsPath, "claves.sf2");
-    concat_directory(pathToCowbell, SoundFontsPath, "cowbell.sf2");
-
-    pCollection = new CInstrumentCollection(pFluid, duration);
-
-    pBongos = new CInstrumentBongos(pathToBongo, true, 1);
-    n = pCollection->AddInstrumentToCollection(pBongos);
-
-    pClave = new CInstrumentClave(pathToClave, false, 1);
-    n2 = pCollection->AddInstrumentToCollection(pClave);
-
-    pCowbell = new CInstrumentCowbell(pathToCowbell, true, 1);
-    n3 = pCollection->AddInstrumentToCollection(pCowbell);
-
-    if(n != -1 && n2 != -1 && n3 != -1)
+    if( !InitializeSoundLibrary(SoundFontsPath) )
     {
-        if ( pFluid->FinishInit() != 0 ) {
-            return 1;
-        }
-
         /* schedule patterns */
-        pFluid->BeginPlayback();
+        BeginPlayback();
 
         /* wait for user input */
         printf("press <q> then <enter> to stop\n");
@@ -107,21 +50,23 @@ int main(int argc, char *argv[])
             n = getchar();
 
             if ( n == 'b' ) {
-                pBongos->Toggle();
+                isEnabled = IsInstrumentEnabled(INSTRUMENT_BONGOS);
+                SetInstrumentEnabled(INSTRUMENT_BONGOS, !isEnabled );
             }
             if ( n == 'c' ) {
-                pClave->Toggle();
+                isEnabled = IsInstrumentEnabled(INSTRUMENT_CLAVE);
+                SetInstrumentEnabled(INSTRUMENT_CLAVE, !isEnabled );
             }
             if ( n == 'w' ) {
-                pCowbell->Toggle();
+                isEnabled = IsInstrumentEnabled(INSTRUMENT_COWBELL);
+                SetInstrumentEnabled(INSTRUMENT_COWBELL, !isEnabled );
             }
         }
 
     }
 
     /* clean and exit */
-    
-    delete pFluid;
+    FreeSoundLibrary();
 
     return 0;
 }

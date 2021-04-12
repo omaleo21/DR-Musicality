@@ -28,6 +28,7 @@ CInstrumentBase::CInstrumentBase(
       m_bIsEnabled(iIsEnabled),
       m_iChannel(-1),
       m_iKeyFactor(iKeyFactor),
+      m_fVolume(1.0),
       m_pNotes(NULL)
 {
 }
@@ -49,3 +50,13 @@ Note *CInstrumentBase::GetNotes(
     return m_pNotes;
 }
 
+void CInstrumentBase::SetVolume(const float &iVolume)
+{
+    m_fVolume = 0.1f * iVolume;
+
+    if ( m_fVolume > 1.0f ) {
+        m_fVolume = 1.0;
+    } else if ( m_fVolume < 0.0 ) {
+        m_fVolume = 0.0;
+    }
+}
