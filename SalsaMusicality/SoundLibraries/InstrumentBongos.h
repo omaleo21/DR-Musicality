@@ -56,12 +56,13 @@ public:
 
 private:
     bool m_bFirstBar;
-    int note_time;
-    int note_duration[5];
+    short m_iRhythm;
 
     Note_structure N;
 
-    Note_structure iBasic_Congo(Note_structure N, const int iBeatTimes[8]);
+    Note_structure Basic_Sym(Note_structure N, const int iBeatTimes[8]);
+
+    Note_structure Basic_Asym(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar);
 };
 
 #endif

@@ -25,6 +25,7 @@ CInstrumentBongos::CInstrumentBongos(
     /* Create a linked list of 3 notes. 3 notes per bar */
     m_pNotes = Note::CreateLinkedList(5);
     m_bFirstBar = true;
+    m_iRhythm = iKeyFactor;
 }
 
 Note *CInstrumentBongos::GetNotes(
@@ -36,7 +37,19 @@ Note *CInstrumentBongos::GetNotes(
 
     Note *pCurrentNote = m_pNotes;
 
-    N = iBasic_Congo(N,iBeatTimes);
+    switch (m_iRhythm){
+        case 1:
+            N = Basic_Sym(N,iBeatTimes);
+            break;
+        case 2:
+            N = Basic_Asym(N,iBeatTimes,m_bFirstBar);
+            break;
+    }
+
+
+    // N = Basic_Asym(N,iBeatTimes,m_bFirstBar);
+
+    m_bFirstBar = !m_bFirstBar;
 
     // beat 1      = 0
     // beat 1&     = 1
@@ -91,7 +104,7 @@ Note *CInstrumentBongos::GetNotes(
         note_duration[4] = CBar.Eighth_note()+CBar.Half_note(0); // from 8.5 to 2
     }
 
-    m_bFirstBar = !m_bFirstBar;
+    
     */
 
 
@@ -121,7 +134,7 @@ Note *CInstrumentBongos::GetNotes(
     return m_pNotes;
 }
 
-Note_structure CInstrumentBongos::iBasic_Congo(Note_structure N, const int iBeatTimes[8])
+Note_structure CInstrumentBongos::Basic_Sym(Note_structure N, const int iBeatTimes[8])
 {   
     int time;
     int duration[5];
@@ -135,6 +148,35 @@ Note_structure CInstrumentBongos::iBasic_Congo(Note_structure N, const int iBeat
     duration[2] = CBar.Eighth_note()+CBar.Half_note(0);                             // from 4.5 to 2
     duration[3] = 0;
     duration[4] = 0;
+
+    N.Set(time,duration);
+
+    return (N);
+}
+
+Note_structure CInstrumentBongos::Basic_Asym(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar)
+{   
+    int time;
+    int duration[5];
+
+    SheetMusic CBar = SheetMusic(iBeatTimes);
+    
+    time = iBeatTimes[2];
+    if ( m_bFirstBar ) {
+        time = iBeatTimes[6];
+        duration[0] = CBar.Whole_note(0);                             // from 4 to 8
+        duration[1] = 0;                                
+        duration[2] = 0;
+        duration[3] = 0;
+        duration[4] = 0;
+    } else {
+        time = iBeatTimes[6];
+        duration[0] = CBar.Eighth_note();                            // from 5 to 6&
+        duration[1] = CBar.Whole_note(0)-CBar.Eighth_note();                            // from 6& to 8
+        duration[2] = 0;                 
+        duration[3] = 0;
+        duration[4] = 0;
+    }
 
     N.Set(time,duration);
 
