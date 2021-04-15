@@ -34,19 +34,9 @@ Note *CInstrumentBongos::GetNotes(
 {
     int i = 0;
 
-    //note_time = iTimeOfNextPattern; // time at time_marker represents beat 1
-
     Note *pCurrentNote = m_pNotes;
 
-    // SheetMusic CBar = SheetMusic(iBeatTimes);
-
     N = iBasic_Congo(N,iBeatTimes);
-
-    note_time = N.note_time;
-
-    for(int i = 0; i < 5; i++) {
-        note_duration[i] = N.note_duration[i];
-    }
 
     // beat 1      = 0
     // beat 1&     = 1
@@ -114,16 +104,15 @@ Note *CInstrumentBongos::GetNotes(
             break;
         }
 
-        printf( "Note %d on: %d\n", i+1, note_time );
+        printf( "Note %d on: %d\n", i+1, N.note_time );
         pCurrentNote->m_iChannel          = m_iChannel;
         pCurrentNote->m_iKey              = 60;
         pCurrentNote->m_iVelocity         = 127;
-        pCurrentNote->m_iNoteOnTime       = note_time;
+        pCurrentNote->m_iNoteOnTime       = N.note_time;
 
-        note_time += note_duration[i];
-
-        printf( "Note %d off: %d\n", i+1, note_time );
-        pCurrentNote->m_iNoteOffTime      = note_time;
+        N.Update_start(N.note_duration[i]);
+        printf( "Note %d off: %d\n", i+1, N.note_time );
+        pCurrentNote->m_iNoteOffTime      = N.note_time;
         pCurrentNote = pCurrentNote->pNext;
 
         i++;

@@ -30,6 +30,10 @@ struct Note_structure{
                 note_duration[i] = duration[i];
             } 
         }
+
+        void Update_start(int additional_time)
+            {note_time += additional_time;
+            }
     };
 
 /*---------------------------------------------------------------------------*\
