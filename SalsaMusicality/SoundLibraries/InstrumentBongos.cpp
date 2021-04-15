@@ -44,13 +44,16 @@ Note *CInstrumentBongos::GetNotes(
         case 2:
             N = Basic_Asym(N,iBeatTimes,m_bFirstBar);
             break;
+        case 3:
+            N = Advanced_Asym(N,iBeatTimes,m_bFirstBar);
+            break;
     }
 
 
     // N = Basic_Asym(N,iBeatTimes,m_bFirstBar);
 
     m_bFirstBar = !m_bFirstBar;
-
+    /*
     // beat 1      = 0
     // beat 1&     = 1
     // beat 2      = 2
@@ -59,7 +62,7 @@ Note *CInstrumentBongos::GetNotes(
     // beat 3&     = 5
     // beat 4      = 6
     // beat 4&     = 7
-    /*
+    
     // Basic Conga Symmetric
     note_time = iBeatTimes[2];
     note_duration[0] = CBar.Half_note(0);                             // from 2 to 4
@@ -67,8 +70,7 @@ Note *CInstrumentBongos::GetNotes(
     note_duration[2] = CBar.Eighth_note()+CBar.Half_note(0);                             // from 4.5 to 2
     note_duration[3] = 0;
     note_duration[4] = 0;
-    */
-   /*
+
    // Basic Conga Asymmetric
    if ( m_bFirstBar ) {
         note_time = iBeatTimes[6];
@@ -85,8 +87,7 @@ Note *CInstrumentBongos::GetNotes(
         note_duration[3] = 0;
         note_duration[4] = 0;
     }
-    */
-   /*
+
    // Advanced Conga 
    if ( m_bFirstBar ) {
         note_time = iBeatTimes[2];
@@ -176,6 +177,35 @@ Note_structure CInstrumentBongos::Basic_Asym(Note_structure N, const int iBeatTi
         duration[2] = 0;                 
         duration[3] = 0;
         duration[4] = 0;
+    }
+
+    N.Set(time,duration);
+
+    return (N);
+}
+
+Note_structure CInstrumentBongos::Advanced_Asym(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar)
+{   
+    int time;
+    int duration[5];
+
+    SheetMusic CBar = SheetMusic(iBeatTimes);
+    
+    time = iBeatTimes[2];
+    if ( m_bFirstBar ) {
+        time = iBeatTimes[2];
+        duration[0] = CBar.Half_note(0);                             // from 2 to 4
+        duration[1] = CBar.Eighth_note();                             // from 4 to 4.5
+        duration[2] = CBar.Eighth_note()+CBar.Half_note(0);                             // from 4.5 to 6
+        duration[3] = 0;
+        duration[4] = 0;
+    } else {
+        time = iBeatTimes[2];
+        duration[0] = CBar.Eighth_note();                            // from 6 to 6&
+        duration[1] = CBar.Eighth_note();                            // from 6& to 7
+        duration[2] = CBar.Quarter_note(0);                 // from 7 to 8 on next frame
+        duration[3] = CBar.Eighth_note();  // 8 to 8&
+        duration[4] = CBar.Eighth_note()+CBar.Half_note(0); // from 8.5 to 2
     }
 
     N.Set(time,duration);
