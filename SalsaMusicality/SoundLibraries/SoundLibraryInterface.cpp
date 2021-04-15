@@ -56,7 +56,7 @@ int InitializeSoundLibrary(char *ipPathToSoundFonts)
     char pathsToSoundFontFiles[NUM_INSTRUMENTS][255];
 
     /* duration of one bar in ticks. Must be divisible by 8! */
-    double bpm = 170;//2.4E5 / bpm
+    double bpm = 100;//2.4E5 / bpm
     unsigned int duration = 2.4E5/bpm; // 2400 is 100bpm
 
     /* Free the library if it's been initialized before */

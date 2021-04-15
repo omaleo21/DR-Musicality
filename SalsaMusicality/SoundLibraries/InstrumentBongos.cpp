@@ -33,13 +33,20 @@ Note *CInstrumentBongos::GetNotes(
     const int                   iBeatTimes[8] )
 {
     int i = 0;
-    int note_duration[5];
 
-    int note_time = iTimeOfNextPattern; // time at time_marker represents beat 1
+    //note_time = iTimeOfNextPattern; // time at time_marker represents beat 1
 
     Note *pCurrentNote = m_pNotes;
 
-    SheetMusic CBar = SheetMusic(iBeatTimes);
+    // SheetMusic CBar = SheetMusic(iBeatTimes);
+
+    N = iBasic_Congo(N,iBeatTimes);
+
+    note_time = N.note_time;
+
+    for(int i = 0; i < 5; i++) {
+        note_duration[i] = N.note_duration[i];
+    }
 
     // beat 1      = 0
     // beat 1&     = 1
@@ -76,7 +83,7 @@ Note *CInstrumentBongos::GetNotes(
         note_duration[4] = 0;
     }
     */
-
+   /*
    // Advanced Conga 
    if ( m_bFirstBar ) {
         note_time = iBeatTimes[2];
@@ -95,12 +102,14 @@ Note *CInstrumentBongos::GetNotes(
     }
 
     m_bFirstBar = !m_bFirstBar;
+    */
+
 
     printf( "----Bongos------\n" );
     while ( pCurrentNote )
     {
         /* Set channel to -1 if note stream is finished. */
-        if ( !note_duration[i] ) {
+        if ( !N.note_duration[i] ) {
             pCurrentNote->m_iChannel = -1;
             break;
         }
@@ -121,4 +130,24 @@ Note *CInstrumentBongos::GetNotes(
     }
 
     return m_pNotes;
+}
+
+Note_structure CInstrumentBongos::iBasic_Congo(Note_structure N, const int iBeatTimes[8])
+{   
+    int time;
+    int duration[5];
+
+    SheetMusic CBar = SheetMusic(iBeatTimes);
+    
+
+    time = iBeatTimes[2];
+    duration[0] = CBar.Half_note(0);                             // from 2 to 4
+    duration[1] = CBar.Eighth_note();                             // from 4 to 4.5
+    duration[2] = CBar.Eighth_note()+CBar.Half_note(0);                             // from 4.5 to 2
+    duration[3] = 0;
+    duration[4] = 0;
+
+    N.Set(time,duration);
+
+    return (N);
 }

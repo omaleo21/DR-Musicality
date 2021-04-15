@@ -16,6 +16,23 @@
 #include "SheetMusic.h"
 
 /*---------------------------------------------------------------------------*\
+|*--------------------------- NOTE STRUCTURE --------------------------------*|
+\*---------------------------------------------------------------------------*/
+
+struct Note_structure{
+        int note_time;
+        int note_duration[5];
+
+        void Set(int start_time, int duration[5])
+        {
+            note_time = start_time;
+            for(int i = 0; i < 5; i++) {
+                note_duration[i] = duration[i];
+            } 
+        }
+    };
+
+/*---------------------------------------------------------------------------*\
 |*------------------------ BASE INSTRUMENT CLASS ----------------------------*|
 \*---------------------------------------------------------------------------*/
 class CInstrumentBongos : public virtual CInstrumentBase
@@ -35,6 +52,12 @@ public:
 
 private:
     bool m_bFirstBar;
+    int note_time;
+    int note_duration[5];
+
+    Note_structure N;
+
+    Note_structure iBasic_Congo(Note_structure N, const int iBeatTimes[8]);
 };
 
 #endif
