@@ -13,7 +13,7 @@
 |*------------------------------- ENUMERATIONS ------------------------------*|
 \*---------------------------------------------------------------------------*/
 enum INSTRUMENTS_TYPE {
-    INSTRUMENT_BONGOS = 0,
+    INSTRUMENT_CONGAS = 0,
     INSTRUMENT_CLAVE,
     INSTRUMENT_COWBELL,
     NUM_INSTRUMENTS

@@ -51,8 +51,8 @@ int main(int argc, char *argv[])
             n = getchar();
             
             if ( n == 'b' ) {
-                 isEnabled = IsInstrumentEnabled(INSTRUMENT_BONGOS);
-                 SetInstrumentEnabled(INSTRUMENT_BONGOS, !isEnabled );
+                 isEnabled = IsInstrumentEnabled(INSTRUMENT_CONGAS);
+                 SetInstrumentEnabled(INSTRUMENT_CONGAS, !isEnabled );
             }
             
             if ( n == 'c' ) {

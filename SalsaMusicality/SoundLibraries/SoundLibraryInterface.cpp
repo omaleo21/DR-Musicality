@@ -15,6 +15,7 @@
 #include "InstrumentCollection.h"
 #include "InstrumentBongos.h"
 #include "InstrumentClave.h"
+#include "InstrumentCongas.h"
 #include "InstrumentCowbell.h"
 
 /*---------------------------------------------------------------------------*\
@@ -62,7 +63,7 @@ int InitializeSoundLibrary(char *ipPathToSoundFonts)
     /* Free the library if it's been initialized before */
     FreeSoundLibrary();
 
-    soundFontFiles[INSTRUMENT_BONGOS]        = "Congas Edition.sf2";
+    soundFontFiles[INSTRUMENT_CONGAS]        = "Congas.sf2";
     soundFontFiles[INSTRUMENT_CLAVE]         = "claves.sf2";
     soundFontFiles[INSTRUMENT_COWBELL]       = "cowbell.sf2";
 
@@ -86,11 +87,11 @@ int InitializeSoundLibrary(char *ipPathToSoundFonts)
     /* Initialize instrument collection */
     g_pCollection = new CInstrumentCollection(g_pFluid, duration);
 
-    /* Initialize bongos */
-    g_pInstruments[INSTRUMENT_BONGOS] =
-        new CInstrumentBongos(pathsToSoundFontFiles[INSTRUMENT_BONGOS], true, 1);
+    /* Initialize congas */
+    g_pInstruments[INSTRUMENT_CONGAS] =
+        new CInstrumentCongas(pathsToSoundFontFiles[INSTRUMENT_CONGAS], true, 1);
 
-    g_pCollection->AddInstrumentToCollection(g_pInstruments[INSTRUMENT_BONGOS]);
+    g_pCollection->AddInstrumentToCollection(g_pInstruments[INSTRUMENT_CONGAS]);
 
     /* Initialize clave */
     g_pInstruments[INSTRUMENT_CLAVE] =
@@ -215,17 +216,17 @@ void SetInstrumentRhythm(
 void SetClaveRhythm(
     short                           iRhythm )
 {   
-    int m_iBongoRhythm = g_pInstruments[INSTRUMENT_BONGOS]->GetRhythm();
+    int m_iBongoRhythm = g_pInstruments[INSTRUMENT_CONGAS]->GetRhythm();
     int m_iCowbellRhythm = g_pInstruments[INSTRUMENT_COWBELL]->GetRhythm();
 
     g_pInstruments[INSTRUMENT_CLAVE]->SetRhythm(iRhythm);
     
     if (m_iBongoRhythm%2!=iRhythm%2){
         if (m_iBongoRhythm%2==0){
-            g_pInstruments[INSTRUMENT_BONGOS]->SetRhythm(m_iBongoRhythm-1);
+            g_pInstruments[INSTRUMENT_CONGAS]->SetRhythm(m_iBongoRhythm-1);
         } 
         else if (m_iBongoRhythm%2==1){
-            g_pInstruments[INSTRUMENT_BONGOS]->SetRhythm(m_iBongoRhythm+1);
+            g_pInstruments[INSTRUMENT_CONGAS]->SetRhythm(m_iBongoRhythm+1);
         }
     }
 
