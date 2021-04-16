@@ -36,6 +36,13 @@ public:
 private:
     bool m_bFirstBar;
 
+    Note_structure N;
+
+    Note_structure All_Beats(Note_structure N, const int iBeatTimes[8]);
+
+    Note_structure Down_Beats(Note_structure N, const int iBeatTimes[8]);
+
+    Note_structure Advanced_Asym(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar);
 };
 
 #endif

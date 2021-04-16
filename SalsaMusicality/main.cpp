@@ -51,14 +51,13 @@ int main(int argc, char *argv[])
             n = getchar();
             
             if ( n == 'b' ) {
-                SetInstrumentRhythm(INSTRUMENT_BONGOS,2);
-                // isEnabled = IsInstrumentEnabled(INSTRUMENT_BONGOS);
-                // SetInstrumentEnabled(INSTRUMENT_BONGOS, !isEnabled );
+                 isEnabled = IsInstrumentEnabled(INSTRUMENT_BONGOS);
+                 SetInstrumentEnabled(INSTRUMENT_BONGOS, !isEnabled );
             }
             
             if ( n == 'c' ) {
-                isEnabled = IsInstrumentEnabled(INSTRUMENT_CLAVE);
-                SetInstrumentEnabled(INSTRUMENT_CLAVE, !isEnabled );
+                 isEnabled = IsInstrumentEnabled(INSTRUMENT_CLAVE);
+                 SetInstrumentEnabled(INSTRUMENT_CLAVE, !isEnabled );
             }
             if ( n == 'w' ) {
                 isEnabled = IsInstrumentEnabled(INSTRUMENT_COWBELL);

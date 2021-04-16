@@ -23,7 +23,7 @@ CInstrumentClave::CInstrumentClave(
         iRhythm )
 {
     /* Create a linked list of 3 notes. Up to 3 notes per bar */
-    m_pNotes = Note::CreateLinkedList(3);
+    m_pNotes = Note::CreateLinkedList(8);
     m_bFirstBar = true;
 }
 
@@ -33,13 +33,9 @@ Note *CInstrumentClave::GetNotes(
     const int                   iBeatTimes[8] )
 {
     int i = 0;
-    int note_duration[3];
-
-    int note_time = iTimeOfNextPattern; // time at time_marker represents beat 1
 
     Note *pCurrentNote = m_pNotes;
-    SheetMusic CBar = SheetMusic(iBeatTimes);
-
+    /*
     // beat 1      = 0
     // beat 1&     = 1
     // beat 2      = 2
@@ -61,7 +57,7 @@ Note *CInstrumentClave::GetNotes(
         note_duration[1] = CBar.Quarter_note(1);                            // from 6& to 8
         note_duration[2] = CBar.Half_note(0);;                 // from 8 to 2 on next frame
     }
-    */
+    
     
     // Son 2-3 Rumba Clave
     if ( m_bFirstBar ) {
@@ -75,32 +71,121 @@ Note *CInstrumentClave::GetNotes(
         note_duration[1] = CBar.Half_note(0);                            // from 6& to 8
         note_duration[2] = CBar.Quarter_note(1);                 // from 8 to 2 on next frame
     }
+    */
     
-    m_bFirstBar = !m_bFirstBar;
+    switch (m_iRhythm){
+        case 1:
+            N = Son(N,iBeatTimes,m_bFirstBar);
+            m_bFirstBar = !m_bFirstBar;
+            break;
+        case 2:
+            m_bFirstBar = !m_bFirstBar;
+            N = Son(N,iBeatTimes,m_bFirstBar);
+            break;
+        case 3:
+            N = Rumba(N,iBeatTimes,m_bFirstBar);
+            m_bFirstBar = !m_bFirstBar;
+            break;
+        case 4:
+            m_bFirstBar = !m_bFirstBar;
+            N = Son(N,iBeatTimes,m_bFirstBar);
+            break;
+    }
+    
 
     printf( "----Clave------\n" );
     while ( pCurrentNote )
     {
         /* Set channel to -1 if note stream is finished. */
-        if ( !note_duration[i] ) {
+        if ( !N.note_duration[i] ) {
             pCurrentNote->m_iChannel = -1;
             break;
         }
 
-        printf( "Note %d on: %d\n", i+1, note_time );
+        printf( "Note %d on: %d\n", i+1, N.note_time );
         pCurrentNote->m_iChannel          = m_iChannel;
         pCurrentNote->m_iKey              = 60;
         pCurrentNote->m_iVelocity         = 127;
-        pCurrentNote->m_iNoteOnTime       = note_time;
+        pCurrentNote->m_iNoteOnTime       = N.note_time;
 
-        note_time += note_duration[i];
+        N.Update_start(N.note_duration[i]);
 
-        printf( "Note %d off: %d\n", i+1, note_time );
-        pCurrentNote->m_iNoteOffTime      = note_time;
+        printf( "Note %d off: %d\n", i+1, N.note_time );
+        pCurrentNote->m_iNoteOffTime      = N.note_time;
         pCurrentNote = pCurrentNote->pNext;
 
         i++;
     }
 
     return m_pNotes;
+}
+
+Note_structure CInstrumentClave::Son(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar)
+{   
+    int time;
+    int duration[8];
+    int keys[8] = {0};
+
+    SheetMusic CBar = SheetMusic(iBeatTimes);
+    
+    if ( m_bFirstBar ) {
+        time = iBeatTimes[2];
+        duration[0] = CBar.Quarter_note(0);                             // from 2 to 3
+        duration[1] = CBar.Half_note(0);                                // from 3 to 5
+        duration[2] = 0;
+        duration[3] = 0;
+        duration[4] = 0;
+        duration[5] = 0;
+        duration[6] = 0;
+        duration[7] = 0;
+    } else {
+        time = iBeatTimes[0];
+        duration[0] = CBar.Quarter_note(1);                            // from 5 to 6&
+        duration[1] = CBar.Quarter_note(1);                            // from 6& to 8
+        duration[2] = CBar.Half_note(0);;                 // from 8 to 2 on next frame
+        duration[3] = 0;
+        duration[4] = 0;
+        duration[5] = 0;
+        duration[6] = 0;
+        duration[7] = 0;
+    }
+
+    N.Set(time,duration,keys);
+
+    return (N);
+}
+
+Note_structure CInstrumentClave::Rumba(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar)
+{   
+    int time;
+    int duration[8];
+    int keys[8] = {0};
+
+    SheetMusic CBar = SheetMusic(iBeatTimes);
+    
+    if ( m_bFirstBar ) {
+        time = iBeatTimes[2];
+        duration[0] = CBar.Quarter_note(0);                             // from 2 to 3
+        duration[1] = CBar.Half_note(0);                                // from 3 to 5
+        duration[2] = 0;
+        duration[3] = 0;
+        duration[4] = 0;
+        duration[5] = 0;
+        duration[6] = 0;
+        duration[7] = 0;
+    } else {
+        time = iBeatTimes[0];
+        duration[0] = CBar.Quarter_note(1);                            // from 5 to 6&
+        duration[1] = CBar.Half_note(0);                            // from 6& to 8&
+        duration[2] = CBar.Quarter_note(1);                       // from 8& to 2 on next frame
+        duration[3] = 0;
+        duration[4] = 0;
+        duration[5] = 0;
+        duration[6] = 0;
+        duration[7] = 0;
+    }
+
+    N.Set(time,duration,keys);
+
+    return (N);
 }
