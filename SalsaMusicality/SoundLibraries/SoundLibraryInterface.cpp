@@ -200,9 +200,9 @@ bool IsInstrumentEnabled(unsigned int iInstrument)
 \*-----------------------------------------------------------------*/
 void SetInstrumentRhythm(
     unsigned int                iInstrument,
-    unsigned int                iRhythm )
+    short                           iRhythm )
 {
-    return;
+    return g_pInstruments[iInstrument]->SetRhythm(iRhythm);
 }
 
 /*-----------------------------------------------------------------*\

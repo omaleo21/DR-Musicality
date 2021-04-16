@@ -132,6 +132,11 @@ public:
 
     virtual const char *GetPathToSoundFont(void) { return m_pPathToSoundFont; }
 
+    virtual short GetRhythm(void) {return m_iKeyFactor;}
+    
+    virtual void SetRhythm(short iRhythm);
+
+
 protected:
     const char                  *m_pPathToSoundFont;
     bool                        m_bIsEnabled;
