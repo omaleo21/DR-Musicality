@@ -50,6 +50,9 @@ SLAPI_EXPORT void SetInstrumentRhythm(
     unsigned int                iInstrument,
     short                       iRhythm );
 
+SLAPI_EXPORT void SetClaveRhythm(
+    short                       iRhythm );
+
 SLAPI_EXPORT void SetMasterVolume(float iVolume);
 
 SLAPI_EXPORT void SetInstrumentVolume(

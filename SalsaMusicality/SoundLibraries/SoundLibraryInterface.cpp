@@ -206,6 +206,42 @@ void SetInstrumentRhythm(
 }
 
 /*-----------------------------------------------------------------*\
+|*---------------------- SetClaveRhythm ---------------------------*|
+|*-----------------------------------------------------------------*|
+|* Purpose: Set the rhythm for the specified instrument.            |
+|* Input:   Instrument index, Rhythm index                          |
+|* Output:  N/A                                                     |
+\*-----------------------------------------------------------------*/
+void SetClaveRhythm(
+    short                           iRhythm )
+{   
+    int m_iBongoRhythm = g_pInstruments[INSTRUMENT_BONGOS]->GetRhythm();
+    int m_iCowbellRhythm = g_pInstruments[INSTRUMENT_COWBELL]->GetRhythm();
+
+    g_pInstruments[INSTRUMENT_CLAVE]->SetRhythm(iRhythm);
+    
+    if (m_iBongoRhythm%2!=iRhythm%2){
+        if (m_iBongoRhythm%2==0){
+            g_pInstruments[INSTRUMENT_BONGOS]->SetRhythm(m_iBongoRhythm-1);
+        } 
+        else if (m_iBongoRhythm%2==1){
+            g_pInstruments[INSTRUMENT_BONGOS]->SetRhythm(m_iBongoRhythm+1);
+        }
+    }
+
+    if (m_iCowbellRhythm%2!=iRhythm%2){
+        if (m_iCowbellRhythm%2==0){
+            g_pInstruments[INSTRUMENT_COWBELL]->SetRhythm(m_iCowbellRhythm-1);
+        } 
+        else if (m_iCowbellRhythm%2==1){
+            g_pInstruments[INSTRUMENT_COWBELL]->SetRhythm(m_iCowbellRhythm+1);
+        }
+    }
+
+
+}
+
+/*-----------------------------------------------------------------*\
 |*------------------------ SetMasterVolume ------------------------*|
 |*-----------------------------------------------------------------*|
 |* Purpose: Set the master volume for fluidsynth.                   |
