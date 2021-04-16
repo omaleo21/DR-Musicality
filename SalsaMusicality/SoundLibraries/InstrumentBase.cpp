@@ -61,7 +61,7 @@ void CInstrumentBase::SetVolume(const float &iVolume)
     }
 }
 
-void CInstrumentBase::SetRhythm(short iRhythm)
+void CInstrumentBase::SetRhythm(short &iRhythm)
 {
     m_iKeyFactor = iRhythm;
 }

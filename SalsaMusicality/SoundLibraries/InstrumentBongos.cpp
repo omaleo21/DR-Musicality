@@ -212,8 +212,9 @@ Note_structure CInstrumentBongos::Advanced_Asym(Note_structure N, const int iBea
 
     return (N);
 }
-
+/*
 void CInstrumentBongos::SetRhythm(short iRhythm)
 {
     m_iRhythm = iRhythm;
 }
+*/

@@ -54,7 +54,7 @@ public:
         const int                   &iDuration,
         const int                   iBeatTimes[8] );
 
-    virtual void SetRhythm(short iRhythm);
+    // virtual void SetRhythm(short iRhythm);
 
 private:
     bool m_bFirstBar;

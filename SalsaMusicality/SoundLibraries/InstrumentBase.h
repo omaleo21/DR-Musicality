@@ -134,7 +134,7 @@ public:
 
     virtual short GetRhythm(void) {return m_iKeyFactor;}
     
-    virtual void SetRhythm(short iRhythm);
+    virtual void SetRhythm(short &iRhythm);
 
 
 protected:

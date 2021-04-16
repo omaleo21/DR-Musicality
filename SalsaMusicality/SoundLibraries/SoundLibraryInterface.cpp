@@ -202,7 +202,7 @@ void SetInstrumentRhythm(
     unsigned int                iInstrument,
     short                           iRhythm )
 {
-    return g_pInstruments[iInstrument]->SetRhythm(iRhythm);
+    g_pInstruments[iInstrument]->SetRhythm(iRhythm);
 }
 
 /*-----------------------------------------------------------------*\
