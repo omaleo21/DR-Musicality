@@ -45,7 +45,7 @@ public:
     CInstrumentBongos(
         const char                  *ipPathToSoundFont,
         const bool                  &iIsEnabled,
-        const short                 &iKeyFactor );
+        const short                 &iRhythm );
 
     virtual ~CInstrumentBongos() {};
 
@@ -54,11 +54,8 @@ public:
         const int                   &iDuration,
         const int                   iBeatTimes[8] );
 
-    // virtual void SetRhythm(short iRhythm);
-
 private:
     bool m_bFirstBar;
-    short m_iRhythm;
 
     Note_structure N;
 

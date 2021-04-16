@@ -16,16 +16,15 @@
 CInstrumentBongos::CInstrumentBongos(
     const char                  *ipPathToSoundFont,
     const bool                  &iIsEnabled,
-    const short                 &iKeyFactor )
+    const short                 &iRhythm )
     : CInstrumentBase(
         ipPathToSoundFont,
         iIsEnabled,
-        iKeyFactor )
+        iRhythm )
 {
     /* Create a linked list of 3 notes. 3 notes per bar */
     m_pNotes = Note::CreateLinkedList(5);
     m_bFirstBar = true;
-    m_iRhythm = iKeyFactor;
 }
 
 Note *CInstrumentBongos::GetNotes(
@@ -212,9 +211,3 @@ Note_structure CInstrumentBongos::Advanced_Asym(Note_structure N, const int iBea
 
     return (N);
 }
-/*
-void CInstrumentBongos::SetRhythm(short iRhythm)
-{
-    m_iRhythm = iRhythm;
-}
-*/

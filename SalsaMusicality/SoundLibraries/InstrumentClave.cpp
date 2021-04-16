@@ -16,11 +16,11 @@
 CInstrumentClave::CInstrumentClave(
     const char                  *ipPathToSoundFont,
     const bool                  &iIsEnabled,
-    const short                 &iKeyFactor )
+    const short                 &iRhythm )
     : CInstrumentBase(
         ipPathToSoundFont,
         iIsEnabled,
-        iKeyFactor )
+        iRhythm )
 {
     /* Create a linked list of 3 notes. Up to 3 notes per bar */
     m_pNotes = Note::CreateLinkedList(3);

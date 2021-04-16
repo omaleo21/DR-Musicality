@@ -16,11 +16,11 @@
 CInstrumentCowbell::CInstrumentCowbell(
     const char                  *ipPathToSoundFont,
     const bool                  &iIsEnabled,
-    const short                 &iKeyFactor )
+    const short                 &iRhythm )
     : CInstrumentBase(
         ipPathToSoundFont,
         iIsEnabled,
-        iKeyFactor )
+        iRhythm )
 {
     /* Create a linked list of 6 notes. Up to 6 notes per bar */
     m_pNotes = Note::CreateLinkedList(6);

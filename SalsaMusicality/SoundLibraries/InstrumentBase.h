@@ -110,7 +110,7 @@ public:
     CInstrumentBase(
         const char                  *ipPathToSoundFont,
         const bool                  &iIsEnabled,
-        const short                 &iKeyFactor );
+        const short                 &iRhythm );
 
     virtual ~CInstrumentBase();
 
@@ -132,16 +132,16 @@ public:
 
     virtual const char *GetPathToSoundFont(void) { return m_pPathToSoundFont; }
 
-    virtual short GetRhythm(void) {return m_iKeyFactor;}
+    virtual short GetRhythm(void) {return m_iRhythm;}
     
-    virtual void SetRhythm(short &iRhythm);
+    virtual void SetRhythm(const short &iRhythm);
 
 
 protected:
     const char                  *m_pPathToSoundFont;
     bool                        m_bIsEnabled;
     int                         m_iChannel;
-    short                       m_iKeyFactor;
+    short                       m_iRhythm;
     float                       m_fVolume;
     Note                        *m_pNotes;
 

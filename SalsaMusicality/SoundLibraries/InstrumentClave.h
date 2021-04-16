@@ -24,7 +24,7 @@ public:
     CInstrumentClave(
         const char                  *ipPathToSoundFont,
         const bool                  &iIsEnabled,
-        const short                 &iKeyFactor );
+        const short                 &iRhythm );
 
     virtual ~CInstrumentClave() {};
 

@@ -23,11 +23,11 @@
 CInstrumentBase::CInstrumentBase(
     const char                  *ipPathToSoundFont,
     const bool                  &iIsEnabled,
-    const short                 &iKeyFactor )
+    const short                 &iRhythm )
     : m_pPathToSoundFont(ipPathToSoundFont),
       m_bIsEnabled(iIsEnabled),
       m_iChannel(-1),
-      m_iKeyFactor(iKeyFactor),
+      m_iRhythm(iRhythm),
       m_fVolume(1.0),
       m_pNotes(NULL)
 {
@@ -61,7 +61,7 @@ void CInstrumentBase::SetVolume(const float &iVolume)
     }
 }
 
-void CInstrumentBase::SetRhythm(short &iRhythm)
+void CInstrumentBase::SetRhythm(const short &iRhythm)
 {
-    m_iKeyFactor = iRhythm;
+    m_iRhythm = iRhythm;
 }

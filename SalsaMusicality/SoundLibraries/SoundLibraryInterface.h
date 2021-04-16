@@ -48,7 +48,7 @@ SLAPI_EXPORT bool IsInstrumentEnabled(unsigned int iInstrument);
 
 SLAPI_EXPORT void SetInstrumentRhythm(
     unsigned int                iInstrument,
-    unsigned int                iRhythm );
+    short                       iRhythm );
 
 SLAPI_EXPORT void SetMasterVolume(float iVolume);
 
