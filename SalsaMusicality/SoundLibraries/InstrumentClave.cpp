@@ -123,7 +123,7 @@ Note *CInstrumentClave::GetNotes(
 Note_structure CInstrumentClave::Son(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar)
 {   
     int time;
-    int duration[8];
+    int duration[8] = {0};
     int keys[8] = {0};
 
     SheetMusic CBar = SheetMusic(iBeatTimes);
@@ -132,22 +132,12 @@ Note_structure CInstrumentClave::Son(Note_structure N, const int iBeatTimes[8],b
         time = iBeatTimes[2];
         duration[0] = CBar.Quarter_note(0);                             // from 2 to 3
         duration[1] = CBar.Half_note(0);                                // from 3 to 5
-        duration[2] = 0;
-        duration[3] = 0;
-        duration[4] = 0;
-        duration[5] = 0;
-        duration[6] = 0;
-        duration[7] = 0;
+
     } else {
         time = iBeatTimes[0];
         duration[0] = CBar.Quarter_note(1);                            // from 5 to 6&
         duration[1] = CBar.Quarter_note(1);                            // from 6& to 8
         duration[2] = CBar.Half_note(0);;                 // from 8 to 2 on next frame
-        duration[3] = 0;
-        duration[4] = 0;
-        duration[5] = 0;
-        duration[6] = 0;
-        duration[7] = 0;
     }
 
     N.Set(time,duration,keys);
@@ -158,7 +148,7 @@ Note_structure CInstrumentClave::Son(Note_structure N, const int iBeatTimes[8],b
 Note_structure CInstrumentClave::Rumba(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar)
 {   
     int time;
-    int duration[8];
+    int duration[8]= {0};
     int keys[8] = {0};
 
     SheetMusic CBar = SheetMusic(iBeatTimes);
@@ -167,22 +157,13 @@ Note_structure CInstrumentClave::Rumba(Note_structure N, const int iBeatTimes[8]
         time = iBeatTimes[2];
         duration[0] = CBar.Quarter_note(0);                             // from 2 to 3
         duration[1] = CBar.Half_note(0);                                // from 3 to 5
-        duration[2] = 0;
-        duration[3] = 0;
-        duration[4] = 0;
-        duration[5] = 0;
-        duration[6] = 0;
-        duration[7] = 0;
+
     } else {
         time = iBeatTimes[0];
         duration[0] = CBar.Quarter_note(1);                            // from 5 to 6&
         duration[1] = CBar.Half_note(0);                            // from 6& to 8&
         duration[2] = CBar.Quarter_note(1);                       // from 8& to 2 on next frame
-        duration[3] = 0;
-        duration[4] = 0;
-        duration[5] = 0;
-        duration[6] = 0;
-        duration[7] = 0;
+
     }
 
     N.Set(time,duration,keys);

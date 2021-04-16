@@ -171,7 +171,7 @@ Note *CInstrumentCowbell::GetNotes(
 
 Note_structure CInstrumentCowbell::All_Beats(Note_structure N, const int iBeatTimes[8]){
     int time;
-    int duration[8];
+    int duration[8]= {0};
     int keys[8];
 
     std::fill(keys, keys+8, 39);
@@ -183,10 +183,6 @@ Note_structure CInstrumentCowbell::All_Beats(Note_structure N, const int iBeatTi
     duration[1] = CBar.Quarter_note(0);
     duration[2] = CBar.Quarter_note(0);
     duration[3] = CBar.Quarter_note(0);
-    duration[4] = 0;
-    duration[5] = 0;
-    duration[6] = 0;
-    duration[7] = 0;
 
     N.Set(time,duration,keys);
 
@@ -195,7 +191,7 @@ Note_structure CInstrumentCowbell::All_Beats(Note_structure N, const int iBeatTi
 
 Note_structure CInstrumentCowbell::Down_Beats(Note_structure N, const int iBeatTimes[8]){
     int time;
-    int duration[8];
+    int duration[8]= {0};
     int keys[8];
 
     std::fill(keys, keys+8, 39);
@@ -205,12 +201,6 @@ Note_structure CInstrumentCowbell::Down_Beats(Note_structure N, const int iBeatT
     time = iBeatTimes[0];
     duration[0] = CBar.Half_note(0);
     duration[1] = CBar.Half_note(0);
-    duration[2] = 0;
-    duration[3] = 0;
-    duration[4] = 0;
-    duration[5] = 0;
-    duration[6] = 0;
-    duration[7] = 0;
 
     N.Set(time,duration,keys);
 
@@ -219,8 +209,8 @@ Note_structure CInstrumentCowbell::Down_Beats(Note_structure N, const int iBeatT
 
 Note_structure CInstrumentCowbell::Advanced_Asym(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar){
     int time;
-    int duration[8];
-    int keys[8];
+    int duration[8]= {0};
+    int keys[8] = {0};
 
     SheetMusic CBar = SheetMusic(iBeatTimes);
 
@@ -232,9 +222,7 @@ Note_structure CInstrumentCowbell::Advanced_Asym(Note_structure N, const int iBe
         duration[2] = CBar.Quarter_note(0);                 // from 3 to 4    (down hit)
         duration[3] = CBar.Eighth_note();                    // from 4 to 4&   (up hit)
         duration[4] = CBar.Eighth_note();                   // from 4& to 5   (up hit)
-        duration[5] = 0;
-        duration[6] = 0;
-        duration[7] = 0;
+ 
 
         // Set key to play (36 for down, 38 for up)
         // Not sure which key is correct for these, but for now having them sound different is most important
@@ -243,9 +231,6 @@ Note_structure CInstrumentCowbell::Advanced_Asym(Note_structure N, const int iBe
         keys[2]    = 39; // 1;
         keys[3]    = 36; // 0;
         keys[4]    = 36; // 0;
-        keys[5]    = 0; // 1;
-        keys[6]    = 0; // 1;
-        keys[7]    = 0; // 1;
 
     } else {
 
@@ -256,8 +241,6 @@ Note_structure CInstrumentCowbell::Advanced_Asym(Note_structure N, const int iBe
         duration[3] = CBar.Quarter_note(0);                 // from 7 to 8    (down hit)
         duration[4] = CBar.Eighth_note();                  // from 8 to 8&   (up hit)
         duration[5] = CBar.Eighth_note();      // from 8& to 1 on next frame    (up hit)
-        duration[6] = 0;
-        duration[7] = 0;
 
         // Set key to play (36 for down, 38 for up)
         // Not sure which key is correct for these, but for now having them sound different is most important
@@ -267,8 +250,6 @@ Note_structure CInstrumentCowbell::Advanced_Asym(Note_structure N, const int iBe
         keys[3]    = 39; // 1;
         keys[4]    = 36; // 0;
         keys[5]    = 36; // 0;
-        keys[6]    = 0; // 1;
-        keys[7]    = 0; // 1;
     }
 
     N.Set(time,duration,keys);
