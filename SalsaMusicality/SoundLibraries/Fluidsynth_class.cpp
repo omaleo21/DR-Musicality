@@ -162,9 +162,6 @@ int CFluidSynth::FinishInit()
         return 70;
     }
 
-    /* get the current time in ticks */
-    m_iStartTimeOfNextPattern = fluid_sequencer_get_tick(m_pSequencer);
-
     return 0;
 }
 
@@ -306,6 +303,9 @@ void CFluidSynth::SetCallbackFunction(
 \*-----------------------------------------------------------------*/
 void CFluidSynth::BeginPlayback()
 {
+    /* get the current time in ticks */
+    m_iStartTimeOfNextPattern = fluid_sequencer_get_tick(m_pSequencer);
+
     m_pSchedulePattern(m_pPatternData, m_iStartTimeOfNextPattern);
     ScheduleTimerEvent();
     m_pSchedulePattern(m_pPatternData, m_iStartTimeOfNextPattern);
