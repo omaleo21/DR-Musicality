@@ -108,7 +108,7 @@ int InitializeSoundLibrary(char *ipPathToSoundFonts)
 
     /* Initialize bongos */
     g_pInstruments[INSTRUMENT_BONGOS] =
-        new CInstrumentBongos(pathsToSoundFontFiles[INSTRUMENT_BONGOS], false, ALL_BEATS);
+        new CInstrumentBongos(pathsToSoundFontFiles[INSTRUMENT_BONGOS], false, MARTILLO);
 
     g_pCollection->AddInstrumentToCollection(g_pInstruments[INSTRUMENT_BONGOS]);
 

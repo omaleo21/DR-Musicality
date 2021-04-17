@@ -11,6 +11,7 @@
 |*---------------------------- LOCAL INCLUDES -------------------------------*|
 \*---------------------------------------------------------------------------*/
 #include "InstrumentClave.h"
+#include "SoundLibraryInterface.h"
 #include <stdio.h>
 
 CInstrumentClave::CInstrumentClave(
@@ -73,21 +74,21 @@ Note *CInstrumentClave::GetNotes(
     */
     
     switch (m_iRhythm){
-        case 0:
+        case SON_2_3:
             N = Son(N,iBeatTimes,m_bFirstBar);
             m_bFirstBar = !m_bFirstBar;
             break;
-        case 1:
+        case SON_3_2:
             m_bFirstBar = !m_bFirstBar;
             N = Son(N,iBeatTimes,m_bFirstBar);
             break;
-        case 2:
+        case RUMBA_2_3:
             N = Rumba(N,iBeatTimes,m_bFirstBar);
             m_bFirstBar = !m_bFirstBar;
             break;
-        case 3:
+        case RUMBA_3_2:
             m_bFirstBar = !m_bFirstBar;
-            N = Son(N,iBeatTimes,m_bFirstBar);
+            N = Rumba(N,iBeatTimes,m_bFirstBar);
             break;
     }
 
@@ -182,22 +183,21 @@ void CInstrumentClave::UpdateSharedData(
 {
     bool isNextFrameFirstBar = m_bFirstBar;
     
-    /* Determine whether the next notes to be played will be on the first bar. */
-    /*
+    /* Determine whether the next notes to be played will be on the first bar.          *\
+    \* The 3-2 claves negate m_bFirstBar before scheduling notes, so do the same here.  */
     switch (m_iRhythm) {
-        case 2:
-            isNextFrameFirstBar = !isNextFrameFirstBar;
-        case 4:
+        case SON_3_2:
+        case RUMBA_3_2:
             isNextFrameFirstBar = !isNextFrameFirstBar;
             break;
         default:
             break;
     }
-    */
+    
     /* Assign number of clave hits for the next bar. */
     if ( isNextFrameFirstBar ) {
-        iopSharedData->Update_Clave(0);
+        iopSharedData->Update_Clave(true);
     } else {
-        iopSharedData->Update_Clave(1);
+        iopSharedData->Update_Clave(false);
     }
 }

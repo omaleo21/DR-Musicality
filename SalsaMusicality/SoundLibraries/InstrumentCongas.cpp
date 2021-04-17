@@ -44,7 +44,7 @@ Note *CInstrumentCongas::GetNotes(
             m_bFirstBar = !m_bFirstBar;
             break;
         case 2:
-            m_bFirstBar = !(ipSharedData->m_bNumClaveBarHits);
+            m_bFirstBar = ipSharedData->m_bNumClaveBarHits;
             N = Clave_Aligned(N,iBeatTimes);
             break;
     }
