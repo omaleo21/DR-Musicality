@@ -24,18 +24,24 @@ public:
     CInstrumentCowbell(
         const char                  *ipPathToSoundFont,
         const bool                  &iIsEnabled,
-        const short                 &iKeyFactor );
+        const short                 &iRhythm );
 
     virtual ~CInstrumentCowbell() {};
 
     virtual Note *GetNotes(
-        const unsigned int          &iTimeOfNextPattern,
-        const int                   &iDuration,
-        const int                   iBeatTimes[8] );
+        const int                   iBeatTimes[8],
+        const SharedInstrumentData  *ipSharedData );
 
 private:
     bool m_bFirstBar;
 
+    Note_structure N;
+
+    Note_structure All_Beats(Note_structure N, const int iBeatTimes[8]);
+
+    Note_structure Down_Beats(Note_structure N, const int iBeatTimes[8]);
+
+    Note_structure Clave_Aligned(Note_structure N, const int iBeatTimes[8]);
 };
 
 #endif

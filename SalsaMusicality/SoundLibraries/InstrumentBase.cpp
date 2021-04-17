@@ -23,11 +23,11 @@
 CInstrumentBase::CInstrumentBase(
     const char                  *ipPathToSoundFont,
     const bool                  &iIsEnabled,
-    const short                 &iKeyFactor )
+    const short                 &iRhythm )
     : m_pPathToSoundFont(ipPathToSoundFont),
       m_bIsEnabled(iIsEnabled),
       m_iChannel(-1),
-      m_iKeyFactor(iKeyFactor),
+      m_iRhythm(iRhythm),
       m_fVolume(1.0),
       m_pNotes(NULL)
 {
@@ -43,9 +43,8 @@ CInstrumentBase::~CInstrumentBase()
 }
 
 Note *CInstrumentBase::GetNotes(
-    const unsigned int          &iTimeOfNextPattern,
-    const int                   &iDuration,
-    const int                   iBeatTimes[8] )
+    const int                   iBeatTimes[8],
+    const SharedInstrumentData  *ipSharedData )
 {
     return m_pNotes;
 }
@@ -59,4 +58,9 @@ void CInstrumentBase::SetVolume(const float &iVolume)
     } else if ( m_fVolume < 0.0 ) {
         m_fVolume = 0.0;
     }
+}
+
+void CInstrumentBase::SetRhythm(const short &iRhythm)
+{
+    m_iRhythm = iRhythm;
 }

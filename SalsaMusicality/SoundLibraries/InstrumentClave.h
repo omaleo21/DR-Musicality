@@ -24,17 +24,26 @@ public:
     CInstrumentClave(
         const char                  *ipPathToSoundFont,
         const bool                  &iIsEnabled,
-        const short                 &iKeyFactor );
+        const short                 &iRhythm );
 
     virtual ~CInstrumentClave() {};
 
     virtual Note *GetNotes(
-        const unsigned int          &iTimeOfNextPattern,
-        const int                   &iDuration,
-        const int                   iBeatTimes[8] );
+        const int                   iBeatTimes[8],
+        const SharedInstrumentData  *ipSharedData );
+
+    virtual void UpdateSharedData(
+        const int                   iBeatTimes[8],
+        SharedInstrumentData        *iopSharedData );
 
 private:
     bool m_bFirstBar;
+
+    Note_structure N;
+
+    Note_structure Son(Note_structure N, const int iBeatTimes[8]);
+
+    Note_structure Rumba(Note_structure N, const int iBeatTimes[8]);
 
 };
 

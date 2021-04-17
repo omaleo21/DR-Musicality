@@ -23,3 +23,5 @@ fluidsynth/src/FluidSynth.framework/Versions/2/FluidSynth
 .vscode/**
 .DS_Store
 
+SalsaMusicality/SoundLibraries/libSoundLibraries.dylib
+SalsaMusicality/SoundLibraries/libSoundLibraries.dylib

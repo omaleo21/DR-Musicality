@@ -13,15 +13,44 @@
 |*------------------------------- ENUMERATIONS ------------------------------*|
 \*---------------------------------------------------------------------------*/
 enum INSTRUMENTS_TYPE {
-    INSTRUMENT_BONGOS = 0,
+    INSTRUMENT_CONGAS = 0,
     INSTRUMENT_CLAVE,
     INSTRUMENT_COWBELL,
+    INSTRUMENT_BONGOS,
     NUM_INSTRUMENTS
 };
 
 enum RHYTHMS_TYPE {
     DEFAULT,
     NUM_RHYTHMS_TYPE
+};
+
+enum BONGO_RHYTHMS {
+    BON_ALL_BEATS = 0,
+    BON_MARTILLO,
+    NUM_BONGO_RHYTHMS
+};
+
+enum CLAVE_RHYTHMS {
+    CLA_SON_2_3 = 0,
+    CLA_SON_3_2,
+    CLA_RUMBA_2_3,
+    CLA_RUMBA_3_2,
+    NUM_CLAVE_RHYTHMS
+};
+
+enum CONGA_RHYTHMS {
+    CON_BASIC_OFFBEAT = 0,
+    CON_BASIC_ENDBEAT,
+    CON_CLAVE_ALIGNED,
+    NUM_CONGA_RHYTHMS
+};
+
+enum COWBELL_RHYTHMS {
+    COW_ALL_BEATS = 0,
+    COW_DOWN_BEATS,
+    COW_CLAVE_ALIGNED,
+    NUM_COWBELL_RHYTHMS
 };
 
 /*---------------------------------------------------------------------------*\
@@ -48,7 +77,10 @@ SLAPI_EXPORT bool IsInstrumentEnabled(unsigned int iInstrument);
 
 SLAPI_EXPORT void SetInstrumentRhythm(
     unsigned int                iInstrument,
-    unsigned int                iRhythm );
+    short                       iRhythm );
+
+SLAPI_EXPORT void SetClaveRhythm(
+    short                       iRhythm );
 
 SLAPI_EXPORT void SetMasterVolume(float iVolume);
 

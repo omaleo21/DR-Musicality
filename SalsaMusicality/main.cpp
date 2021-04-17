@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <iostream>
 
 /*---------------------------------------------------------------------------*\
 |*----------------------------- LOCAL INCLUDES ------------------------------*|
@@ -48,18 +49,25 @@ int main(int argc, char *argv[])
         printf("press <q> then <enter> to stop\n");
         while ( n != 'q' ) {
             n = getchar();
-
-            if ( n == 'b' ) {
-                isEnabled = IsInstrumentEnabled(INSTRUMENT_BONGOS);
-                SetInstrumentEnabled(INSTRUMENT_BONGOS, !isEnabled );
+            
+            if ( n == 't' ) {
+                 isEnabled = IsInstrumentEnabled(INSTRUMENT_CONGAS);
+                 SetInstrumentEnabled(INSTRUMENT_CONGAS, !isEnabled );
             }
+            
             if ( n == 'c' ) {
+                //SetInstrumentRhythm(INSTRUMENT_CLAVE,CLA_SON_3_2);
                 isEnabled = IsInstrumentEnabled(INSTRUMENT_CLAVE);
                 SetInstrumentEnabled(INSTRUMENT_CLAVE, !isEnabled );
             }
             if ( n == 'w' ) {
                 isEnabled = IsInstrumentEnabled(INSTRUMENT_COWBELL);
                 SetInstrumentEnabled(INSTRUMENT_COWBELL, !isEnabled );
+            }
+
+            if ( n == 'b' ) {
+                 isEnabled = IsInstrumentEnabled(INSTRUMENT_BONGOS);
+                 SetInstrumentEnabled(INSTRUMENT_BONGOS, !isEnabled );
             }
         }
 

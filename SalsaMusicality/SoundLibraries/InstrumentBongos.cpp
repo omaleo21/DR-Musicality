@@ -11,36 +11,42 @@
 |*---------------------------- LOCAL INCLUDES -------------------------------*|
 \*---------------------------------------------------------------------------*/
 #include "InstrumentBongos.h"
+#include "SoundLibraryInterface.h"
+
 #include <stdio.h>
+#include <algorithm>
 
 CInstrumentBongos::CInstrumentBongos(
     const char                  *ipPathToSoundFont,
     const bool                  &iIsEnabled,
-    const short                 &iKeyFactor )
+    const short                 &iRhythm )
     : CInstrumentBase(
         ipPathToSoundFont,
         iIsEnabled,
-        iKeyFactor )
+        iRhythm )
 {
     /* Create a linked list of 3 notes. 3 notes per bar */
-    m_pNotes = Note::CreateLinkedList(5);
+    m_pNotes = Note::CreateLinkedList(8);
     m_bFirstBar = true;
 }
 
 Note *CInstrumentBongos::GetNotes(
-    const unsigned int          &iTimeOfNextPattern,
-    const int                   &iDuration,
-    const int                   iBeatTimes[8] )
+    const int                   iBeatTimes[8],
+    const SharedInstrumentData  *ipSharedData )
 {
     int i = 0;
-    int note_duration[5];
-
-    int note_time = iTimeOfNextPattern; // time at time_marker represents beat 1
 
     Note *pCurrentNote = m_pNotes;
 
-    SheetMusic CBar = SheetMusic(iBeatTimes);
-
+    switch (m_iRhythm){
+        case BON_ALL_BEATS:
+            N = All_Beats(N,iBeatTimes);
+            break;
+        case BON_MARTILLO:
+            N = Martillo(N, iBeatTimes);
+            break;
+    }
+    /*
     // beat 1      = 0
     // beat 1&     = 1
     // beat 2      = 2
@@ -49,7 +55,7 @@ Note *CInstrumentBongos::GetNotes(
     // beat 3&     = 5
     // beat 4      = 6
     // beat 4&     = 7
-    /*
+    
     // Basic Conga Symmetric
     note_time = iBeatTimes[2];
     note_duration[0] = CBar.Half_note(0);                             // from 2 to 4
@@ -57,8 +63,7 @@ Note *CInstrumentBongos::GetNotes(
     note_duration[2] = CBar.Eighth_note()+CBar.Half_note(0);                             // from 4.5 to 2
     note_duration[3] = 0;
     note_duration[4] = 0;
-    */
-   /*
+
    // Basic Conga Asymmetric
    if ( m_bFirstBar ) {
         note_time = iBeatTimes[6];
@@ -75,7 +80,6 @@ Note *CInstrumentBongos::GetNotes(
         note_duration[3] = 0;
         note_duration[4] = 0;
     }
-    */
 
    // Advanced Conga 
    if ( m_bFirstBar ) {
@@ -94,27 +98,35 @@ Note *CInstrumentBongos::GetNotes(
         note_duration[4] = CBar.Eighth_note()+CBar.Half_note(0); // from 8.5 to 2
     }
 
-    m_bFirstBar = !m_bFirstBar;
+    
+    */
 
-    printf( "----Bongos------\n" );
+    if ( m_bIsEnabled ) {
+        printf( "----Bongos------\n" );
+    }
+
     while ( pCurrentNote )
     {
         /* Set channel to -1 if note stream is finished. */
-        if ( !note_duration[i] ) {
+        if ( !N.note_duration[i] ) {
             pCurrentNote->m_iChannel = -1;
             break;
         }
 
-        printf( "Note %d on: %d\n", i+1, note_time );
         pCurrentNote->m_iChannel          = m_iChannel;
-        pCurrentNote->m_iKey              = 60;
+        pCurrentNote->m_iKey              = N.keytoplay[i];
         pCurrentNote->m_iVelocity         = 127;
-        pCurrentNote->m_iNoteOnTime       = note_time;
+        pCurrentNote->m_iNoteOnTime       = N.note_time;
 
-        note_time += note_duration[i];
+        N.Update_start(N.note_duration[i]);
 
-        printf( "Note %d off: %d\n", i+1, note_time );
-        pCurrentNote->m_iNoteOffTime      = note_time;
+        pCurrentNote->m_iNoteOffTime      = N.note_time;
+
+        if ( m_bIsEnabled ) {
+            printf( "Note %d on: %d\n", i+1, pCurrentNote->m_iNoteOnTime );
+            printf( "Note %d off: %d\n", i+1, pCurrentNote->m_iNoteOffTime );
+        }
+
         pCurrentNote = pCurrentNote->pNext;
 
         i++;
@@ -122,3 +134,53 @@ Note *CInstrumentBongos::GetNotes(
 
     return m_pNotes;
 }
+
+Note_structure CInstrumentBongos::All_Beats(Note_structure N, const int iBeatTimes[8])
+{   
+    int time;
+    int duration[8] = {0};
+    int keys[8] = {0};
+
+    SheetMusic CBar = SheetMusic(iBeatTimes);
+    
+    time = iBeatTimes[0];
+    std::fill(duration, duration+4, CBar.Quarter_note(0)); // All quarter notes in a bar.
+
+    if (m_bFirstBar){
+        std::fill(keys, keys+4, 63);
+    }   else {
+        std::fill(keys, keys+4, 60);
+    }
+
+    N.Set(time,duration,keys);
+
+    return (N);
+}
+
+Note_structure CInstrumentBongos::Martillo(Note_structure N, const int iBeatTimes[8])
+{   
+    int time;
+    int duration[8] = {0};
+    int keys[8] = {0};
+
+    SheetMusic CBar = SheetMusic(iBeatTimes);
+    
+    time = iBeatTimes[0];
+
+    std::fill(duration, duration+8, CBar.Eighth_note()); // All eighth notes in a bar.
+
+    keys[0] = 57;
+    keys[1] = 85;
+    keys[2] = 63;
+    keys[3] = 51;
+    keys[4] = 57;
+    keys[5] = 85;
+    keys[6] = 60;
+    keys[7] = 51;
+    
+
+    N.Set(time,duration,keys);
+
+    return (N);
+}
+

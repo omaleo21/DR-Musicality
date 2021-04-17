@@ -15,6 +15,29 @@
 #include <string.h>
 
 /*---------------------------------------------------------------------------*\
+|*--------------------------- NOTE STRUCTURE --------------------------------*|
+\*---------------------------------------------------------------------------*/
+
+struct Note_structure{
+        int note_time;
+        int note_duration[8];
+        int keytoplay[8];
+
+        void Set(int start_time, int duration[8], int keys[8])
+        {
+            note_time = start_time;
+            for(int i = 0; i < 8; i++) {
+                note_duration[i] = duration[i];
+                keytoplay[i] = keys[i];
+            } 
+        }
+
+        void Update_start(int additional_time)
+            {note_time += additional_time;
+            }
+};
+
+/*---------------------------------------------------------------------------*\
 |*------------------------ SHEET MUSIC CLASS --------------------------------*|
 \*---------------------------------------------------------------------------*/
 

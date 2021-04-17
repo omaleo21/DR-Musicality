@@ -98,6 +98,7 @@ set(SOURCES
         SheetMusic.cpp
         InstrumentBongos.cpp
         InstrumentClave.cpp
+        InstrumentCongas.cpp
         InstrumentCowbell.cpp
         InstrumentCollection.cpp
         SoundLibraryInterface.cpp )

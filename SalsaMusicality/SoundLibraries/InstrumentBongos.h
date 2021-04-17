@@ -24,17 +24,22 @@ public:
     CInstrumentBongos(
         const char                  *ipPathToSoundFont,
         const bool                  &iIsEnabled,
-        const short                 &iKeyFactor );
+        const short                 &iRhythm );
 
     virtual ~CInstrumentBongos() {};
 
     virtual Note *GetNotes(
-        const unsigned int          &iTimeOfNextPattern,
-        const int                   &iDuration,
-        const int                   iBeatTimes[8] );
+        const int                   iBeatTimes[8],
+        const SharedInstrumentData  *ipSharedData );
 
 private:
     bool m_bFirstBar;
+
+    Note_structure N;
+
+    Note_structure All_Beats(Note_structure N, const int iBeatTimes[8]);
+    Note_structure Martillo(Note_structure N, const int iBeatTimes[8]);
+
 };
 
 #endif

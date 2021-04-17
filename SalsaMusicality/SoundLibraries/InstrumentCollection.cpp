@@ -23,6 +23,8 @@ CInstrumentCollection::CInstrumentCollection(
 
     m_vInstruments = new std::vector<CInstrumentBase *>();
 
+    m_pSharedData = new SharedInstrumentData();
+
     SetDurationOfOneBar(iDurationOfOneBar);
 }
 
@@ -36,6 +38,11 @@ CInstrumentCollection::~CInstrumentCollection()
         }
         delete m_vInstruments;
         m_vInstruments = NULL;
+    }
+
+    if ( m_pSharedData ) {
+        delete m_pSharedData;
+        m_pSharedData = NULL;
     }
 }
 
@@ -74,18 +81,28 @@ void CInstrumentCollection::SchedulePattern(
         beatTimes[i] = beatTimes[i - 1] + pCollection->m_iDurationOfHalfBeat;
     }
 
+    /* Update the shared data object before calling GetNotes() */
     for ( i = 0; i < pCollection->m_vInstruments->size(); i++ ) {
         CInstrumentBase *pInstrument = pCollection->m_vInstruments->at(i);
 
+        pInstrument->UpdateSharedData(
+            beatTimes,
+            pCollection->m_pSharedData );
+    }
+
+    for ( i = 0; i < pCollection->m_vInstruments->size(); i++ ) {
+        CInstrumentBase *pInstrument = pCollection->m_vInstruments->at(i);
+
+        Note *pNotes =
+            pInstrument->GetNotes(
+                beatTimes,
+                pCollection->m_pSharedData );
+
         if ( pInstrument->IsEnabled() ) {
-            Note *pNotes =
-                pInstrument->GetNotes(
-                    ioStartTimeOfNextPattern,
-                    pCollection->m_iDurationOfOneBar,
-                    beatTimes );
 
             /* Channel = -1 indicates we're done playing notes */
             while ( pNotes && pNotes->m_iChannel != -1 ) {
+                
                 pCollection->m_pFluid->ScheduleNoteOn(
                     pNotes->m_iChannel,
                     pNotes->m_iKey,

@@ -45,6 +45,8 @@ private:
 
     unsigned int                        m_iDurationOfOneBar;
     unsigned int                        m_iDurationOfHalfBeat;
+
+    SharedInstrumentData                *m_pSharedData;
 };
 
 

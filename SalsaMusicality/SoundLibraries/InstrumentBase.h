@@ -101,6 +101,21 @@ struct Note
     }
 };
 
+struct SharedInstrumentData
+{
+    bool        m_bNumClaveBarHits;
+
+    SharedInstrumentData()
+    {   
+        // 0 for 2 hits; 1 for 3 hits;
+        m_bNumClaveBarHits = 0;
+    }
+
+    void Update_Clave(bool bClave){
+        m_bNumClaveBarHits = bClave;
+    }
+};
+
 /*---------------------------------------------------------------------------*\
 |*------------------------ BASE INSTRUMENT CLASS ----------------------------*|
 \*---------------------------------------------------------------------------*/
@@ -110,14 +125,13 @@ public:
     CInstrumentBase(
         const char                  *ipPathToSoundFont,
         const bool                  &iIsEnabled,
-        const short                 &iKeyFactor );
+        const short                 &iRhythm );
 
     virtual ~CInstrumentBase();
 
     virtual Note *GetNotes(
-        const unsigned int          &iTimeOfNextPattern,
-        const int                   &iDuration,
-        const int                   iBeatTimes[8] );
+        const int                   iBeatTimes[8],
+        const SharedInstrumentData  *ipSharedData );
 
     virtual void SetChannel(const int &iChannel) { m_iChannel = iChannel; }
 
@@ -132,11 +146,20 @@ public:
 
     virtual const char *GetPathToSoundFont(void) { return m_pPathToSoundFont; }
 
+    virtual short GetRhythm(void) {return m_iRhythm;}
+    
+    virtual void SetRhythm(const short &iRhythm);
+
+    virtual void UpdateSharedData(
+        const int                   iBeatTimes[8],
+        SharedInstrumentData        *iopSharedData ) { return; }
+
+
 protected:
     const char                  *m_pPathToSoundFont;
     bool                        m_bIsEnabled;
     int                         m_iChannel;
-    short                       m_iKeyFactor;
+    short                       m_iRhythm;
     float                       m_fVolume;
     Note                        *m_pNotes;
 

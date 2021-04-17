@@ -15,6 +15,7 @@
 #include "InstrumentCollection.h"
 #include "InstrumentBongos.h"
 #include "InstrumentClave.h"
+#include "InstrumentCongas.h"
 #include "InstrumentCowbell.h"
 
 /*---------------------------------------------------------------------------*\
@@ -56,15 +57,16 @@ int InitializeSoundLibrary(char *ipPathToSoundFonts)
     char pathsToSoundFontFiles[NUM_INSTRUMENTS][255];
 
     /* duration of one bar in ticks. Must be divisible by 8! */
-    double bpm = 170;//2.4E5 / bpm
+    double bpm = 180;//2.4E5 / bpm
     unsigned int duration = 2.4E5/bpm; // 2400 is 100bpm
 
     /* Free the library if it's been initialized before */
     FreeSoundLibrary();
 
-    soundFontFiles[INSTRUMENT_BONGOS]        = "Congas Edition.sf2";
+    soundFontFiles[INSTRUMENT_CONGAS]        = "Congas.sf2";
     soundFontFiles[INSTRUMENT_CLAVE]         = "claves.sf2";
     soundFontFiles[INSTRUMENT_COWBELL]       = "cowbell.sf2";
+    soundFontFiles[INSTRUMENT_BONGOS]        = "Bongos.sf2";
 
     g_pFluid = new CFluidSynth("SalsaMusicality");
 
@@ -86,23 +88,29 @@ int InitializeSoundLibrary(char *ipPathToSoundFonts)
     /* Initialize instrument collection */
     g_pCollection = new CInstrumentCollection(g_pFluid, duration);
 
-    /* Initialize bongos */
-    g_pInstruments[INSTRUMENT_BONGOS] =
-        new CInstrumentBongos(pathsToSoundFontFiles[INSTRUMENT_BONGOS], true, 1);
+    /* Initialize congas */
+    g_pInstruments[INSTRUMENT_CONGAS] =
+        new CInstrumentCongas(pathsToSoundFontFiles[INSTRUMENT_CONGAS], true, CON_BASIC_ENDBEAT);
 
-    g_pCollection->AddInstrumentToCollection(g_pInstruments[INSTRUMENT_BONGOS]);
+    g_pCollection->AddInstrumentToCollection(g_pInstruments[INSTRUMENT_CONGAS]);
 
     /* Initialize clave */
     g_pInstruments[INSTRUMENT_CLAVE] =
-        new CInstrumentClave(pathsToSoundFontFiles[INSTRUMENT_CLAVE], true, 1);
+        new CInstrumentClave(pathsToSoundFontFiles[INSTRUMENT_CLAVE], true, CLA_SON_2_3);
 
     g_pCollection->AddInstrumentToCollection(g_pInstruments[INSTRUMENT_CLAVE]);
 
     /* Initialize cowbell */
     g_pInstruments[INSTRUMENT_COWBELL] =
-        new CInstrumentCowbell(pathsToSoundFontFiles[INSTRUMENT_COWBELL], true, 1);
+        new CInstrumentCowbell(pathsToSoundFontFiles[INSTRUMENT_COWBELL], true, COW_DOWN_BEATS);
 
     g_pCollection->AddInstrumentToCollection(g_pInstruments[INSTRUMENT_COWBELL]);
+
+    /* Initialize bongos */
+    g_pInstruments[INSTRUMENT_BONGOS] =
+        new CInstrumentBongos(pathsToSoundFontFiles[INSTRUMENT_BONGOS], true, BON_MARTILLO);
+
+    g_pCollection->AddInstrumentToCollection(g_pInstruments[INSTRUMENT_BONGOS]);
 
     if ( g_pFluid->FinishInit() != 0 ) {
         return 1;
@@ -140,7 +148,8 @@ void FreeSoundLibrary(void)
 |* Output:  N/A                                                     |
 \*-----------------------------------------------------------------*/
 void BeginPlayback(void)
-{
+{   
+    
     g_pFluid->BeginPlayback();
 }
 
@@ -200,9 +209,9 @@ bool IsInstrumentEnabled(unsigned int iInstrument)
 \*-----------------------------------------------------------------*/
 void SetInstrumentRhythm(
     unsigned int                iInstrument,
-    unsigned int                iRhythm )
+    short                           iRhythm )
 {
-    return;
+    g_pInstruments[iInstrument]->SetRhythm(iRhythm);
 }
 
 /*-----------------------------------------------------------------*\
