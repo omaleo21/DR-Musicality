@@ -90,9 +90,11 @@ Note *CInstrumentClave::GetNotes(
             N = Son(N,iBeatTimes,m_bFirstBar);
             break;
     }
-    
 
-    printf( "----Clave------\n" );
+    if ( m_bIsEnabled ) {
+        printf( "----Clave------\n" );
+    }
+
     while ( pCurrentNote )
     {
         /* Set channel to -1 if note stream is finished. */
@@ -101,7 +103,6 @@ Note *CInstrumentClave::GetNotes(
             break;
         }
 
-        printf( "Note %d on: %d\n", i+1, N.note_time );
         pCurrentNote->m_iChannel          = m_iChannel;
         pCurrentNote->m_iKey              = 60;
         pCurrentNote->m_iVelocity         = 127;
@@ -109,8 +110,13 @@ Note *CInstrumentClave::GetNotes(
 
         N.Update_start(N.note_duration[i]);
 
-        printf( "Note %d off: %d\n", i+1, N.note_time );
         pCurrentNote->m_iNoteOffTime      = N.note_time;
+
+        if ( m_bIsEnabled ) {
+            printf( "Note %d on: %d\n", i+1, pCurrentNote->m_iNoteOnTime );
+            printf( "Note %d off: %d\n", i+1, pCurrentNote->m_iNoteOffTime );
+        }
+
         pCurrentNote = pCurrentNote->pNext;
 
         i++;

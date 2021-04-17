@@ -93,11 +93,12 @@ void CInstrumentCollection::SchedulePattern(
     for ( i = 0; i < pCollection->m_vInstruments->size(); i++ ) {
         CInstrumentBase *pInstrument = pCollection->m_vInstruments->at(i);
 
+        Note *pNotes =
+            pInstrument->GetNotes(
+                beatTimes,
+                pCollection->m_pSharedData );
+
         if ( pInstrument->IsEnabled() ) {
-            Note *pNotes =
-                pInstrument->GetNotes(
-                    beatTimes,
-                    pCollection->m_pSharedData );
 
             /* Channel = -1 indicates we're done playing notes */
             while ( pNotes && pNotes->m_iChannel != -1 ) {

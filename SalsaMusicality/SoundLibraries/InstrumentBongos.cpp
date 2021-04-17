@@ -102,8 +102,10 @@ Note *CInstrumentBongos::GetNotes(
     
     */
 
+    if ( m_bIsEnabled ) {
+        printf( "----Bongos------\n" );
+    }
 
-    printf( "----Bongos------\n" );
     while ( pCurrentNote )
     {
         /* Set channel to -1 if note stream is finished. */
@@ -112,15 +114,20 @@ Note *CInstrumentBongos::GetNotes(
             break;
         }
 
-        printf( "Note %d on: %d\n", i+1, N.note_time );
         pCurrentNote->m_iChannel          = m_iChannel;
         pCurrentNote->m_iKey              = N.keytoplay[i];
         pCurrentNote->m_iVelocity         = 127;
         pCurrentNote->m_iNoteOnTime       = N.note_time;
 
         N.Update_start(N.note_duration[i]);
-        printf( "Note %d off: %d\n", i+1, N.note_time );
+
         pCurrentNote->m_iNoteOffTime      = N.note_time;
+
+        if ( m_bIsEnabled ) {
+            printf( "Note %d on: %d\n", i+1, pCurrentNote->m_iNoteOnTime );
+            printf( "Note %d off: %d\n", i+1, pCurrentNote->m_iNoteOffTime );
+        }
+
         pCurrentNote = pCurrentNote->pNext;
 
         i++;
