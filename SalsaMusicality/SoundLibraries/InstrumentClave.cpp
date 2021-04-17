@@ -28,9 +28,8 @@ CInstrumentClave::CInstrumentClave(
 }
 
 Note *CInstrumentClave::GetNotes(
-    const unsigned int          &iTimeOfNextPattern,
-    const int                   &iDuration,
-    const int                   iBeatTimes[8] )
+    const int                   iBeatTimes[8],
+    const SharedInstrumentData  *ipSharedData )
 {
     int i = 0;
 
@@ -169,4 +168,28 @@ Note_structure CInstrumentClave::Rumba(Note_structure N, const int iBeatTimes[8]
     N.Set(time,duration,keys);
 
     return (N);
+}
+
+void CInstrumentClave::UpdateSharedData(
+    const int                   iBeatTimes[8],
+    SharedInstrumentData        *iopSharedData )
+{
+    bool isNextFrameFirstBar = m_bFirstBar;
+
+    /* Determine whether the next notes to be played will be on the first bar. */
+    switch (m_iRhythm) {
+        case 2:
+        case 4:
+            isNextFrameFirstBar = !isNextFrameFirstBar;
+            break;
+        default:
+            break;
+    }
+
+    /* Assign number of clave hits for the next bar. */
+    if ( isNextFrameFirstBar ) {
+        iopSharedData->m_iNumClaveBarHits = 2;
+    } else {
+        iopSharedData->m_iNumClaveBarHits = 3;
+    }
 }

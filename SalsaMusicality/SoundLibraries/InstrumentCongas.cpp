@@ -28,9 +28,8 @@ CInstrumentCongas::CInstrumentCongas(
 }
 
 Note *CInstrumentCongas::GetNotes(
-    const unsigned int          &iTimeOfNextPattern,
-    const int                   &iDuration,
-    const int                   iBeatTimes[8] )
+    const int                   iBeatTimes[8],
+    const SharedInstrumentData  *ipSharedData )
 {
     int i = 0;
 

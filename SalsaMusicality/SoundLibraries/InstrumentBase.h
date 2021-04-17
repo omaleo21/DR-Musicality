@@ -101,6 +101,16 @@ struct Note
     }
 };
 
+struct SharedInstrumentData
+{
+    int        m_iNumClaveBarHits;
+
+    SharedInstrumentData()
+    {
+        m_iNumClaveBarHits = 0;
+    }
+};
+
 /*---------------------------------------------------------------------------*\
 |*------------------------ BASE INSTRUMENT CLASS ----------------------------*|
 \*---------------------------------------------------------------------------*/
@@ -115,9 +125,8 @@ public:
     virtual ~CInstrumentBase();
 
     virtual Note *GetNotes(
-        const unsigned int          &iTimeOfNextPattern,
-        const int                   &iDuration,
-        const int                   iBeatTimes[8] );
+        const int                   iBeatTimes[8],
+        const SharedInstrumentData  *ipSharedData );
 
     virtual void SetChannel(const int &iChannel) { m_iChannel = iChannel; }
 
@@ -135,6 +144,10 @@ public:
     virtual short GetRhythm(void) {return m_iRhythm;}
     
     virtual void SetRhythm(const short &iRhythm);
+
+    virtual void UpdateSharedData(
+        const int                   iBeatTimes[8],
+        SharedInstrumentData        *iopSharedData ) { return; }
 
 
 protected:

@@ -29,9 +29,8 @@ public:
     virtual ~CInstrumentBongos() {};
 
     virtual Note *GetNotes(
-        const unsigned int          &iTimeOfNextPattern,
-        const int                   &iDuration,
-        const int                   iBeatTimes[8] );
+        const int                   iBeatTimes[8],
+        const SharedInstrumentData  *ipSharedData );
 
 private:
     bool m_bFirstBar;

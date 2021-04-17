@@ -29,9 +29,12 @@ public:
     virtual ~CInstrumentClave() {};
 
     virtual Note *GetNotes(
-        const unsigned int          &iTimeOfNextPattern,
-        const int                   &iDuration,
-        const int                   iBeatTimes[8] );
+        const int                   iBeatTimes[8],
+        const SharedInstrumentData  *ipSharedData );
+
+    virtual void UpdateSharedData(
+        const int                   iBeatTimes[8],
+        SharedInstrumentData        *iopSharedData );
 
 private:
     bool m_bFirstBar;

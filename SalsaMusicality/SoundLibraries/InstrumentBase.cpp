@@ -43,9 +43,8 @@ CInstrumentBase::~CInstrumentBase()
 }
 
 Note *CInstrumentBase::GetNotes(
-    const unsigned int          &iTimeOfNextPattern,
-    const int                   &iDuration,
-    const int                   iBeatTimes[8] )
+    const int                   iBeatTimes[8],
+    const SharedInstrumentData  *ipSharedData )
 {
     return m_pNotes;
 }
