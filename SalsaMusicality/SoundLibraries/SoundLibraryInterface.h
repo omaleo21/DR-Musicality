@@ -26,33 +26,33 @@ enum RHYTHMS_TYPE {
 };
 
 enum BONGO_RHYTHMS {
-    ALL_BEATS = 0,
-    MARTILLO,
+    BON_ALL_BEATS = 0,
+    BON_MARTILLO,
     NUM_BONGO_RHYTHMS
 };
 
 enum CLAVE_RHYTHMS {
-    SON_2_3 = 0,
-    SON_3_2,
-    RUMBA_2_3,
-    RUMBA_3_2,
+    CLA_SON_2_3 = 0,
+    CLA_SON_3_2,
+    CLA_RUMBA_2_3,
+    CLA_RUMBA_3_2,
     NUM_CLAVE_RHYTHMS
 };
 
 enum CONGA_RHYTHMS {
-    BASIC_OFFBEAT = 0,
-    BASIC_ENDBEAT,
-    CLAVE_ALIGNED,
+    CON_BASIC_OFFBEAT = 0,
+    CON_BASIC_ENDBEAT,
+    CON_CLAVE_ALIGNED,
     NUM_CONGA_RHYTHMS
 };
-/*
+
 enum COWBELL_RHYTHMS {
-    ALL_BEATS = 0,
-    DOWN_BEATS,
-    CLAVE_ALIGNED,
+    COW_ALL_BEATS = 0,
+    COW_DOWN_BEATS,
+    COW_CLAVE_ALIGNED,
     NUM_COWBELL_RHYTHMS
 };
-*/
+
 /*---------------------------------------------------------------------------*\
 |*--------------------------------- EXPORTS ---------------------------------*|
 \*---------------------------------------------------------------------------*/

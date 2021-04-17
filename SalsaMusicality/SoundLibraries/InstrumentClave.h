@@ -41,9 +41,9 @@ private:
 
     Note_structure N;
 
-    Note_structure Son(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar);
+    Note_structure Son(Note_structure N, const int iBeatTimes[8]);
 
-    Note_structure Rumba(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar);
+    Note_structure Rumba(Note_structure N, const int iBeatTimes[8]);
 
 };
 

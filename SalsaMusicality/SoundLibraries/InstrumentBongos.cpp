@@ -11,6 +11,8 @@
 |*---------------------------- LOCAL INCLUDES -------------------------------*|
 \*---------------------------------------------------------------------------*/
 #include "InstrumentBongos.h"
+#include "SoundLibraryInterface.h"
+
 #include <stdio.h>
 #include <algorithm>
 
@@ -37,13 +39,11 @@ Note *CInstrumentBongos::GetNotes(
     Note *pCurrentNote = m_pNotes;
 
     switch (m_iRhythm){
-        case 0:
+        case BON_ALL_BEATS:
             N = All_Beats(N,iBeatTimes);
-            m_bFirstBar = !m_bFirstBar;
             break;
-        case 1:
+        case BON_MARTILLO:
             N = Martillo(N, iBeatTimes);
-            m_bFirstBar = !m_bFirstBar;
             break;
     }
     /*
@@ -147,15 +147,9 @@ Note_structure CInstrumentBongos::All_Beats(Note_structure N, const int iBeatTim
     std::fill(duration, duration+4, CBar.Quarter_note(0)); // All quarter notes in a bar.
 
     if (m_bFirstBar){
-        keys[0] = 63;
-        keys[1] = 63;
-        keys[2] = 63;
-        keys[3] = 63;
+        std::fill(keys, keys+4, 63);
     }   else {
-        keys[0] = 60;
-        keys[1] = 60;
-        keys[2] = 60;
-        keys[3] = 60;
+        std::fill(keys, keys+4, 60);
     }
 
     N.Set(time,duration,keys);

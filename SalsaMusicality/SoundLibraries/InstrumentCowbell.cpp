@@ -11,6 +11,7 @@
 |*---------------------------- LOCAL INCLUDES -------------------------------*|
 \*---------------------------------------------------------------------------*/
 #include "InstrumentCowbell.h"
+#include "SoundLibraryInterface.h"
 #include <stdio.h>
 #include <algorithm>
 
@@ -38,15 +39,15 @@ Note *CInstrumentCowbell::GetNotes(
     Note *pCurrentNote = m_pNotes;
 
     switch (m_iRhythm){
-        case 0:
+        case COW_ALL_BEATS:
             N = All_Beats(N,iBeatTimes);
             break;
-        case 1:
+        case COW_DOWN_BEATS:
             N = Down_Beats(N,iBeatTimes);
             break;
-        case 2:
+        case COW_CLAVE_ALIGNED:
+            m_bFirstBar = ipSharedData->m_bNumClaveBarHits;
             N = Clave_Aligned(N,iBeatTimes);
-            m_bFirstBar = !m_bFirstBar;
             break;
     }
     /*

@@ -90,25 +90,25 @@ int InitializeSoundLibrary(char *ipPathToSoundFonts)
 
     /* Initialize congas */
     g_pInstruments[INSTRUMENT_CONGAS] =
-        new CInstrumentCongas(pathsToSoundFontFiles[INSTRUMENT_CONGAS], true, CLAVE_ALIGNED);
+        new CInstrumentCongas(pathsToSoundFontFiles[INSTRUMENT_CONGAS], true, CON_BASIC_ENDBEAT);
 
     g_pCollection->AddInstrumentToCollection(g_pInstruments[INSTRUMENT_CONGAS]);
 
     /* Initialize clave */
     g_pInstruments[INSTRUMENT_CLAVE] =
-        new CInstrumentClave(pathsToSoundFontFiles[INSTRUMENT_CLAVE], true, SON_2_3);
+        new CInstrumentClave(pathsToSoundFontFiles[INSTRUMENT_CLAVE], true, CLA_SON_2_3);
 
     g_pCollection->AddInstrumentToCollection(g_pInstruments[INSTRUMENT_CLAVE]);
 
     /* Initialize cowbell */
     g_pInstruments[INSTRUMENT_COWBELL] =
-        new CInstrumentCowbell(pathsToSoundFontFiles[INSTRUMENT_COWBELL], false, CLAVE_ALIGNED);
+        new CInstrumentCowbell(pathsToSoundFontFiles[INSTRUMENT_COWBELL], true, COW_DOWN_BEATS);
 
     g_pCollection->AddInstrumentToCollection(g_pInstruments[INSTRUMENT_COWBELL]);
 
     /* Initialize bongos */
     g_pInstruments[INSTRUMENT_BONGOS] =
-        new CInstrumentBongos(pathsToSoundFontFiles[INSTRUMENT_BONGOS], false, MARTILLO);
+        new CInstrumentBongos(pathsToSoundFontFiles[INSTRUMENT_BONGOS], true, BON_MARTILLO);
 
     g_pCollection->AddInstrumentToCollection(g_pInstruments[INSTRUMENT_BONGOS]);
 

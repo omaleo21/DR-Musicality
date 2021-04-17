@@ -74,21 +74,21 @@ Note *CInstrumentClave::GetNotes(
     */
     
     switch (m_iRhythm){
-        case SON_2_3:
-            N = Son(N,iBeatTimes,m_bFirstBar);
+        case CLA_SON_2_3:
+            N = Son(N,iBeatTimes);
             m_bFirstBar = !m_bFirstBar;
             break;
-        case SON_3_2:
+        case CLA_SON_3_2:
             m_bFirstBar = !m_bFirstBar;
-            N = Son(N,iBeatTimes,m_bFirstBar);
+            N = Son(N,iBeatTimes);
             break;
-        case RUMBA_2_3:
-            N = Rumba(N,iBeatTimes,m_bFirstBar);
+        case CLA_RUMBA_2_3:
+            N = Rumba(N,iBeatTimes);
             m_bFirstBar = !m_bFirstBar;
             break;
-        case RUMBA_3_2:
+        case CLA_RUMBA_3_2:
             m_bFirstBar = !m_bFirstBar;
-            N = Rumba(N,iBeatTimes,m_bFirstBar);
+            N = Rumba(N,iBeatTimes);
             break;
     }
 
@@ -126,7 +126,7 @@ Note *CInstrumentClave::GetNotes(
     return m_pNotes;
 }
 
-Note_structure CInstrumentClave::Son(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar)
+Note_structure CInstrumentClave::Son(Note_structure N, const int iBeatTimes[8])
 {   
     int time;
     int duration[8] = {0};
@@ -151,7 +151,7 @@ Note_structure CInstrumentClave::Son(Note_structure N, const int iBeatTimes[8],b
     return (N);
 }
 
-Note_structure CInstrumentClave::Rumba(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar)
+Note_structure CInstrumentClave::Rumba(Note_structure N, const int iBeatTimes[8])
 {   
     int time;
     int duration[8]= {0};
@@ -186,8 +186,8 @@ void CInstrumentClave::UpdateSharedData(
     /* Determine whether the next notes to be played will be on the first bar.          *\
     \* The 3-2 claves negate m_bFirstBar before scheduling notes, so do the same here.  */
     switch (m_iRhythm) {
-        case SON_3_2:
-        case RUMBA_3_2:
+        case CLA_SON_3_2:
+        case CLA_RUMBA_3_2:
             isNextFrameFirstBar = !isNextFrameFirstBar;
             break;
         default:

@@ -11,6 +11,7 @@
 |*---------------------------- LOCAL INCLUDES -------------------------------*|
 \*---------------------------------------------------------------------------*/
 #include "InstrumentCongas.h"
+#include "SoundLibraryInterface.h"
 #include <stdio.h>
 
 CInstrumentCongas::CInstrumentCongas(
@@ -36,14 +37,14 @@ Note *CInstrumentCongas::GetNotes(
     Note *pCurrentNote = m_pNotes;
         
     switch (m_iRhythm){
-        case 0:
+        case CON_BASIC_OFFBEAT:
             N = Basic_Offbeat(N,iBeatTimes);
             break;
-        case 1:
+        case CON_BASIC_ENDBEAT:
             N = Basic_Endbeat(N,iBeatTimes);
             m_bFirstBar = !m_bFirstBar;
             break;
-        case 2:
+        case CON_CLAVE_ALIGNED:
             m_bFirstBar = ipSharedData->m_bNumClaveBarHits;
             N = Clave_Aligned(N,iBeatTimes);
             break;
