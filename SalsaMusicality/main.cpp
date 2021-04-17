@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
         while ( n != 'q' ) {
             n = getchar();
             
-            if ( n == 'b' ) {
+            if ( n == 't' ) {
                  isEnabled = IsInstrumentEnabled(INSTRUMENT_CONGAS);
                  SetInstrumentEnabled(INSTRUMENT_CONGAS, !isEnabled );
             }
@@ -62,6 +62,11 @@ int main(int argc, char *argv[])
             if ( n == 'w' ) {
                 isEnabled = IsInstrumentEnabled(INSTRUMENT_COWBELL);
                 SetInstrumentEnabled(INSTRUMENT_COWBELL, !isEnabled );
+            }
+
+            if ( n == 'b' ) {
+                 isEnabled = IsInstrumentEnabled(INSTRUMENT_BONGOS);
+                 SetInstrumentEnabled(INSTRUMENT_BONGOS, !isEnabled );
             }
         }
 

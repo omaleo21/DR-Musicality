@@ -39,12 +39,11 @@ Note *CInstrumentCongas::GetNotes(
     switch (m_iRhythm){
         case 1:
             N = Basic_Sym(N,iBeatTimes);
-            m_bFirstBar = !m_bFirstBar;
             break;
         case 2:
-            m_bFirstBar = !m_bFirstBar;
             N = Basic_Sym(N,iBeatTimes);
             break;
+        // Case 3 and 4 are Clave Invariant
         case 3:
             N = Basic_Asym(N,iBeatTimes,m_bFirstBar);
             m_bFirstBar = !m_bFirstBar;
@@ -132,7 +131,6 @@ Note *CInstrumentCongas::GetNotes(
         printf( "Note %d on: %d\n", i+1, N.note_time );
         pCurrentNote->m_iChannel          = m_iChannel;
         pCurrentNote->m_iKey              = N.keytoplay[i];
-        printf( "Key %d: %d\n", i+1, N.keytoplay[i]);
         pCurrentNote->m_iVelocity         = 127;
         pCurrentNote->m_iNoteOnTime       = N.note_time;
 
@@ -193,7 +191,43 @@ Note_structure CInstrumentCongas::Basic_Asym(Note_structure N, const int iBeatTi
 
     return (N);
 }
+/*
+Note_structure CInstrumentCongas::Advanced_Full(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar)
+{   
+    int time;
+    int duration[8] = {0};
+    int keys[8] = {0};
 
+    SheetMusic CBar = SheetMusic(iBeatTimes);
+    
+    if ( m_bFirstBar ) {
+        time = iBeatTimes[2];
+        duration[0] = CBar.Half_note(0);                             // from 2 to 4
+        duration[1] = CBar.Eighth_note();                             // from 4 to 4.5
+        duration[2] = CBar.Eighth_note()+CBar.Half_note(0);                             // from 4.5 to 6
+        keys[0] = 64;
+        keys[1] = 62;
+        keys[2] = 62;
+
+    } else {
+        time = iBeatTimes[2];
+        duration[0] = CBar.Eighth_note();                            // from 6 to 6&
+        duration[1] = CBar.Eighth_note();                            // from 6& to 7
+        duration[2] = CBar.Quarter_note(0);                 // from 7 to 8 on next frame
+        duration[3] = CBar.Eighth_note();  // 8 to 8&
+        duration[4] = CBar.Eighth_note()+CBar.Half_note(0); // from 8.5 to 2
+        keys[0] = 64;
+        keys[1] = 62;
+        keys[2] = 62;
+        keys[3] = 62;
+        keys[4] = 62;
+    }
+    
+    N.Set(time,duration,keys);
+
+    return (N);
+}
+*/
 Note_structure CInstrumentCongas::Advanced_Asym(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar)
 {   
     int time;
@@ -207,7 +241,7 @@ Note_structure CInstrumentCongas::Advanced_Asym(Note_structure N, const int iBea
         duration[0] = CBar.Half_note(0);                             // from 2 to 4
         duration[1] = CBar.Eighth_note();                             // from 4 to 4.5
         duration[2] = CBar.Eighth_note()+CBar.Half_note(0);                             // from 4.5 to 6
-        keys[0] = 62;
+        keys[0] = 64;
         keys[1] = 62;
         keys[2] = 62;
 
@@ -218,7 +252,7 @@ Note_structure CInstrumentCongas::Advanced_Asym(Note_structure N, const int iBea
         duration[2] = CBar.Quarter_note(0);                 // from 7 to 8 on next frame
         duration[3] = CBar.Eighth_note();  // 8 to 8&
         duration[4] = CBar.Eighth_note()+CBar.Half_note(0); // from 8.5 to 2
-        keys[0] = 62;
+        keys[0] = 64;
         keys[1] = 62;
         keys[2] = 62;
         keys[3] = 62;

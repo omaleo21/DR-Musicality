@@ -43,6 +43,9 @@ private:
     Note_structure Basic_Asym(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar);
 
     Note_structure Advanced_Asym(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar);
+
+    // Note_structure Advanced_Full(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar);
+
 };
 
 #endif

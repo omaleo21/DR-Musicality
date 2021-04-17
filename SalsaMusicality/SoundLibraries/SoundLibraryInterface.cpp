@@ -57,7 +57,7 @@ int InitializeSoundLibrary(char *ipPathToSoundFonts)
     char pathsToSoundFontFiles[NUM_INSTRUMENTS][255];
 
     /* duration of one bar in ticks. Must be divisible by 8! */
-    double bpm = 100;//2.4E5 / bpm
+    double bpm = 180;//2.4E5 / bpm
     unsigned int duration = 2.4E5/bpm; // 2400 is 100bpm
 
     /* Free the library if it's been initialized before */
@@ -66,6 +66,7 @@ int InitializeSoundLibrary(char *ipPathToSoundFonts)
     soundFontFiles[INSTRUMENT_CONGAS]        = "Congas.sf2";
     soundFontFiles[INSTRUMENT_CLAVE]         = "claves.sf2";
     soundFontFiles[INSTRUMENT_COWBELL]       = "cowbell.sf2";
+    soundFontFiles[INSTRUMENT_BONGOS]        = "Bongos.sf2";
 
     g_pFluid = new CFluidSynth("SalsaMusicality");
 
@@ -89,21 +90,27 @@ int InitializeSoundLibrary(char *ipPathToSoundFonts)
 
     /* Initialize congas */
     g_pInstruments[INSTRUMENT_CONGAS] =
-        new CInstrumentCongas(pathsToSoundFontFiles[INSTRUMENT_CONGAS], true, 1);
+        new CInstrumentCongas(pathsToSoundFontFiles[INSTRUMENT_CONGAS], false, 1);
 
     g_pCollection->AddInstrumentToCollection(g_pInstruments[INSTRUMENT_CONGAS]);
 
     /* Initialize clave */
     g_pInstruments[INSTRUMENT_CLAVE] =
-        new CInstrumentClave(pathsToSoundFontFiles[INSTRUMENT_CLAVE], true, 1);
+        new CInstrumentClave(pathsToSoundFontFiles[INSTRUMENT_CLAVE], false, 1);
 
     g_pCollection->AddInstrumentToCollection(g_pInstruments[INSTRUMENT_CLAVE]);
 
     /* Initialize cowbell */
     g_pInstruments[INSTRUMENT_COWBELL] =
-        new CInstrumentCowbell(pathsToSoundFontFiles[INSTRUMENT_COWBELL], true, 1);
+        new CInstrumentCowbell(pathsToSoundFontFiles[INSTRUMENT_COWBELL], false, 5);
 
     g_pCollection->AddInstrumentToCollection(g_pInstruments[INSTRUMENT_COWBELL]);
+
+    /* Initialize bongos */
+    g_pInstruments[INSTRUMENT_BONGOS] =
+        new CInstrumentBongos(pathsToSoundFontFiles[INSTRUMENT_BONGOS], true, 1);
+
+    g_pCollection->AddInstrumentToCollection(g_pInstruments[INSTRUMENT_BONGOS]);
 
     if ( g_pFluid->FinishInit() != 0 ) {
         return 1;

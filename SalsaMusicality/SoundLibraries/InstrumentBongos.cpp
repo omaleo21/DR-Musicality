@@ -38,28 +38,12 @@ Note *CInstrumentBongos::GetNotes(
 
     switch (m_iRhythm){
         case 1:
-            N = Basic_Sym(N,iBeatTimes);
+            N = All_Beats(N,iBeatTimes);
             m_bFirstBar = !m_bFirstBar;
             break;
         case 2:
+            N = All_Beats(N,iBeatTimes);
             m_bFirstBar = !m_bFirstBar;
-            N = Basic_Sym(N,iBeatTimes);
-            break;
-        case 3:
-            N = Basic_Asym(N,iBeatTimes,m_bFirstBar);
-            m_bFirstBar = !m_bFirstBar;
-            break;
-        case 4:
-            m_bFirstBar = !m_bFirstBar;
-            N = Basic_Asym(N,iBeatTimes,m_bFirstBar);
-            break;
-        case 5:
-            N = Advanced_Asym(N,iBeatTimes,m_bFirstBar);
-            m_bFirstBar = !m_bFirstBar;
-            break;
-        case 6:
-            m_bFirstBar = !m_bFirstBar;
-            N = Advanced_Asym(N,iBeatTimes,m_bFirstBar);
             break;
     }
 
@@ -131,7 +115,7 @@ Note *CInstrumentBongos::GetNotes(
 
         printf( "Note %d on: %d\n", i+1, N.note_time );
         pCurrentNote->m_iChannel          = m_iChannel;
-        pCurrentNote->m_iKey              = 60;
+        pCurrentNote->m_iKey              = N.keytoplay[i];
         pCurrentNote->m_iVelocity         = 127;
         pCurrentNote->m_iNoteOnTime       = N.note_time;
 
@@ -146,7 +130,7 @@ Note *CInstrumentBongos::GetNotes(
     return m_pNotes;
 }
 
-Note_structure CInstrumentBongos::Basic_Sym(Note_structure N, const int iBeatTimes[8])
+Note_structure CInstrumentBongos::All_Beats(Note_structure N, const int iBeatTimes[8])
 {   
     int time;
     int duration[8] = {0};
@@ -154,38 +138,22 @@ Note_structure CInstrumentBongos::Basic_Sym(Note_structure N, const int iBeatTim
 
     SheetMusic CBar = SheetMusic(iBeatTimes);
     
-    time = iBeatTimes[2];
-    duration[0] = CBar.Half_note(0);                             // from 2 to 4
-    duration[1] = CBar.Eighth_note();                             // from 4 to 4.5
-    duration[2] = CBar.Eighth_note()+CBar.Half_note(0);                             // from 4.5 to 2
+    time = iBeatTimes[0];
+    duration[0] = CBar.Quarter_note(0);                             // from 1 to 2
+    duration[1] = CBar.Quarter_note(0);                            // from 2 to 3
+    duration[2] = CBar.Quarter_note(0);                             // from 3 to 4
+    duration[3] = CBar.Quarter_note(0);                             // from 4 to 5
 
-    N.Set(time,duration,keys);
-
-    return (N);
-}
-
-Note_structure CInstrumentBongos::Basic_Asym(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar)
-{   
-    int time;
-    int duration[8] = {0};
-    int keys[8] = {0};
-
-    SheetMusic CBar = SheetMusic(iBeatTimes);
-    
-    if ( m_bFirstBar ) {
-        time = iBeatTimes[6];
-        duration[0] = CBar.Whole_note(0);                             // from 4 to 8
-        duration[1] = 0;                                
-        duration[2] = 0;
-        duration[3] = 0;
-        duration[4] = 0;
-        duration[5] = 0;
-        duration[6] = 0;
-        duration[7] = 0;
-    } else {
-        time = iBeatTimes[6];
-        duration[0] = CBar.Eighth_note();                            // from 5 to 6&
-        duration[1] = CBar.Whole_note(0)-CBar.Eighth_note();                            // from 6& to 8
+    if (m_bFirstBar){
+        keys[0] = 63;
+        keys[1] = 63;
+        keys[2] = 63;
+        keys[3] = 63;
+    }   else {
+        keys[0] = 60;
+        keys[1] = 60;
+        keys[2] = 60;
+        keys[3] = 60;
     }
 
     N.Set(time,duration,keys);
@@ -193,31 +161,3 @@ Note_structure CInstrumentBongos::Basic_Asym(Note_structure N, const int iBeatTi
     return (N);
 }
 
-Note_structure CInstrumentBongos::Advanced_Asym(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar)
-{   
-    int time;
-    int duration[8] = {0};
-    int keys[8] = {0};
-
-    SheetMusic CBar = SheetMusic(iBeatTimes);
-    
-    if ( m_bFirstBar ) {
-        time = iBeatTimes[2];
-        duration[0] = CBar.Half_note(0);                             // from 2 to 4
-        duration[1] = CBar.Eighth_note();                             // from 4 to 4.5
-        duration[2] = CBar.Eighth_note()+CBar.Half_note(0);                             // from 4.5 to 6
-
-    } else {
-        time = iBeatTimes[2];
-        duration[0] = CBar.Eighth_note();                            // from 6 to 6&
-        duration[1] = CBar.Eighth_note();                            // from 6& to 7
-        duration[2] = CBar.Quarter_note(0);                 // from 7 to 8 on next frame
-        duration[3] = CBar.Eighth_note();  // 8 to 8&
-        duration[4] = CBar.Eighth_note()+CBar.Half_note(0); // from 8.5 to 2
-
-    }
-    
-    N.Set(time,duration,keys);
-
-    return (N);
-}
