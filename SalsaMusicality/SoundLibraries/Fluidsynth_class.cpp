@@ -217,7 +217,8 @@ void CFluidSynth::ScheduleNoteOff(
 |* Output:  N/A                                                     |
 \*-----------------------------------------------------------------*/
 void CFluidSynth::ScheduleTimerEvent(void)
-{
+{   
+    printf("New Bar \n");
     fluid_event_t *ev = new_fluid_event();
     fluid_event_set_source(ev, -1);
     fluid_event_set_dest(ev, m_iClientDest);
@@ -306,6 +307,7 @@ void CFluidSynth::SetCallbackFunction(
 \*-----------------------------------------------------------------*/
 void CFluidSynth::BeginPlayback()
 {
+    
     m_pSchedulePattern(m_pPatternData, m_iStartTimeOfNextPattern);
     ScheduleTimerEvent();
     m_pSchedulePattern(m_pPatternData, m_iStartTimeOfNextPattern);

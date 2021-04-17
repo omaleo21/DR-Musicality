@@ -38,6 +38,8 @@ private:
     Note_structure N;
 
     Note_structure All_Beats(Note_structure N, const int iBeatTimes[8]);
+    Note_structure Martillo(Note_structure N, const int iBeatTimes[8]);
+
 };
 
 #endif

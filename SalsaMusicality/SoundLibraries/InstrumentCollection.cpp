@@ -102,6 +102,7 @@ void CInstrumentCollection::SchedulePattern(
 
             /* Channel = -1 indicates we're done playing notes */
             while ( pNotes && pNotes->m_iChannel != -1 ) {
+                
                 pCollection->m_pFluid->ScheduleNoteOn(
                     pNotes->m_iChannel,
                     pNotes->m_iKey,

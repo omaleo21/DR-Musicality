@@ -12,6 +12,7 @@
 \*---------------------------------------------------------------------------*/
 #include "InstrumentBongos.h"
 #include <stdio.h>
+#include <algorithm>
 
 CInstrumentBongos::CInstrumentBongos(
     const char                  *ipPathToSoundFont,
@@ -36,17 +37,15 @@ Note *CInstrumentBongos::GetNotes(
     Note *pCurrentNote = m_pNotes;
 
     switch (m_iRhythm){
-        case 1:
+        case 0:
             N = All_Beats(N,iBeatTimes);
             m_bFirstBar = !m_bFirstBar;
             break;
-        case 2:
-            N = All_Beats(N,iBeatTimes);
+        case 1:
+            N = Martillo(N, iBeatTimes);
             m_bFirstBar = !m_bFirstBar;
             break;
     }
-
-    
     /*
     // beat 1      = 0
     // beat 1&     = 1
@@ -145,10 +144,7 @@ Note_structure CInstrumentBongos::All_Beats(Note_structure N, const int iBeatTim
     SheetMusic CBar = SheetMusic(iBeatTimes);
     
     time = iBeatTimes[0];
-    duration[0] = CBar.Quarter_note(0);                             // from 1 to 2
-    duration[1] = CBar.Quarter_note(0);                            // from 2 to 3
-    duration[2] = CBar.Quarter_note(0);                             // from 3 to 4
-    duration[3] = CBar.Quarter_note(0);                             // from 4 to 5
+    std::fill(duration, duration+4, CBar.Quarter_note(0)); // All quarter notes in a bar.
 
     if (m_bFirstBar){
         keys[0] = 63;
@@ -161,6 +157,33 @@ Note_structure CInstrumentBongos::All_Beats(Note_structure N, const int iBeatTim
         keys[2] = 60;
         keys[3] = 60;
     }
+
+    N.Set(time,duration,keys);
+
+    return (N);
+}
+
+Note_structure CInstrumentBongos::Martillo(Note_structure N, const int iBeatTimes[8])
+{   
+    int time;
+    int duration[8] = {0};
+    int keys[8] = {0};
+
+    SheetMusic CBar = SheetMusic(iBeatTimes);
+    
+    time = iBeatTimes[0];
+
+    std::fill(duration, duration+8, CBar.Eighth_note()); // All eighth notes in a bar.
+
+    keys[0] = 57;
+    keys[1] = 85;
+    keys[2] = 63;
+    keys[3] = 51;
+    keys[4] = 57;
+    keys[5] = 85;
+    keys[6] = 60;
+    keys[7] = 51;
+    
 
     N.Set(time,duration,keys);
 

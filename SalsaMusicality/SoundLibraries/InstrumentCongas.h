@@ -37,11 +37,11 @@ private:
 
     Note_structure N;
 
-    Note_structure Basic_Sym(Note_structure N, const int iBeatTimes[8]);
+    Note_structure Basic_Offbeat(Note_structure N, const int iBeatTimes[8]);
 
-    Note_structure Basic_Asym(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar);
+    Note_structure Basic_Endbeat(Note_structure N, const int iBeatTimes[8]);
 
-    Note_structure Advanced_Asym(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar);
+    Note_structure Clave_Aligned(Note_structure N, const int iBeatTimes[8]);
 
     // Note_structure Advanced_Full(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar);
 

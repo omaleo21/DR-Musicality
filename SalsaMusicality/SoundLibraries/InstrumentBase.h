@@ -103,11 +103,16 @@ struct Note
 
 struct SharedInstrumentData
 {
-    int        m_iNumClaveBarHits;
+    bool        m_bNumClaveBarHits;
 
     SharedInstrumentData()
-    {
-        m_iNumClaveBarHits = 0;
+    {   
+        // 0 for 2 hits; 1 for 3 hits;
+        m_bNumClaveBarHits = 0;
+    }
+
+    void Update_Clave(bool bClave){
+        m_bNumClaveBarHits = bClave;
     }
 };
 

@@ -56,8 +56,9 @@ int main(int argc, char *argv[])
             }
             
             if ( n == 'c' ) {
-                isEnabled = IsInstrumentEnabled(INSTRUMENT_CLAVE);
-                SetInstrumentEnabled(INSTRUMENT_CLAVE, !isEnabled );
+                SetInstrumentRhythm(INSTRUMENT_CLAVE,SON_3_2);
+                // isEnabled = IsInstrumentEnabled(INSTRUMENT_CLAVE);
+                // SetInstrumentEnabled(INSTRUMENT_CLAVE, !isEnabled );
             }
             if ( n == 'w' ) {
                 isEnabled = IsInstrumentEnabled(INSTRUMENT_COWBELL);

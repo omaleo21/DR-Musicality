@@ -73,19 +73,19 @@ Note *CInstrumentClave::GetNotes(
     */
     
     switch (m_iRhythm){
-        case 1:
+        case 0:
             N = Son(N,iBeatTimes,m_bFirstBar);
             m_bFirstBar = !m_bFirstBar;
+            break;
+        case 1:
+            m_bFirstBar = !m_bFirstBar;
+            N = Son(N,iBeatTimes,m_bFirstBar);
             break;
         case 2:
-            m_bFirstBar = !m_bFirstBar;
-            N = Son(N,iBeatTimes,m_bFirstBar);
-            break;
-        case 3:
             N = Rumba(N,iBeatTimes,m_bFirstBar);
             m_bFirstBar = !m_bFirstBar;
             break;
-        case 4:
+        case 3:
             m_bFirstBar = !m_bFirstBar;
             N = Son(N,iBeatTimes,m_bFirstBar);
             break;
@@ -181,21 +181,23 @@ void CInstrumentClave::UpdateSharedData(
     SharedInstrumentData        *iopSharedData )
 {
     bool isNextFrameFirstBar = m_bFirstBar;
-
+    
     /* Determine whether the next notes to be played will be on the first bar. */
+    /*
     switch (m_iRhythm) {
         case 2:
+            isNextFrameFirstBar = !isNextFrameFirstBar;
         case 4:
             isNextFrameFirstBar = !isNextFrameFirstBar;
             break;
         default:
             break;
     }
-
+    */
     /* Assign number of clave hits for the next bar. */
     if ( isNextFrameFirstBar ) {
-        iopSharedData->m_iNumClaveBarHits = 2;
+        iopSharedData->Update_Clave(0);
     } else {
-        iopSharedData->m_iNumClaveBarHits = 3;
+        iopSharedData->Update_Clave(1);
     }
 }

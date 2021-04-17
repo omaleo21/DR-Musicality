@@ -34,30 +34,18 @@ Note *CInstrumentCongas::GetNotes(
     int i = 0;
 
     Note *pCurrentNote = m_pNotes;
-
+        
     switch (m_iRhythm){
+        case 0:
+            N = Basic_Offbeat(N,iBeatTimes);
+            break;
         case 1:
-            N = Basic_Sym(N,iBeatTimes);
+            N = Basic_Endbeat(N,iBeatTimes);
+            m_bFirstBar = !m_bFirstBar;
             break;
         case 2:
-            N = Basic_Sym(N,iBeatTimes);
-            break;
-        // Case 3 and 4 are Clave Invariant
-        case 3:
-            N = Basic_Asym(N,iBeatTimes,m_bFirstBar);
-            m_bFirstBar = !m_bFirstBar;
-            break;
-        case 4:
-            N = Basic_Asym(N,iBeatTimes,m_bFirstBar);
-            m_bFirstBar = !m_bFirstBar;
-            break;
-        case 5:
-            N = Advanced_Asym(N,iBeatTimes,m_bFirstBar);
-            m_bFirstBar = !m_bFirstBar;
-            break;
-        case 6:
-            m_bFirstBar = !m_bFirstBar;
-            N = Advanced_Asym(N,iBeatTimes,m_bFirstBar);
+            m_bFirstBar = !(ipSharedData->m_bNumClaveBarHits);
+            N = Clave_Aligned(N,iBeatTimes);
             break;
     }
 
@@ -150,7 +138,7 @@ Note *CInstrumentCongas::GetNotes(
     return m_pNotes;
 }
 
-Note_structure CInstrumentCongas::Basic_Sym(Note_structure N, const int iBeatTimes[8])
+Note_structure CInstrumentCongas::Basic_Offbeat(Note_structure N, const int iBeatTimes[8])
 {   
     int time;
     int duration[8] = {0};
@@ -172,7 +160,7 @@ Note_structure CInstrumentCongas::Basic_Sym(Note_structure N, const int iBeatTim
     return (N);
 }
 
-Note_structure CInstrumentCongas::Basic_Asym(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar)
+Note_structure CInstrumentCongas::Basic_Endbeat(Note_structure N, const int iBeatTimes[8])
 {   
     int time;
     int duration[8] = {0};
@@ -233,7 +221,7 @@ Note_structure CInstrumentCongas::Advanced_Full(Note_structure N, const int iBea
     return (N);
 }
 */
-Note_structure CInstrumentCongas::Advanced_Asym(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar)
+Note_structure CInstrumentCongas::Clave_Aligned(Note_structure N, const int iBeatTimes[8])
 {   
     int time;
     int duration[8] = {0};

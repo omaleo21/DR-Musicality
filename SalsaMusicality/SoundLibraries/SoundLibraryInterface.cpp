@@ -90,25 +90,25 @@ int InitializeSoundLibrary(char *ipPathToSoundFonts)
 
     /* Initialize congas */
     g_pInstruments[INSTRUMENT_CONGAS] =
-        new CInstrumentCongas(pathsToSoundFontFiles[INSTRUMENT_CONGAS], false, 1);
+        new CInstrumentCongas(pathsToSoundFontFiles[INSTRUMENT_CONGAS], true, CLAVE_ALIGNED);
 
     g_pCollection->AddInstrumentToCollection(g_pInstruments[INSTRUMENT_CONGAS]);
 
     /* Initialize clave */
     g_pInstruments[INSTRUMENT_CLAVE] =
-        new CInstrumentClave(pathsToSoundFontFiles[INSTRUMENT_CLAVE], false, 1);
+        new CInstrumentClave(pathsToSoundFontFiles[INSTRUMENT_CLAVE], true, SON_2_3);
 
     g_pCollection->AddInstrumentToCollection(g_pInstruments[INSTRUMENT_CLAVE]);
 
     /* Initialize cowbell */
     g_pInstruments[INSTRUMENT_COWBELL] =
-        new CInstrumentCowbell(pathsToSoundFontFiles[INSTRUMENT_COWBELL], false, 5);
+        new CInstrumentCowbell(pathsToSoundFontFiles[INSTRUMENT_COWBELL], false, CLAVE_ALIGNED);
 
     g_pCollection->AddInstrumentToCollection(g_pInstruments[INSTRUMENT_COWBELL]);
 
     /* Initialize bongos */
     g_pInstruments[INSTRUMENT_BONGOS] =
-        new CInstrumentBongos(pathsToSoundFontFiles[INSTRUMENT_BONGOS], true, 1);
+        new CInstrumentBongos(pathsToSoundFontFiles[INSTRUMENT_BONGOS], false, ALL_BEATS);
 
     g_pCollection->AddInstrumentToCollection(g_pInstruments[INSTRUMENT_BONGOS]);
 
@@ -148,7 +148,8 @@ void FreeSoundLibrary(void)
 |* Output:  N/A                                                     |
 \*-----------------------------------------------------------------*/
 void BeginPlayback(void)
-{
+{   
+    
     g_pFluid->BeginPlayback();
 }
 
@@ -211,42 +212,6 @@ void SetInstrumentRhythm(
     short                           iRhythm )
 {
     g_pInstruments[iInstrument]->SetRhythm(iRhythm);
-}
-
-/*-----------------------------------------------------------------*\
-|*---------------------- SetClaveRhythm ---------------------------*|
-|*-----------------------------------------------------------------*|
-|* Purpose: Set the rhythm for the specified instrument.            |
-|* Input:   Instrument index, Rhythm index                          |
-|* Output:  N/A                                                     |
-\*-----------------------------------------------------------------*/
-void SetClaveRhythm(
-    short                           iRhythm )
-{   
-    int m_iBongoRhythm = g_pInstruments[INSTRUMENT_CONGAS]->GetRhythm();
-    int m_iCowbellRhythm = g_pInstruments[INSTRUMENT_COWBELL]->GetRhythm();
-
-    g_pInstruments[INSTRUMENT_CLAVE]->SetRhythm(iRhythm);
-    
-    if (m_iBongoRhythm%2!=iRhythm%2){
-        if (m_iBongoRhythm%2==0){
-            g_pInstruments[INSTRUMENT_CONGAS]->SetRhythm(m_iBongoRhythm-1);
-        } 
-        else if (m_iBongoRhythm%2==1){
-            g_pInstruments[INSTRUMENT_CONGAS]->SetRhythm(m_iBongoRhythm+1);
-        }
-    }
-
-    if (m_iCowbellRhythm%2!=iRhythm%2){
-        if (m_iCowbellRhythm%2==0){
-            g_pInstruments[INSTRUMENT_COWBELL]->SetRhythm(m_iCowbellRhythm-1);
-        } 
-        else if (m_iCowbellRhythm%2==1){
-            g_pInstruments[INSTRUMENT_COWBELL]->SetRhythm(m_iCowbellRhythm+1);
-        }
-    }
-
-
 }
 
 /*-----------------------------------------------------------------*\

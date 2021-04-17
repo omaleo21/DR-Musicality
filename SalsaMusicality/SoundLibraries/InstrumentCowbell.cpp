@@ -38,29 +38,15 @@ Note *CInstrumentCowbell::GetNotes(
     Note *pCurrentNote = m_pNotes;
 
     switch (m_iRhythm){
-        case 1:
+        case 0:
             N = All_Beats(N,iBeatTimes);
-            m_bFirstBar = !m_bFirstBar;
+            break;
+        case 1:
+            N = Down_Beats(N,iBeatTimes);
             break;
         case 2:
+            N = Clave_Aligned(N,iBeatTimes);
             m_bFirstBar = !m_bFirstBar;
-            N = All_Beats(N,iBeatTimes);
-            break;
-        case 3:
-            N = Down_Beats(N,iBeatTimes);
-            m_bFirstBar = !m_bFirstBar;
-            break;
-        case 4:
-            m_bFirstBar = !m_bFirstBar;
-            N = Down_Beats(N,iBeatTimes);
-            break;
-        case 5:
-            N = Advanced_Asym(N,iBeatTimes,m_bFirstBar);
-            m_bFirstBar = !m_bFirstBar;
-            break;
-        case 6:
-            m_bFirstBar = !m_bFirstBar;
-            N = Advanced_Asym(N,iBeatTimes,m_bFirstBar);
             break;
     }
     /*
@@ -179,16 +165,12 @@ Note_structure CInstrumentCowbell::All_Beats(Note_structure N, const int iBeatTi
     int duration[8]= {0};
     int keys[8];
 
-    std::fill(keys, keys+8, 39);
-
     SheetMusic CBar = SheetMusic(iBeatTimes);
 
     time = iBeatTimes[0];
-    duration[0] = CBar.Quarter_note(0);
-    duration[1] = CBar.Quarter_note(0);
-    duration[2] = CBar.Quarter_note(0);
-    duration[3] = CBar.Quarter_note(0);
 
+    std::fill(duration, keys+4, CBar.Quarter_note(0));
+    std::fill(keys, keys+8, 39);
     N.Set(time,duration,keys);
 
     return (N);
@@ -199,20 +181,19 @@ Note_structure CInstrumentCowbell::Down_Beats(Note_structure N, const int iBeatT
     int duration[8]= {0};
     int keys[8];
 
-    std::fill(keys, keys+8, 39);
+    
 
     SheetMusic CBar = SheetMusic(iBeatTimes);
 
     time = iBeatTimes[0];
-    duration[0] = CBar.Half_note(0);
-    duration[1] = CBar.Half_note(0);
-
+    std::fill(duration, duration+2, CBar.Half_note(0));
+    std::fill(keys, keys+8, 39);
     N.Set(time,duration,keys);
 
     return (N);
 }
 
-Note_structure CInstrumentCowbell::Advanced_Asym(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar){
+Note_structure CInstrumentCowbell::Clave_Aligned(Note_structure N, const int iBeatTimes[8]){
     int time;
     int duration[8]= {0};
     int keys[8] = {0};
