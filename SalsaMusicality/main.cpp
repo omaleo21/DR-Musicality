@@ -13,7 +13,7 @@
 /*---------------------------------------------------------------------------*\
 |*--------------------------- PATH FOR SOUNDFONTS ---------------------------*|
 \*---------------------------------------------------------------------------*/
-char *SoundFontsPath = "../SoundFonts/"; // Must be relative to SoundLibrary shared object
+char *SoundFontsPath = "SoundFonts/"; // Must be relative to SoundLibrary shared object
 
 /*---------------------------------------------------------------------------*\
 |*-------------------------------- FUNCTIONS --------------------------------*|
@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
     bool isEnabled = false;
 
     /* duration of the pattern in ticks. Must be divisible by 8! */
-    double bpm = 100;//2.4E5 / bpm
-    unsigned int duration = 2.4E5/bpm; // 2400 is 100bpm
+    // double bpm = 100;//2.4E5 / bpm
+    // unsigned int duration = 2.4E5/bpm; // 2400 is 100bpm
 
     if( !InitializeSoundLibrary(SoundFontsPath) )
     {
