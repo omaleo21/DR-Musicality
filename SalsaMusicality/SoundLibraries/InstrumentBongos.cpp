@@ -169,14 +169,14 @@ Note_structure CInstrumentBongos::Martillo(Note_structure N, const int iBeatTime
 
     std::fill(duration, duration+8, CBar.Eighth_note()); // All eighth notes in a bar.
 
-    keys[0] = 57;
-    keys[1] = 85;
-    keys[2] = 63;
-    keys[3] = 51;
-    keys[4] = 57;
-    keys[5] = 85;
-    keys[6] = 60;
-    keys[7] = 51;
+    keys[0] = 58;
+    keys[1] = 86;
+    keys[2] = 64;
+    keys[3] = 52;
+    keys[4] = 58;
+    keys[5] = 86;
+    keys[6] = 61;
+    keys[7] = 52;
     
 
     N.Set(time,duration,keys);
