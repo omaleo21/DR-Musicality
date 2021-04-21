@@ -4,16 +4,43 @@ namespace SalsaMusicalityGUI
 {
     internal enum INSTRUMENTS_TYPE
     {
-        INSTRUMENT_BONGOS = 0,
+        INSTRUMENT_CONGAS = 0,
         INSTRUMENT_CLAVE,
         INSTRUMENT_COWBELL,
+        INSTRUMENT_BONGOS,
         NUM_INSTRUMENTS
     };
 
-    internal enum RHYTHMS_TYPE
+    internal enum BONGO_RHYTHMS_TYPE
     {
-        DEFAULT,
-        NUM_RHYTHMS_TYPE
+        BON_ALL_BEATS = 0,
+        BON_MARTILLO,
+        NUM_BONGO_RHYTHMS
+    };
+
+    internal enum CLAVE_RHYTHMS_TYPE
+    {
+        CLA_SON_2_3 = 0,
+        CLA_SON_3_2,
+        CLA_RUMBA_2_3,
+        CLA_RUMBA_3_2,
+        NUM_CLAVE_RHYTHMS
+    };
+
+    internal enum CONGA_RHYTHMS_TYPE
+    {
+        CON_BASIC_OFFBEAT = 0,
+        CON_BASIC_ENDBEAT,
+        CON_CLAVE_ALIGNED,
+        NUM_CONGA_RHYTHMS
+    };
+
+    internal enum COWBELL_RHYTHMS_TYPE
+    {
+        COW_ALL_BEATS = 0,
+        COW_DOWN_BEATS,
+        COW_CLAVE_ALIGNED,
+        NUM_COWBELL_RHYTHMS
     };
 
     internal static class SoundLibraryInterface
@@ -116,7 +143,19 @@ namespace SalsaMusicalityGUI
             EntryPoint = "SetInstrumentRhythm")]
         internal static extern void SetInstrumentRhythm(
             uint iInstrument,
-            uint iRhythm);
+            short iRhythm);
+
+        /*-----------------------------------------------------------------*\
+        |*---------------------- GetInstrumentRhythm ----------------------*|
+        |*-----------------------------------------------------------------*|
+        |* Purpose: Get the rhythm for the specified instrument.            |
+        |* Input:   Instrument index                                        |
+        |* Output:  Rhythm index                                            |
+        \*-----------------------------------------------------------------*/
+        [DllImport("libSoundLibraries.so",
+            CallingConvention = CallingConvention.Cdecl,
+            EntryPoint = "GetInstrumentRhythm")]
+        internal static extern short GetInstrumentRhythm(uint iInstrument);
 
         /*-----------------------------------------------------------------*\
         |*------------------------ SetMasterVolume ------------------------*|

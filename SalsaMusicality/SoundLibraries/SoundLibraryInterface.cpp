@@ -215,6 +215,18 @@ void SetInstrumentRhythm(
 }
 
 /*-----------------------------------------------------------------*\
+|*---------------------- GetInstrumentRhythm ----------------------*|
+|*-----------------------------------------------------------------*|
+|* Purpose: Get the rhythm for the specified instrument.            |
+|* Input:   Instrument index                                        |
+|* Output:  Rhythm index                                            |
+\*-----------------------------------------------------------------*/
+short GetInstrumentRhythm(unsigned int iInstrument)
+{
+    return g_pInstruments[iInstrument]->GetRhythm();
+}
+
+/*-----------------------------------------------------------------*\
 |*------------------------ SetMasterVolume ------------------------*|
 |*-----------------------------------------------------------------*|
 |* Purpose: Set the master volume for fluidsynth.                   |

@@ -20,11 +20,6 @@ enum INSTRUMENTS_TYPE {
     NUM_INSTRUMENTS
 };
 
-enum RHYTHMS_TYPE {
-    DEFAULT,
-    NUM_RHYTHMS_TYPE
-};
-
 enum BONGO_RHYTHMS {
     BON_ALL_BEATS = 0,
     BON_MARTILLO,
@@ -79,8 +74,7 @@ SLAPI_EXPORT void SetInstrumentRhythm(
     unsigned int                iInstrument,
     short                       iRhythm );
 
-SLAPI_EXPORT void SetClaveRhythm(
-    short                       iRhythm );
+SLAPI_EXPORT short GetInstrumentRhythm(unsigned int iInstrument);
 
 SLAPI_EXPORT void SetMasterVolume(float iVolume);
 

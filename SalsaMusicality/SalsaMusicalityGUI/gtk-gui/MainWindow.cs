@@ -31,21 +31,33 @@ public partial class MainWindow
 
 	private global::Gtk.Button claveButton;
 
-	private global::Gtk.ComboBox combobox1;
+	private global::Gtk.ComboBox claveRhythmsBox;
 
 	private global::Gtk.HBox hbox6;
 
 	private global::Gtk.Button cowbellButton;
 
-	private global::Gtk.ComboBox combobox2;
+	private global::Gtk.ComboBox cowbellRhythmsBox;
 
 	private global::Gtk.HBox hbox7;
 
 	private global::Gtk.Button bongosButton;
 
-	private global::Gtk.ComboBox combobox3;
+	private global::Gtk.ComboBox bongosRhythmsBox;
 
 	private global::Gtk.VBox vbox3;
+
+	private global::Gtk.HBox hbox8;
+
+	private global::Gtk.HBox hbox9;
+
+	private global::Gtk.Button congasButton;
+
+	private global::Gtk.ComboBox congasRhythmsBox;
+
+	private global::Gtk.HBox hbox10;
+
+	private global::Gtk.HBox hbox11;
 
 	protected virtual void Build()
 	{
@@ -171,10 +183,10 @@ public partial class MainWindow
 		w10.Expand = false;
 		w10.Fill = false;
 		// Container child hbox5.Gtk.Box+BoxChild
-		this.combobox1 = global::Gtk.ComboBox.NewText();
-		this.combobox1.Name = "combobox1";
-		this.hbox5.Add(this.combobox1);
-		global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.hbox5[this.combobox1]));
+		this.claveRhythmsBox = global::Gtk.ComboBox.NewText();
+		this.claveRhythmsBox.Name = "claveRhythmsBox";
+		this.hbox5.Add(this.claveRhythmsBox);
+		global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.hbox5[this.claveRhythmsBox]));
 		w11.Position = 1;
 		w11.Expand = false;
 		w11.Fill = false;
@@ -199,10 +211,10 @@ public partial class MainWindow
 		w15.Expand = false;
 		w15.Fill = false;
 		// Container child hbox6.Gtk.Box+BoxChild
-		this.combobox2 = global::Gtk.ComboBox.NewText();
-		this.combobox2.Name = "combobox2";
-		this.hbox6.Add(this.combobox2);
-		global::Gtk.Box.BoxChild w16 = ((global::Gtk.Box.BoxChild)(this.hbox6[this.combobox2]));
+		this.cowbellRhythmsBox = global::Gtk.ComboBox.NewText();
+		this.cowbellRhythmsBox.Name = "cowbellRhythmsBox";
+		this.hbox6.Add(this.cowbellRhythmsBox);
+		global::Gtk.Box.BoxChild w16 = ((global::Gtk.Box.BoxChild)(this.hbox6[this.cowbellRhythmsBox]));
 		w16.Position = 1;
 		w16.Expand = false;
 		w16.Fill = false;
@@ -225,10 +237,10 @@ public partial class MainWindow
 		w19.Expand = false;
 		w19.Fill = false;
 		// Container child hbox7.Gtk.Box+BoxChild
-		this.combobox3 = global::Gtk.ComboBox.NewText();
-		this.combobox3.Name = "combobox3";
-		this.hbox7.Add(this.combobox3);
-		global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.hbox7[this.combobox3]));
+		this.bongosRhythmsBox = global::Gtk.ComboBox.NewText();
+		this.bongosRhythmsBox.Name = "bongosRhythmsBox";
+		this.hbox7.Add(this.bongosRhythmsBox);
+		global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.hbox7[this.bongosRhythmsBox]));
 		w20.Position = 1;
 		w20.Expand = false;
 		w20.Fill = false;
@@ -247,9 +259,58 @@ public partial class MainWindow
 		this.vbox3 = new global::Gtk.VBox();
 		this.vbox3.Name = "vbox3";
 		this.vbox3.Spacing = 6;
+		// Container child vbox3.Gtk.Box+BoxChild
+		this.hbox8 = new global::Gtk.HBox();
+		this.hbox8.Name = "hbox8";
+		this.hbox8.Spacing = 6;
+		// Container child hbox8.Gtk.Box+BoxChild
+		this.hbox9 = new global::Gtk.HBox();
+		this.hbox9.Name = "hbox9";
+		this.hbox9.Spacing = 6;
+		// Container child hbox9.Gtk.Box+BoxChild
+		this.congasButton = new global::Gtk.Button();
+		this.congasButton.CanFocus = true;
+		this.congasButton.Name = "congasButton";
+		global::Gtk.Image w24 = new global::Gtk.Image();
+		this.congasButton.Image = w24;
+		this.hbox9.Add(this.congasButton);
+		global::Gtk.Box.BoxChild w25 = ((global::Gtk.Box.BoxChild)(this.hbox9[this.congasButton]));
+		w25.Position = 0;
+		w25.Expand = false;
+		w25.Fill = false;
+		// Container child hbox9.Gtk.Box+BoxChild
+		this.congasRhythmsBox = global::Gtk.ComboBox.NewText();
+		this.congasRhythmsBox.Name = "congasRhythmsBox";
+		this.hbox9.Add(this.congasRhythmsBox);
+		global::Gtk.Box.BoxChild w26 = ((global::Gtk.Box.BoxChild)(this.hbox9[this.congasRhythmsBox]));
+		w26.Position = 1;
+		w26.Expand = false;
+		w26.Fill = false;
+		this.hbox8.Add(this.hbox9);
+		global::Gtk.Box.BoxChild w27 = ((global::Gtk.Box.BoxChild)(this.hbox8[this.hbox9]));
+		w27.Position = 0;
+		// Container child hbox8.Gtk.Box+BoxChild
+		this.hbox10 = new global::Gtk.HBox();
+		this.hbox10.Name = "hbox10";
+		this.hbox10.Spacing = 6;
+		this.hbox8.Add(this.hbox10);
+		global::Gtk.Box.BoxChild w28 = ((global::Gtk.Box.BoxChild)(this.hbox8[this.hbox10]));
+		w28.Position = 1;
+		// Container child hbox8.Gtk.Box+BoxChild
+		this.hbox11 = new global::Gtk.HBox();
+		this.hbox11.Name = "hbox11";
+		this.hbox11.Spacing = 6;
+		this.hbox8.Add(this.hbox11);
+		global::Gtk.Box.BoxChild w29 = ((global::Gtk.Box.BoxChild)(this.hbox8[this.hbox11]));
+		w29.Position = 2;
+		this.vbox3.Add(this.hbox8);
+		global::Gtk.Box.BoxChild w30 = ((global::Gtk.Box.BoxChild)(this.vbox3[this.hbox8]));
+		w30.Position = 0;
+		w30.Expand = false;
+		w30.Fill = false;
 		this.vbox1.Add(this.vbox3);
-		global::Gtk.Box.BoxChild w24 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.vbox3]));
-		w24.Position = 2;
+		global::Gtk.Box.BoxChild w31 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.vbox3]));
+		w31.Position = 2;
 		this.Add(this.vbox1);
 		if ((this.Child != null))
 		{
@@ -263,7 +324,12 @@ public partial class MainWindow
 		this.playbackButton.Clicked += new global::System.EventHandler(this.OnPlaybackButtonClicked);
 		this.masterVolumeSlider.ValueChanged += new global::System.EventHandler(this.OnMasterVolumeSliderChanged);
 		this.claveButton.Clicked += new global::System.EventHandler(this.OnClaveButtonClicked);
+		this.claveRhythmsBox.Changed += new global::System.EventHandler(this.OnClaveRhythmsBoxChanged);
 		this.cowbellButton.Clicked += new global::System.EventHandler(this.OnCowbellButtonClicked);
+		this.cowbellRhythmsBox.Changed += new global::System.EventHandler(this.OnCowbellRhythmsBoxChanged);
 		this.bongosButton.Clicked += new global::System.EventHandler(this.OnBongosButtonClicked);
+		this.bongosRhythmsBox.Changed += new global::System.EventHandler(this.OnBongosRhythmsBoxChanged);
+		this.congasButton.Clicked += new global::System.EventHandler(this.OnCongasButtonClicked);
+		this.congasRhythmsBox.Changed += new global::System.EventHandler(this.OnCongasRhythmsBoxChanged);
 	}
 }
