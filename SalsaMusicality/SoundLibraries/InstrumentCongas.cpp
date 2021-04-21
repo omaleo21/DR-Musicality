@@ -13,6 +13,7 @@
 #include "InstrumentCongas.h"
 #include "SoundLibraryInterface.h"
 #include <stdio.h>
+#include <algorithm>
 
 CInstrumentCongas::CInstrumentCongas(
     const char                  *ipPathToSoundFont,
@@ -42,6 +43,10 @@ Note *CInstrumentCongas::GetNotes(
             break;
         case CON_BASIC_ENDBEAT:
             N = Basic_Endbeat(N,iBeatTimes);
+            m_bFirstBar = !m_bFirstBar;
+            break;
+        case CON_BASIC_FULL:
+            N = Basic_Full(N,iBeatTimes);
             m_bFirstBar = !m_bFirstBar;
             break;
         case CON_CLAVE_ALIGNED:
@@ -152,7 +157,7 @@ Note_structure CInstrumentCongas::Basic_Offbeat(Note_structure N, const int iBea
     duration[1] = CBar.Eighth_note();                             // from 4 to 4.5
     duration[2] = CBar.Eighth_note()+CBar.Half_note(0);                             // from 4.5 to 2
 
-    keys[0] = 64;
+    keys[0] = 69;
     keys[1] = 62;
     keys[2] = 62;
 
@@ -179,6 +184,42 @@ Note_structure CInstrumentCongas::Basic_Endbeat(Note_structure N, const int iBea
         duration[1] = CBar.Whole_note(0)-CBar.Eighth_note();                            // from 6& to 8
         keys[1] = 62;
         keys[2] = 62;
+    }
+
+    N.Set(time,duration,keys);
+
+    return (N);
+}
+
+Note_structure CInstrumentCongas::Basic_Full(Note_structure N, const int iBeatTimes[8])
+{   
+    int time;
+    int duration[8] = {0};
+    int keys[8] = {0};
+
+    SheetMusic CBar = SheetMusic(iBeatTimes);
+
+    time = iBeatTimes[0];
+    std::fill(duration, duration+8, CBar.Eighth_note()); // All eighth notes in a bar.
+
+    if ( m_bFirstBar ) {
+        keys[0] = 71;
+        keys[1] = 72;
+        keys[2] = 69;
+        keys[3] = 72;
+        keys[4] = 71;
+        keys[5] = 72;
+        keys[6] = 67;
+        keys[7] = 67;
+    } else {
+        keys[0] = 71;
+        keys[1] = 72;
+        keys[2] = 69;
+        keys[3] = 62;
+        keys[4] = 62;
+        keys[5] = 72;
+        keys[6] = 67;
+        keys[7] = 67;
     }
 
     N.Set(time,duration,keys);
