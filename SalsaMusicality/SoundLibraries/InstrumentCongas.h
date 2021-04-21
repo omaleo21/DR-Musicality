@@ -41,6 +41,8 @@ private:
 
     Note_structure Basic_Endbeat(Note_structure N, const int iBeatTimes[8]);
 
+    Note_structure Basic_Full(Note_structure N, const int iBeatTimes[8]);
+
     Note_structure Clave_Aligned(Note_structure N, const int iBeatTimes[8]);
 
     // Note_structure Advanced_Full(Note_structure N, const int iBeatTimes[8],bool m_bFirstBar);
